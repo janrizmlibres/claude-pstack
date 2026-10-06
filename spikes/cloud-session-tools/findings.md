@@ -3,7 +3,54 @@
 Lead session: `session_01K52547PxV5PrmorXj79Fw9` (title "Cloud session tools probe"), environment `env_011fdXavJ6U87ghgCCgmnoee` ("Mira").
 Started 2026-10-06T16:15:01Z.
 
-Status: IN PROGRESS (step 1 done).
+Status: steps 1–6 done. The late child was left running on purpose (see Survival).
+
+Sessions created:
+- child `session_01CSbTQfsDL7SGUdJoemZDWB` (lead -> depth 1)
+- grandchild `session_01LLpmy8uujcYjXYpNHttjDo` (created by the child, depth 2)
+- late child `session_01LKNcFyGd6VNxySTbTCZkM5` (lead -> depth 1)
+
+## Summary
+
+### Start state (child)
+- Repo/branch: `create_session` takes `source_url` + `source_revision`. With `source_revision:"probe/session-tools-base"` the child started **on that branch** (`git branch --show-current` = `probe/session-tools-base`, HEAD `0f043d5`). The lead's own pushed branch works as a base.
+- **BASE_MARKER existed** in the child.
+- Environment: it inherits by default. I passed the lead's own `env_011fdXavJ6U87ghgCCgmnoee` ("Mira") explicitly. `list_environments` offers two: Mira, and `env_01C2nsLM8YNe2GsPB79MDmsm` "Default - trusted network access". (`list_sessions` also shows older sessions in a third env, `env_01U8RULkZQyH1tPCbhmgFzLw`, which `list_environments` did not list.)
+- Model: a free-string `model` param, "Defaults to the calling session's model". There is no enum, so the description lists no allowed values. The child got the lead's model.
+- `~/.claude` **matched the lead's exactly**: the same entries, skills `session-start-hook` + `synced`, plugins `synced`, no `agents` dir. Hostname `vm` and pwd `/home/user/claude-pstack` were the same too. So it ran the same environment setup.
+- The child had `permissionMode:"default"` (in its init event). The 27 remote tools were deferred there too (the MCP server was "pending" at init) and needed a ToolSearch.
+- The child has no outcome branch by default. `create_session` has an `outcome_branch` param that I did not use.
+
+### Read back
+| Tool | What it showed |
+|---|---|
+| `get_session` | status (PENDING → RUNNING → REQUIRES_ACTION → IDLE), `status_bucket` (WORKING/BLOCKED/COMPLETED), `post_turn_summary` (status_detail, recent_action, **needs_action**, e.g. "Approve or deny mcp__claude-code-remote__send_message"), `current_branches` (showed the child's pushed branch), usage/cost, `parent_session_id`, `lineage {depth, limit:8}` (self only) |
+| `list_events` | **Full transcript**: the initial prompt, init/system events (tools, skills, agents, permissionMode), every assistant text and tool_use input, every tool_result output, `control_request` permission prompts, `result` events (final text, cost, turns), env_manager boot logs, `prompt_suggestion`. Thinking blocks are signature-only. The `kinds` filter and `after_id` paging work. It works on grandchildren and on self (self is huge: 450k chars) |
+| `get_event` | one event by uuid (used it to fetch the CHILD FINAL text) |
+| `list_sessions` | all of the account's sessions with status, summaries, cost, parent_session_id |
+| `ReadNotifications` | inbound `send_message` messages, queued |
+
+Visible: status yes, completion yes (bucket COMPLETED + `result` event), **CHILD FINAL message yes** (verbatim via list_events/get_event, and summarised in post_turn_summary), full transcript yes, branch yes (`current_branches`, plus the push output in the transcript and `git ls-remote`). PR: none was created (`config:auto-create-pr:off`), and no PR field appears.
+
+Notification vs polling: **polling, apart from the message channel.** Nothing arrived in the lead unprompted mid-turn: no `<child-session-event>` and no system reminder. The child finished cleanly, and the create_session description says clean finishes do not report back. The child's `send_message("child done")` was queued as a notification for the lead (queued_at 16:20:14Z). I only saw it when I called `ReadNotifications`. My ping to the child was likewise queued (queued_at 16:19:39Z). The child read it via `ReadNotifications` after its first `result`, then ran a second turn and answered "PONG" in its final message. Messages arrive wrapped in `<cross-session-message from-session="...">`, and the wrapper tells the receiver it can reply with `session_id:"@parent"`.
+
+### Push and nesting
+- **The child pushed**: `probe/session-tools-child` at `c8f2a32` (`* [new branch] probe/session-tools-child -> probe/session-tools-child`), with no error.
+- **The child had the full tool set**: the same 27 `mcp__claude-code-remote__*` tools, plus `Agent` (`Task`), `Workflow`, `SendMessage`, etc.
+- **The grandchild was created**: `session_01LLpmy8uujcYjXYpNHttjDo`. The call took ~45 s and returned PENDING with `parent_session_id` = child. The grandchild finished in ~7 s: "The hostname is `vm`. I do have `mcp__claude-code-remote__` tools available, including `create_session`, `send_message`, `list_sessions` and `get_session`. As instructed, I haven't created any sessions or taken any other action." So the grandchild has the tools too (depth 2 of 8).
+- Gotcha: in the child, `send_message` triggered a **permission prompt** (`control_request can_use_tool`). The child sat in REQUIRES_ACTION / BLOCKED for ~6 s until it was resolved. The transcript does not show who resolved it. The lead can see the block but has no approve tool. `create_session`, `list_events` and `get_session` did not prompt.
+
+### Caps
+- Nesting depth: `lineage.limit = 8` (lead depth 0, child 1, grandchild 2).
+- `permission_mode` and `extra_allowed_tools` can't exceed the parent's.
+- Message size 64 KiB. list limits: events ≤100, sessions ≤100, environments ≤100, repos ≤200, triggers ≤100. Cron is normally ≥ hourly. `send_later` has 1-min granularity.
+- No errors, quotas or concurrency limits came up in practice. The lead's `rate_limit_info`: five_hour window, status allowed.
+- A practical limit: `list_events` on a long session can exceed the tool-result size (my own was 451,754 chars), so use `kinds` + `limit`.
+
+### Survival
+- Late child `session_01LKNcFyGd6VNxySTbTCZkM5` created at **2026-10-06T16:21:54.577950Z** (create_session `created_at`).
+- Lead end time: see the final line of this section, written just before the last push.
+- To check: `git ls-remote --heads origin probe/session-tools-late` and the commit time / late-report.md's end time. If the branch exists with an end time after the lead's end time, a child survives its parent going idle.
 
 ## Start state (lead)
 
@@ -156,3 +203,12 @@ Model: `create_session.model` is a free string, "Defaults to the calling session
 > 3. **Grandchild:** I created exactly one session, `session_01LLpmy8uujcYjXYpNHttjDo`. The create call returned status PENDING, with this session as its parent and the same environment. It finished in about 7 seconds and replied: hostname `vm`, it does have `mcp__claude-code-remote__` tools, and it created no sessions.
 > 4. **Push:** I committed `spikes/cloud-session-tools/child-report.md` and pushed it to the new branch `probe/session-tools-child`. The push succeeded with no errors.
 > 5. **Message to parent:** I sent "child done" to `session_01K52547PxV5PrmorXj79Fw9`. The call succeeded and returned the delivered event, which arrives wrapped as a `<cross-session-message>` from this session (`inbound_origin` `mcp_send_message`, `isSynthetic` true).
+13. Step 5 — `create_session` (late child) at 2026-10-06T16:21:54Z, same settings (source_url, source_revision probe/session-tools-base, environment_id Mira, title "Probe late child (session tools)", prompt = step-5 prompt verbatim) ->
+```
+{"ccr":{"id":"session_01LKNcFyGd6VNxySTbTCZkM5", "title":"Probe late child (session tools)", "session_status":"SESSION_STATUS_PENDING", "created_at":"2026-10-06T16:21:54.577950Z", "updated_at":"2026-10-06T16:21:54.577950Z", "environment_id":"env_011fdXavJ6U87ghgCCgmnoee", "session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack", "revision":"probe/session-tools-base"}}], "model":"<model>"}, "origin":"claude_code_mcp_seed", "connection_status":"disconnected", "tags":["config:session-created", "config:auto-create-pr:off", "config:meta-mcp-own-entry"], "environment_kind":"anthropic_cloud", "parent_session_id":"session_01K52547PxV5PrmorXj79Fw9", "status_bucket":"SESSION_STATUS_BUCKET_WORKING", "configured_model":"<model>"}}
+```
+   Not polled after creation, as instructed.
+14. Step 6: wrote the summary and pushed. The child and grandchild were not archived.
+
+## Lead end time
+Lead end (`date -u` just before final push): **2026-10-06T16:22:35Z**
