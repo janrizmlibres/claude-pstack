@@ -114,3 +114,15 @@ Model: `create_session.model` is a free string, "Defaults to the calling session
      -> NESTING WORKS: grandchild created at depth 2.
    - child tried `Monitor` without loading it (InputValidationError), then `list_events` on the grandchild -> empty data page.
    - The lead's ping did not yet appear in the child transcript at this point (queued: default priority waits for turn end).
+11. Read-back #2 (~16:20:20Z).
+   - `get_session {child}` -> `session_status:"SESSION_STATUS_REQUIRES_ACTION"`, `status_bucket:"SESSION_STATUS_BUCKET_BLOCKED"`, `post_turn_summary:{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__send_message","needs_action":"Approve or deny mcp__claude-code-remote__send_message"}`, `current_branches {"":"probe/session-tools-child"}`.
+     -> In the child (permissionMode "default"), `send_message` needed a permission prompt. The lead can SEE the block (status + needs_action text) but has no tool to approve it.
+   - `get_session {grandchild session_01LLpmy8uujcYjXYpNHttjDo}` -> `SESSION_STATUS_IDLE`, bucket `COMPLETED`, `post_turn_summary.recent_action:"hostname=vm; has mcp__claude-code-remote__ tools (create_session, send_message, list_sessions, get_session)"`, usage cost ~$0.20. `current_branches {"":null}`.
+   - `list_events {grandchild, kinds:[assistant,result]}` -> grandchild's final text: "The hostname is `vm`. I do have `mcp__claude-code-remote__` tools available, including `create_session`, `send_message`, `list_sessions` and `get_session`. As instructed, I haven't created any sessions or taken any other action." `result` event: subtype success, stop_reason end_turn, terminal_reason completed, duration_ms 6700, `origin.kind:"task-notification"`. The lead (grandparent) can read the grandchild directly.
+   - `list_events {child, after_id:<last>, kinds:[user,assistant,result,control_request,other]}` -> child wrote child-report.md, committed, and pushed:
+     ```
+     To https://github.com/janrizmlibres/claude-pstack
+      * [new branch]      probe/session-tools-child -> probe/session-tools-child
+     ```
+     (child added the Co-Authored-By / Claude-Session trailers itself, from its own system prompt.) Then `send_message {message:"child done", session_id:"session_01K52547PxV5PrmorXj79Fw9"}` at 16:20:08Z -> a `control_request` event `subtype:"can_use_tool"`, `tool_name:"mcp__claude-code-remote__send_message"`, `permission_suggestions:[{behavior:allow, destination:localSettings, ...}]` -> at 16:20:14Z the tool_result arrived (permission resolved after ~6 s, by whom is not visible in the filtered events) with the delivered event: `<cross-session-message from-session="session_01CSbTQfsDL7SGUdJoemZDWB"> ... child done </cross-session-message>`, inbound_origin `mcp_send_message`, isSynthetic true.
+   - In the LEAD: nothing arrived unprompted mid-turn. The "child done" message was accepted at 16:20:14Z but did not show up in my context while I was busy with a turn (see later entries for whether it arrives at turn end).
