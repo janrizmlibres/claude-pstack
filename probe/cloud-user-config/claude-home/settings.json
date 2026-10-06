@@ -3,7 +3,7 @@
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "bash \"$HOME/.claude/hooks/session-start.sh\"", "timeout": 60 }
+          { "type": "command", "command": "bash \"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/session-start.sh\"", "timeout": 60 }
         ]
       }
     ]
