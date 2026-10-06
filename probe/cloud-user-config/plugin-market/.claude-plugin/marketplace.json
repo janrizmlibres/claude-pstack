@@ -1,0 +1,7 @@
+{
+  "name": "pstack-probe-market",
+  "owner": { "name": "janrizmlibres" },
+  "plugins": [
+    { "name": "probe-plugin", "source": "./probe-plugin", "description": "Probe plugin for the claude-pstack cloud test" }
+  ]
+}
