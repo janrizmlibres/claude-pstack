@@ -167,3 +167,14 @@ RETURNED get_session (Y poll 1) at 2026-10-07T02:17:57Z: REQUIRES_ACTION / BLOCK
 ABOUT TO CALL get_session (Y poll 2) at 2026-10-07T02:18:29Z
 RETURNED get_session (Y poll 2) at 2026-10-07T02:18:35Z: REQUIRES_ACTION / BLOCKED again (same needs_action). BLOCKED twice -> stop.
 ABOUT TO CALL list_events (Y, system/control_request/result, limit 30) at 2026-10-07T02:18:35Z
+RETURNED list_events (Y) at 2026-10-07T02:18:55Z: child Y permissionMode=default; one can_use_tool for send_message; no result (blocked)
+(Deviation: fetched control_request+result and system in two calls instead of one.)
+```
+init: "permissionMode":"default"; no allowedTools field.
+control_request 02:17:29.915525Z: {"request":{"display_name":"Send Message","input":{"message":"A-Y alive","session_id":"@parent"},"mcp_server":{"name":"claude-code-remote","source":"dynamic"},"permission_suggestions":[{"behavior":"allow","destination":"localSettings","rules":[{"toolName":"mcp__claude-code-remote__send_message"}],"type":"addRules"}],"subtype":"can_use_tool","tool_name":"mcp__claude-code-remote__send_message","tool_use_id":"toolu_013cPyaubEh4mPYJNYS85QDv"}}
+others: initialize (02:18:23), get_context_usage (02:18:24). result: none
+```
+Observation: child Y (no grant) behaves identically to child X (with grant): get_session no prompt (inferred: no can_use_tool raised for it), send_message prompts. So extra_allowed_tools made no observable difference for send_message.
+
+## 9. Other arms
+ABOUT TO CALL get_session (C session_018hFvmkPry3fB2RJZ4sAwF7) at 2026-10-07T02:18:55Z
