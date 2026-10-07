@@ -261,3 +261,8 @@ result (02:25:09, subtype success, num_turns 3, "permission_denials":[]):
 ```
 Routine outcome: completed without prompts, but the fired session had no claude-code-remote MCP server at all (mcp_servers:[]), no repo (cwd /home/user, no sources), and ran on claude-sonnet-5-5. So the routine path gives auto mode but no session tools in this setup.
 ABOUT TO CALL delete_trigger trig_014KJq15zwgjpj2jFdXjdLTk at 2026-10-07T02:26:01Z
+RETURNED delete_trigger at 2026-10-07T02:27:55Z: deleted, no prompt; last_run {"status":"ROUTINE_RUN_STATUS_SUCCEEDED","fired_at":"2026-10-07T02:24:56Z","finished_at":"2026-10-07T02:25:09.947907Z","session_id":"cse_01J7FWdCdr7GnHGdrHSZtPhK"}
+
+## 11. Child Z (after send_message grant)
+(Operator-added step. Same create_session args as step 4. Note: no grant was actually approved on child X or Y in this session; I approved nothing and changed no settings.)
+ABOUT TO CALL create_session (child Z, extra_allowed_tools=4 remote tools) at 2026-10-07T02:27:55Z
