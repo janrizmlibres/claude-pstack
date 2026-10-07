@@ -203,3 +203,9 @@ B1 control_request 02:08:08.538241Z: can_use_tool tool_name=mcp__claude-code-rem
 others: initialize x5, get_context_usage x2
 ```
 ABOUT TO CALL get_session (B2 session_01SSGvGDAT5TguMNJVMcorvH) at 2026-10-07T02:19:47Z
+RETURNED get_session (B2) at 2026-10-07T02:19:56Z: session_status=SESSION_STATUS_IDLE, status_bucket=SESSION_STATUS_BUCKET_BLOCKED, permission_mode=PERMISSION_MODE_AUTO (session_context.permission_mode "auto", permission_mode_seq "1"), source probe/perms-none; lineage absent
+```json
+"post_turn_summary":{"status_category":"need_input","status_detail":"waiting on push access to probe/perms-b2-out to continue","needs_action":"grant write access to probe/perms-b2-out so agent can log results and resume steps 5–7"}
+```
+Note: B2's block is a git push restriction (its own report), not a tool permission prompt.
+ABOUT TO CALL list_events (B2, control_request) at 2026-10-07T02:19:56Z
