@@ -270,3 +270,5 @@ RETURNED create_session (Z) at 2026-10-07T02:28:04Z: child Z = session_012kXYSqs
 ABOUT TO CALL get_session (Z poll 1) at 2026-10-07T02:28:36Z
 RETURNED get_session (Z poll 1) at 2026-10-07T02:28:45Z: REQUIRES_ACTION / BLOCKED, needs_action="Approve or deny mcp__claude-code-remote__send_message"
 ABOUT TO CALL get_session (Z poll 2) at 2026-10-07T02:29:17Z
+RETURNED get_session (Z poll 2) at 2026-10-07T02:29:26Z: REQUIRES_ACTION / BLOCKED again. Stop.
+ABOUT TO CALL list_events (Z, control_request/result) at 2026-10-07T02:29:26Z
