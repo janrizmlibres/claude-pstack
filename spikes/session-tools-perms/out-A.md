@@ -120,3 +120,10 @@ Step 3 result: own permissionMode=default; get_session and list_events ran with 
 
 ## 4. Spawn child X
 ABOUT TO CALL create_session (child X, extra_allowed_tools=4 remote tools) at 2026-10-07T02:12:22Z
+RETURNED create_session at 2026-10-07T02:14:19Z: child X = session_01BAPuiRRt26Mo5KrdkwkTvY, no prompt
+```json
+{"ccr":{"id":"session_01BAPuiRRt26Mo5KrdkwkTvY","title":"perms probe A child X","session_status":"SESSION_STATUS_PENDING","created_at":"2026-10-07T02:14:11.465694Z","updated_at":"2026-10-07T02:14:11.465694Z","environment_id":"env_011fdXavJ6U87ghgCCgmnoee","session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack","revision":"main"}}],"model":"claude-opus-5-5"},"origin":"claude_code_mcp_seed","connection_status":"disconnected","tags":["config:session-created","config:auto-create-pr:off","config:meta-mcp-own-entry"],"environment_kind":"anthropic_cloud","parent_session_id":"session_01HkRZDPY6n5Pgc5xfvQ15FP","status_bucket":"SESSION_STATUS_BUCKET_WORKING","configured_model":"claude-opus-5-5"}}
+```
+Note: return value does not echo extra_allowed_tools.
+
+## 5. Watch child X
