@@ -235,3 +235,12 @@ Note: D's source is probe/perms-dontask yet init permissionMode reads "default" 
 
 ## 10. Routine
 ABOUT TO CALL create_trigger at 2026-10-07T02:20:39Z
+RETURNED create_trigger at 2026-10-07T02:24:00Z: trig_014KJq15zwgjpj2jFdXjdLTk created, no prompt; warning: stores no MCP connectors
+```
+{"trigger":{"id":"trig_014KJq15zwgjpj2jFdXjdLTk","name":"perms probe routine","cron_expression":"","enabled":true,"persist_session":false,"mcp_connections":[],"creator":{"account_uuid":"<omitted>","display_name":"<omitted>"},
+ "session_request":{"environment_id":"env_011fdXavJ6U87ghgCCgmnoee","config":{"sources":[],"outcomes":[],"allowed_tools":[],"disallowed_tools":[],"builtin_tools":[],"mcp_servers":[],"auto_mode_allow":[],"auto_mode_environment":[],"auto_mode_soft_deny":[],...},"events":[<prompt as user event>]},
+ "created_via":"meta_mcp","created_kind":"ROUTINE_CREATED_KIND_ROUTINE"},"outcome":"CREATE_TRIGGER_OUTCOME_CREATED"}
+warning: this trigger stores no MCP connectors, so the sessions it fires will run without connector (mcp__<server>__*) tools. Connectors on triggers created via this tool are limited to those the calling session itself holds; this call had none to pass through (no session context, or no passable connector grants). If the routine needs connectors, create it from a session that holds them, or ask the user to create it from the claude.ai routines UI.
+```
+Note: session_request.config has allowed_tools:[] and sources:[] (no repo).
+ABOUT TO CALL fire_trigger at 2026-10-07T02:24:00Z
