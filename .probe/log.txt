@@ -1,2 +1,3 @@
 start wall=1791335594 up=10.41 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=vm marker=shell 1791335594
 hb 1 wall=1791335630 up=46.43 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=vm marker=shell 1791335594
+hb 2 wall=1791335662 up=78.47 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=vm marker=shell 1791335594
