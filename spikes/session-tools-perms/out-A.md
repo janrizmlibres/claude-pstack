@@ -178,3 +178,8 @@ Observation: child Y (no grant) behaves identically to child X (with grant): get
 
 ## 9. Other arms
 ABOUT TO CALL get_session (C session_018hFvmkPry3fB2RJZ4sAwF7) at 2026-10-07T02:18:55Z
+RETURNED get_session (C) at 2026-10-07T02:19:05Z: session_status=SESSION_STATUS_REQUIRES_ACTION, status_bucket=SESSION_STATUS_BUCKET_BLOCKED, source revision probe/perms-none; lineage: field absent in response
+```json
+"post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__create_session","needs_action":"Approve or deny mcp__claude-code-remote__create_session"}
+```
+ABOUT TO CALL list_events (C) at 2026-10-07T02:19:05Z
