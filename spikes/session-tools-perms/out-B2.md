@@ -112,3 +112,13 @@ Inbox event before step 5 (ReadNotifications at 02:17:27Z): one cross-session me
 
 ## Step 5: Watch the child
 ABOUT TO CALL get_session (child) at 2026-10-07T02:22:12Z
+RETURNED get_session (child) at 2026-10-07T02:22:27Z: ran with no prompt; COMPLETED on the first poll
+```
+session_status: SESSION_STATUS_IDLE  status_bucket: SESSION_STATUS_BUCKET_COMPLETED  post_turn_summary.needs_action: ""
+session_context.permission_mode: auto ; permission_mode: PERMISSION_MODE_AUTO ; origin: claude_code_mcp_seed ; parent_session_id: session_01SSGvGDAT5TguMNJVMcorvH
+updated_at: 2026-10-07T02:17:07Z (about 18 s after creation)
+post_turn_summary: {status_category: completed, status_detail: "B2-X probe complete: session depth 1, parent relay OK", recent_action: "Session session_01Hfj5VGEYHuw25JF8W33psA at lineage depth 1; permission_mode auto; message sent to parent"}
+turn_handoff.tools: same list as the lead (includes only these remote tools: list_triggers, create_trigger, update_trigger, delete_trigger, fire_trigger, send_later, add_repo, check_repo_access, list_repos; NOT send_message/get_session/list_events/create_session)
+```
+Stopped polling early: the bucket already read COMPLETED.
+ABOUT TO CALL list_events (child, kinds [system, control_request, result], limit 30) at 2026-10-07T02:22:27Z
