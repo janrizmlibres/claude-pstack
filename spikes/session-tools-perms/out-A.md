@@ -296,3 +296,5 @@ RETURNED get_session (B2 pass 2) at 2026-10-07T02:30:22Z: CHANGED: session_statu
 ```
 ("child reply logged" per B2's own summary: inferred that B2's child ran send_message to its parent; not verified here.)
 ABOUT TO CALL list_events (B2 pass 2, after last seen id) at 2026-10-07T02:30:22Z
+RETURNED list_events (B2 pass 2) at 2026-10-07T02:30:30Z: only one new control_request: initialize (02:21:32). No can_use_tool raised after pass 1.
+ABOUT TO CALL get_session (D pass 2) at 2026-10-07T02:30:30Z
