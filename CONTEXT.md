@@ -64,6 +64,10 @@ _Avoid_: child, agent
 The job a worker does in a run: delegate, runner, reviewer, judge or synthesizer. A role, not a worker, is what a model and effort setting attaches to.
 _Avoid_: seat, tier, slot
 
+**Setting**:
+A named model-and-effort pair that a role runs on: **Work**, **Judgement** or **Volume**. The user chooses a setting's model; the port fixes its effort.
+_Avoid_: tier, budget, level
+
 **Volume role**:
 A role whose results come from the number of attempts or pages read rather than the depth of each, such as the workers of a race any single success wins.
 _Avoid_: cheap role, bulk worker
