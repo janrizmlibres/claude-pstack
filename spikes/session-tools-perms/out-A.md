@@ -112,3 +112,11 @@ turn_handoff_available event (subtype) "tools":["Bash","Write","Edit","Read","Gl
 other system events: vcs_state_changed (push), background_tasks_changed
 ```
 ABOUT TO CALL list_events (self, control_request, limit 20) at 2026-10-07T02:12:11Z
+RETURNED list_events (control_request) at 2026-10-07T02:12:22Z: no permission request raised so far
+```json
+[{"created_at":"2026-10-07T02:11:47.068793Z","control_request":{"request":{"subtype":"initialize"}}},{"created_at":"2026-10-07T02:11:47.699776Z","control_request":{"request":{"subtype":"get_context_usage"}}}]
+```
+Step 3 result: own permissionMode=default; get_session and list_events ran with no prompt (both are in .claude/settings.json allow list on probe/perms-allow).
+
+## 4. Spawn child X
+ABOUT TO CALL create_session (child X, extra_allowed_tools=4 remote tools) at 2026-10-07T02:12:22Z
