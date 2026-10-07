@@ -101,3 +101,14 @@ RETURNED list_events at 2026-10-07T02:12:00Z: no prompt; limit 5 page held no sy
 ```
 Deviation: retrying with limit 100 to reach the init event.
 ABOUT TO CALL list_events (self, system, limit 100) at 2026-10-07T02:12:00Z
+RETURNED list_events at 2026-10-07T02:12:11Z: no prompt; init permissionMode=default
+Trimmed (init event fields of interest, verbatim):
+```
+init: "permissionMode":"default", "apiKeySource":"none", "claude_code_version":"2.1.292",
+"mcp_servers":[{"name":"claude-code-remote","source":"dynamic","status":"pending"},{"name":"github","source":"dynamic","status":"pending"}]
+init has no allowedTools / pre-approved-tools field. Its "tools" lists built-in tools only (no mcp__ tools, since MCP servers were pending).
+turn_handoff_available event (subtype) "tools":["Bash","Write","Edit","Read","Glob","Grep","Agent","NotebookEdit","WebFetch","WebSearch","TaskStop","SearchMcpRegistry","SuggestConnectors","ListConnectors","Skill","Artifact","mcp__claude-code-remote__list_triggers","mcp__claude-code-remote__create_trigger","mcp__claude-code-remote__update_trigger","mcp__claude-code-remote__delete_trigger","mcp__claude-code-remote__fire_trigger","mcp__claude-code-remote__send_later","mcp__claude-code-remote__add_repo","mcp__claude-code-remote__check_repo_access","mcp__claude-code-remote__list_repos"]
+(inferred: turn_handoff.tools is not the permission allow list; it does not match .claude/settings.json.)
+other system events: vcs_state_changed (push), background_tasks_changed
+```
+ABOUT TO CALL list_events (self, control_request, limit 20) at 2026-10-07T02:12:11Z
