@@ -136,3 +136,12 @@ page: has_more true, first_id d239ec90-0796-4885-be19-5e3a7b183966
 ```
 Paging back with before_id to cover the whole transcript for control_requests.
 ABOUT TO CALL list_events (child, kinds [control_request, system], limit 100, before_id d239ec90-...) at 2026-10-07T02:22:44Z
+RETURNED list_events (child, earlier page) at 2026-10-07T02:22:59Z: ran with no prompt; one control_request, no more pages
+```
+02:16:49.31Z set_permission_mode {mode: auto}
+(no has_more; the page starts at the session's first event)
+```
+Child X's complete control_request list: set_permission_mode(auto), initialize, get_context_usage x2. No can_use_tool. Its system events include no permission_check_status or permission_denied, so no classifier check was recorded for any of its tool calls (ToolSearch, get_session, send_message, list_events).
+
+## Step 6: Message the child
+ABOUT TO CALL send_message (child, "lead ping B2") at 2026-10-07T02:22:59Z
