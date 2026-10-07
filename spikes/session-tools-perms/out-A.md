@@ -162,3 +162,4 @@ RETURNED create_session (Y) at 2026-10-07T02:17:18Z: child Y = session_01Ktc2jZE
 ```json
 {"ccr":{"id":"session_01Ktc2jZExc1KPvpa7mpUQee","title":"perms probe A child Y","session_status":"SESSION_STATUS_PENDING","created_at":"2026-10-07T02:17:11.077155Z","environment_id":"env_011fdXavJ6U87ghgCCgmnoee","session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack","revision":"main"}}],"model":"claude-opus-5-5"},"origin":"claude_code_mcp_seed","connection_status":"disconnected","tags":["config:session-created","config:auto-create-pr:off","config:meta-mcp-own-entry"],"parent_session_id":"session_01HkRZDPY6n5Pgc5xfvQ15FP","status_bucket":"SESSION_STATUS_BUCKET_WORKING","configured_model":"claude-opus-5-5"}}
 ```
+ABOUT TO CALL get_session (Y poll 1) at 2026-10-07T02:17:50Z
