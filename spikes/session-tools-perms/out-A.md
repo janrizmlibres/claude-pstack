@@ -147,3 +147,10 @@ Observation: no can_use_tool for get_session appears before the send_message one
 
 ## 6. Message child X
 ABOUT TO CALL send_message (to X) at 2026-10-07T02:16:03Z
+RETURNED send_message at 2026-10-07T02:17:01Z: ran with no prompt (lead side); delivered as synthetic user event
+```json
+{"ccr":{"events":[{"user":{"uuid":"f58e218f-60b4-4694-9c7e-286889490192","internal_anthropic_catchall":{"client_platform":"claude_code_mcp","inbound_origin":"mcp_send_message","isSynthetic":true,"message":{"content":"<cross-session-message from-session=\"session_01HkRZDPY6n5Pgc5xfvQ15FP\">\n...(standard DATA preamble)...\n    lead ping A\n</cross-session-message>","role":"user"}}}}]}}
+```
+Note: operator added step 11 mid-turn (child Z after send_message grant); will do after step 10.
+
+## 7. Inbox
