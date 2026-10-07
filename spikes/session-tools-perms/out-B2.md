@@ -50,3 +50,9 @@ lineage: {"depth":0,"limit":8}
 Note: the session's source revision is probe/perms-none, while the working branch is claude/perms-probe-arm-b2-oobf3b (HEAD bca13e9).
 
 ABOUT TO CALL list_events (self, kinds [system], limit 5) at 2026-10-07T02:14:40Z
+RETURNED list_events at 2026-10-07T02:15:02Z: ran with no prompt; data empty (filter applies after a 5-event page read)
+```
+{"has_more":true,"first_id":"cac8c880-9b1a-4968-90dc-c79b2197ff03","last_id":"36794e3b-85f2-4fd9-8d92-0d02e862ae24"}
+```
+Deviation: re-reading with limit 100 to reach the init event.
+ABOUT TO CALL list_events (self, kinds [system], limit 100) at 2026-10-07T02:15:02Z
