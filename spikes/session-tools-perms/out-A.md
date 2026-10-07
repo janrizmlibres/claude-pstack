@@ -95,3 +95,9 @@ RETURNED get_session at 2026-10-07T02:11:50Z: own id session_01HkRZDPY6n5Pgc5xfv
 ```
 Note: session source revision is probe/perms-allow (the branch carrying .claude/settings.json allow list).
 ABOUT TO CALL list_events (self, system) at 2026-10-07T02:11:50Z
+RETURNED list_events at 2026-10-07T02:12:00Z: no prompt; limit 5 page held no system events (filter applies after page read)
+```json
+{"ccr":{"has_more":true,"first_id":"9e5ad170-6c8a-4ff0-b1fe-a247994ff359","last_id":"12e65dfb-4815-466f-a066-d3e8fa3afff9"}}
+```
+Deviation: retrying with limit 100 to reach the init event.
+ABOUT TO CALL list_events (self, system, limit 100) at 2026-10-07T02:12:00Z
