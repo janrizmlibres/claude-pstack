@@ -171,3 +171,24 @@ You are the LEAD of a smal
   3. The ToolSearch `+claude-code-remote` query found nothing because the remote tools were already loaded (not deferred) in the lead.
   4. list_events `limit` applies before the `kinds` filter and pages are newest-first, so "first user event" needed before_id paging.
   5. create_session return value omitted permission_mode, but get_session later showed `auto`.
+
+## Later turn
+
+Trigger: Stop hook feedback ("There are untracked files in the repository"). The only untracked path was `.probe/` (hook.log, runtime output already quoted above); added `.probe/` to the local `.git/info/exclude` instead of committing it.
+
+```
+2026-10-07T14:36:07Z
+2026-10-07T14:31:59Z HOOKFIRED UserPromptSubmit "prompt":"/probe-entry
+You are the LEAD of a smal
+2026-10-07T14:32:09Z PRETOOLHOOK Bash
+2026-10-07T14:32:37Z PRETOOLHOOK Bash
+2026-10-07T14:32:56Z PRETOOLHOOK Bash
+2026-10-07T14:33:34Z PRETOOLHOOK Bash
+2026-10-07T14:34:24Z PRETOOLHOOK Bash
+2026-10-07T14:34:33Z PRETOOLHOOK Bash
+2026-10-07T14:35:36Z PRETOOLHOOK Bash
+2026-10-07T14:35:52Z PRETOOLHOOK Bash
+2026-10-07T14:35:56Z PRETOOLHOOK Bash
+2026-10-07T14:36:02Z PRETOOLHOOK Bash
+2026-10-07T14:36:06Z PRETOOLHOOK Bash
+```
