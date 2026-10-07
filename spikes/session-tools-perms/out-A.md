@@ -282,3 +282,5 @@ Child Z outcome = identical to X and Y: blocked on send_message. Nothing about t
 
 ### 11b. Other arms, second pass
 ABOUT TO CALL get_session (C) at 2026-10-07T02:29:40Z
+RETURNED get_session (C pass 2) at 2026-10-07T02:29:50Z: unchanged: REQUIRES_ACTION / BLOCKED on create_session, updated_at still 02:07:49; connection_status now "disconnected"
+ABOUT TO CALL list_events (C pass 2, control_request) at 2026-10-07T02:29:50Z
