@@ -56,3 +56,17 @@ Your log is spikes/entry-slash/out-lead.md. Push it with `git push origin HEAD` 
   => In the **stored transcript** the first user event is the **raw** `/probe-entry` line + args (plain string, no command tags, no skill body). The expansion into `<command-message>/<command-name>/<command-args>` + skill body happened in the CLI and is what the model saw, but is not what CCR stored as the user event.
 - Hooks seen in system events: UserPromptSubmit hook_started/hook_response (14:31:59), then PreToolUse:Bash.
 - list_events kinds ["system"] limit 3 on the latest page returned no data (filter after page read); paging back found the `init` event (14:31:59.979Z). Its `skills` list **includes `probe-entry`** (2nd entry, after session-start-hook); `slash_commands` also includes it.
+
+## Step 3
+
+Read spikes/entry-slash/CHILD-PROMPT.txt and passed it verbatim (first line `/probe-entry`) to create_session.
+
+Child id: **`session_01LP6QiRQMRFMfLfemW6LtQ9`**
+
+Return value (model id fields omitted):
+```
+{"ccr":{"id":"session_01LP6QiRQMRFMfLfemW6LtQ9","title":"entry-slash child","session_status":"SESSION_STATUS_PENDING","created_at":"2026-10-07T14:32:49.686788Z","updated_at":"2026-10-07T14:32:49.686788Z","environment_id":"env_011fdXavJ6U87ghgCCgmnoee","session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack","revision":"probe/entry-slash"}}],"outcomes":[{"git_repository":{"git_info":{"repo":"janrizmlibres/claude-pstack","branches":["claude/entry-slash-child"]}}}]},"origin":"claude_code_mcp_seed","connection_status":"disconnected","tags":["config:session-created","config:auto-create-pr:off","config:meta-mcp-own-entry"],"environment_kind":"anthropic_cloud","parent_session_id":"session_01RHDEXvmXA6fqMTf39A5Vou","status_bucket":"SESSION_STATUS_BUCKET_WORKING"}}
+```
+Note: the return value has no permission_mode field even though "auto" was requested.
+
+## Step 4 — polling child
