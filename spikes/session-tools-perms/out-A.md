@@ -223,3 +223,15 @@ RETURNED get_session (D) at 2026-10-07T02:20:20Z: REQUIRES_ACTION / BLOCKED, sou
 "post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__create_session","needs_action":"Approve or deny mcp__claude-code-remote__create_session"}
 ```
 ABOUT TO CALL list_events (D, control_request) at 2026-10-07T02:20:20Z
+RETURNED list_events (D, 3 calls) at 2026-10-07T02:20:39Z: D permissionMode=default (in both inits); two can_use_tool for create_session
+```
+D init #1 (02:07:50, worker_epoch 1): "permissionMode":"default"
+D init #2 (02:15:30, worker_epoch 2, after a worker restart/resume): "permissionMode":"default"
+D control_request 02:09:02.578737Z: can_use_tool mcp__claude-code-remote__create_session ("perms probe D child X"), suggestions addRules localSettings create_session
+D control_request 02:15:52.619498Z: can_use_tool mcp__claude-code-remote__create_session again (new tool_use_id toolu_01Q1MSy3CtoHEeXmtqqYGgog) after the worker restart
+others: initialize x2, get_context_usage x2
+```
+Note: D's source is probe/perms-dontask yet init permissionMode reads "default" (inferred: a settings-file defaultMode, if that is what the branch carries, did not change the reported mode; I did not read that branch's settings).
+
+## 10. Routine
+ABOUT TO CALL create_trigger at 2026-10-07T02:20:39Z
