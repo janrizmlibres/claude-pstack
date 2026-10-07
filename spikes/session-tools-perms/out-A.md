@@ -209,3 +209,12 @@ RETURNED get_session (B2) at 2026-10-07T02:19:56Z: session_status=SESSION_STATUS
 ```
 Note: B2's block is a git push restriction (its own report), not a tool permission prompt.
 ABOUT TO CALL list_events (B2, control_request) at 2026-10-07T02:19:56Z
+RETURNED list_events (B2, 2 calls) at 2026-10-07T02:20:10Z: B2 permissionMode=auto; no can_use_tool for any mcp__claude-code-remote__* tool; one can_use_tool for Bash raised by the auto-mode classifier
+```
+B2 control_request 02:07:02.649836Z: {"request":{"mode":"auto","subtype":"set_permission_mode"}}  (set before init)
+B2 init (02:07:07): "permissionMode":"auto"; no allowedTools field.
+B2 control_request 02:08:40.454654Z: {"decision_reason":"3 consecutive actions were blocked. Please review the transcript before continuing.\n\nLatest blocked action: [Auto-Mode Bypass]","decision_reason_type":"classifier","display_name":"Bash","subtype":"can_use_tool","tool_name":"Bash","permission_suggestions":[]}  (command was B2's step-1 log+push script; trimmed)
+others: initialize x4, get_context_usage x1
+```
+Inferred from B2's post_turn_summary ("resume steps 5–7"): B2 got past step 4 (create_session) in auto mode without a remote-tool prompt; its block is git push to probe/perms-b2-out. Not verified from B2's tool results.
+ABOUT TO CALL get_session (D session_01QGEo9uoTUYPW5u7UfhL6p7) at 2026-10-07T02:20:10Z
