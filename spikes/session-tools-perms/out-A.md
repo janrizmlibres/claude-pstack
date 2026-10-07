@@ -191,3 +191,8 @@ others: initialize (02:08:05, 02:10:02, 02:14:24), get_context_usage x2
 ```
 Inferred: C (probe/perms-none, no settings) ran get_session + list_events without prompt (no can_use_tool for them), and was stopped at create_session.
 ABOUT TO CALL get_session (B1 session_01JkZGetHpiGugT7Pqb9yn9i) at 2026-10-07T02:19:26Z
+RETURNED get_session (B1) at 2026-10-07T02:19:34Z: REQUIRES_ACTION / BLOCKED, source revision probe/perms-none; lineage absent
+```json
+"post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__create_session","needs_action":"Approve or deny mcp__claude-code-remote__create_session"}
+```
+ABOUT TO CALL list_events (B1, control_request) at 2026-10-07T02:19:34Z
