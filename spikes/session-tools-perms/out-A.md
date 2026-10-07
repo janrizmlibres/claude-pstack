@@ -183,3 +183,11 @@ RETURNED get_session (C) at 2026-10-07T02:19:05Z: session_status=SESSION_STATUS_
 "post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__create_session","needs_action":"Approve or deny mcp__claude-code-remote__create_session"}
 ```
 ABOUT TO CALL list_events (C) at 2026-10-07T02:19:05Z
+RETURNED list_events (C, 3 paged calls) at 2026-10-07T02:19:26Z: C permissionMode=default; one can_use_tool for create_session
+```
+C init (02:06:27): "permissionMode":"default"; mcp_servers claude-code-remote+github "connected" at init; init "tools" lists all 27 mcp__claude-code-remote__* tools (availability, not an allow list). No allowedTools field.
+C control_request 02:07:49.365264Z: {"display_name":"Create Session","input":{"extra_allowed_tools":["mcp__claude-code-remote__send_message","mcp__claude-code-remote__get_session","mcp__claude-code-remote__list_events","mcp__claude-code-remote__create_session"],...,"title":"perms probe C child X"},"permission_suggestions":[{"behavior":"allow","destination":"localSettings","rules":[{"toolName":"mcp__claude-code-remote__create_session"}],"type":"addRules"}],"subtype":"can_use_tool","tool_name":"mcp__claude-code-remote__create_session"}
+others: initialize (02:08:05, 02:10:02, 02:14:24), get_context_usage x2
+```
+Inferred: C (probe/perms-none, no settings) ran get_session + list_events without prompt (no can_use_tool for them), and was stopped at create_session.
+ABOUT TO CALL get_session (B1 session_01JkZGetHpiGugT7Pqb9yn9i) at 2026-10-07T02:19:26Z
