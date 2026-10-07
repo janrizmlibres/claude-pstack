@@ -1,0 +1,18 @@
+This is a throwaway infrastructure probe (wayfinder ticket "Does background work keep a cloud session's VM alive"). Follow the steps exactly, do nothing else, and keep replies to a few lines. Do not open a PR.
+
+Define this stamp command and use it verbatim wherever STAMP appears:
+  echo "wall=$(date -u +%s) up=$(cut -d' ' -f1 /proc/uptime) boot=$(cat /proc/sys/kernel/random/boot_id) host=$(hostname) marker=$(cat /tmp/vm-marker 2>/dev/null || echo MISSING)"
+
+Setup (one Bash call):
+  git checkout -b probe/vm-monitor && mkdir -p .probe && echo "monitor $(date -u +%s)" > /tmp/vm-marker && echo "start $(STAMP)" >> .probe/log.txt && git add .probe && git commit -qm "probe monitor start" && git push -q -u origin probe/vm-monitor && tail -1 .probe/log.txt
+(Expand STAMP inline as the command above.)
+
+The heartbeat command HB(i) for this session is:
+  echo "hb i $(STAMP)" >> .probe/log.txt && git add .probe && git commit -qm "hb i" && git push -q origin HEAD:probe/vm-monitor
+
+Then:
+Load the Monitor tool (it may be deferred: ToolSearch "select:Monitor"). If it does not exist, append "nomonitor $(STAMP)" to .probe/log.txt, commit, push, reply "no Monitor tool" and stop. Otherwise start Monitor on this command:
+  for i in $(seq 1 40); do sleep 30; HB($i); echo "hb $i pushed"; done
+(expand HB inline). Then END YOUR TURN IMMEDIATELY with the one line "monitor started". Whenever a monitor event arrives, reply only "ok" and take no other action.
+
+Later user turns labelled "Follow-up" ask you to report: run STAMP, append it as "followup <n> <stamp>" to .probe/log.txt (if the checkout or branch is missing, run git fetch origin probe/vm-monitor and check it out first; if the remote branch is gone too, recreate it), commit, push, then reply in at most 6 lines with: the stamp line, `pgrep -af "sleep|seq" | head -5`, whether .probe/log.txt existed locally before you fetched, and `git log --oneline -1`.

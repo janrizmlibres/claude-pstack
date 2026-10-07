@@ -1,0 +1,16 @@
+This is a throwaway infrastructure probe (wayfinder ticket "Does background work keep a cloud session's VM alive"). Follow the steps exactly, do nothing else, and keep replies to a few lines. Do not open a PR.
+
+Define this stamp command and use it verbatim wherever STAMP appears:
+  echo "wall=$(date -u +%s) up=$(cut -d' ' -f1 /proc/uptime) boot=$(cat /proc/sys/kernel/random/boot_id) host=$(hostname) marker=$(cat /tmp/vm-marker 2>/dev/null || echo MISSING)"
+
+Setup (one Bash call):
+  git checkout -b probe/vm-ctlc && mkdir -p .probe && echo "ctlc $(date -u +%s)" > /tmp/vm-marker && echo "start $(STAMP)" >> .probe/log.txt && git add .probe && git commit -qm "probe ctlc start" && git push -q -u origin probe/vm-ctlc && tail -1 .probe/log.txt
+(Expand STAMP inline as the command above.)
+
+The heartbeat command HB(i) for this session is:
+  echo "hb i $(STAMP)" >> .probe/log.txt && git add .probe && git commit -qm "hb i" && git push -q origin HEAD:probe/vm-ctlc
+
+Then:
+Nothing else. Leave nothing running. END YOUR TURN with the stamp line from setup.
+
+Later user turns labelled "Follow-up" ask you to report: run STAMP, append it as "followup <n> <stamp>" to .probe/log.txt (if the checkout or branch is missing, run git fetch origin probe/vm-ctlc and check it out first; if the remote branch is gone too, recreate it), commit, push, then reply in at most 6 lines with: the stamp line, `pgrep -af "sleep|seq" | head -5`, whether .probe/log.txt existed locally before you fetched, and `git log --oneline -1`.

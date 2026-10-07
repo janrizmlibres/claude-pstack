@@ -1,0 +1,2 @@
+start wall=1791335594 up=12.40 boot=c71632dc-1806-4c45-b65b-b25bd2d74119 host=vm marker=ctlb 1791335594
+followup 1 wall=1791342979 up=18.10 boot=a703696e-b741-4a0a-bfd1-030ee0cef1ed host=vm marker=ctlb 1791335594
