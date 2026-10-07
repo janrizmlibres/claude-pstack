@@ -89,3 +89,9 @@ ToolSearch +claude-code-remote max_results=30 returned 27 tools.
 
 ## 3. Own mode
 ABOUT TO CALL get_session at 2026-10-07T02:11:35Z
+RETURNED get_session at 2026-10-07T02:11:50Z: own id session_01HkRZDPY6n5Pgc5xfvQ15FP, lineage depth 0 limit 8, no prompt
+```json
+{"ccr":{"id":"session_01HkRZDPY6n5Pgc5xfvQ15FP","title":"Perms probe ARM A","session_status":"SESSION_STATUS_RUNNING","environment_id":"env_011fdXavJ6U87ghgCCgmnoee","session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack","revision":"probe/perms-allow"}}],"outcomes":[{"git_repository":{"git_info":{"repo":"janrizmlibres/claude-pstack","branches":["claude/perms-probe-arm-a-2njzog"]}}}],"model":"claude-opus-5-5"},"origin":"claude_code_cli","tags":["config:auto-create-pr:off","config:meta-mcp-own-entry"],"external_metadata":{"container_cc_version":"2.1.292","cross_session_inbound":"available","turn_handoff":{"no_query_first":true,"staged_files":true,"tools":["Bash","Write","Edit","Read","Glob","Grep","Agent","NotebookEdit","WebFetch","WebSearch","TaskStop","SearchMcpRegistry","SuggestConnectors","ListConnectors","Skill","Artifact","mcp__claude-code-remote__list_triggers","mcp__claude-code-remote__create_trigger","mcp__claude-code-remote__update_trigger","mcp__claude-code-remote__delete_trigger","mcp__claude-code-remote__fire_trigger","mcp__claude-code-remote__send_later","mcp__claude-code-remote__add_repo","mcp__claude-code-remote__check_repo_access","mcp__claude-code-remote__list_repos"],"v":1,"worker_epoch":1}},"status_bucket":"SESSION_STATUS_BUCKET_WORKING","configured_model":"claude-opus-5-5"},"lineage":{"depth":0,"limit":8}}
+```
+Note: session source revision is probe/perms-allow (the branch carrying .claude/settings.json allow list).
+ABOUT TO CALL list_events (self, system) at 2026-10-07T02:11:50Z
