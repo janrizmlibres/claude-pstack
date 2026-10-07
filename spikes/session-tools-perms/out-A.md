@@ -252,3 +252,11 @@ RETURNED get_session (routine poll 1) at 2026-10-07T02:25:44Z: session_status=SE
 ```
 repo/branch: session_context has no sources/outcomes (no repo). No parent_session_id. Served model differs from mine (claude-sonnet-5-5; no configured_model field).
 ABOUT TO CALL list_events (routine, system/control_request/result) at 2026-10-07T02:25:44Z
+RETURNED list_events (routine, 2 calls): permissionMode=auto; no can_use_tool control_request; result success
+```
+control_request 02:24:55.956625Z: {"request":{"mode":"auto","subtype":"set_permission_mode"}}
+init (02:25:05): "permissionMode":"auto", "model":"claude-sonnet-5-5", "cwd":"/home/user", "mcp_servers":[], entrypoint "remote_trigger"; init "tools" has NO mcp__* tools and no AskUserQuestion/EnterPlanMode/ExitPlanMode
+result (02:25:09, subtype success, num_turns 3, "permission_denials":[]):
+"routine FINAL: mode=unknown (list_events unavailable); send_message=denied: the claude-code-remote MCP tools don't exist in this session, because ToolSearch \"+claude-code-remote\" returned no matches. I didn't call get_session, send_message or list_events."
+```
+Routine outcome: completed without prompts, but the fired session had no claude-code-remote MCP server at all (mcp_servers:[]), no repo (cwd /home/user, no sources), and ran on claude-sonnet-5-5. So the routine path gives auto mode but no session tools in this setup.
