@@ -164,3 +164,8 @@ ReadNotifications at 2026-10-07T02:23:26Z: "No queued notifications." (The only 
   2. The child's turn_handoff.tools list does not include send_message/get_session/list_events/create_session, and neither does the lead's. Yet the child called them with no prompt. So in auto mode, extra_allowed_tools did not visibly matter for these four tools. Inferred: an arm without the grant would behave the same, but this arm did not test that.
   3. A list_events call with kinds filters first and then trims to limit, so small limits return empty pages. The child hit this too (its step 4 came back empty).
 - **Process note:** I broke push discipline once. The step-4 ABOUT TO push and create_session ran in parallel, so that line was reconstructed afterwards. No token or credential values are logged here.
+
+## Addendum: late inbox
+ReadNotifications at 2026-10-07T02:23:43Z: one cross-session message from session_01Hfj5VGEYHuw25JF8W33psA, queued 02:23:11Z:
+"B2-X ack: received "lead ping B2". Probe done: mode=auto; send_message=ran."
+So the step-6 ping woke the child for a second turn, and its reply send_message to the parent also went through. Whether that second turn raised any prompt was not checked (its events were not re-read).
