@@ -29,3 +29,19 @@ claude/entry-slash-child
 You are the CHILD session 
 2026-10-07T14:33:06Z PRETOOLHOOK Bash
 ```
+
+## Turn 2
+Later message (cross-session message from session_01RHDEXvmXA6fqMTf39A5Vou, delivered via ReadNotifications, not a slash command):
+```
+turn 2 ping from lead
+```
+```
+2026-10-07T14:34:40Z
+2026-10-07T14:32:55Z HOOKFIRED UserPromptSubmit "prompt":"/probe-entry
+You are the CHILD session 
+2026-10-07T14:33:06Z PRETOOLHOOK Bash
+2026-10-07T14:33:10Z PRETOOLHOOK Bash
+2026-10-07T14:34:31Z HOOKFIRED UserPromptSubmit "prompt":"<task-notification>
+<task-type>queued-r
+2026-10-07T14:34:39Z PRETOOLHOOK Bash
+```

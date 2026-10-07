@@ -2,3 +2,6 @@
 You are the CHILD session 
 2026-10-07T14:33:06Z PRETOOLHOOK Bash
 2026-10-07T14:33:10Z PRETOOLHOOK Bash
+2026-10-07T14:34:31Z HOOKFIRED UserPromptSubmit "prompt":"<task-notification>
+<task-type>queued-r
+2026-10-07T14:34:39Z PRETOOLHOOK Bash
