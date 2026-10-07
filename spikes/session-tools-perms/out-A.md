@@ -218,3 +218,8 @@ others: initialize x4, get_context_usage x1
 ```
 Inferred from B2's post_turn_summary ("resume steps 5–7"): B2 got past step 4 (create_session) in auto mode without a remote-tool prompt; its block is git push to probe/perms-b2-out. Not verified from B2's tool results.
 ABOUT TO CALL get_session (D session_01QGEo9uoTUYPW5u7UfhL6p7) at 2026-10-07T02:20:10Z
+RETURNED get_session (D) at 2026-10-07T02:20:20Z: REQUIRES_ACTION / BLOCKED, source probe/perms-dontask, worker_epoch 2, updated 02:15:52; lineage absent
+```json
+"post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__create_session","needs_action":"Approve or deny mcp__claude-code-remote__create_session"}
+```
+ABOUT TO CALL list_events (D, control_request) at 2026-10-07T02:20:20Z
