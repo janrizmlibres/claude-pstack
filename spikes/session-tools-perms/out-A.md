@@ -290,3 +290,9 @@ RETURNED get_session (B1 pass 2) at 2026-10-07T02:30:07Z: unchanged: REQUIRES_AC
 ABOUT TO CALL list_events (B1 pass 2, after last seen id) at 2026-10-07T02:30:07Z
 RETURNED list_events (B1 pass 2) at 2026-10-07T02:30:13Z: {"ccr":{}}, no new events
 ABOUT TO CALL get_session (B2 pass 2) at 2026-10-07T02:30:13Z
+RETURNED get_session (B2 pass 2) at 2026-10-07T02:30:22Z: CHANGED: session_status=SESSION_STATUS_IDLE, status_bucket=SESSION_STATUS_BUCKET_COMPLETED, PERMISSION_MODE_AUTO, updated 02:23:59
+```json
+"post_turn_summary":{"status_category":"completed","status_detail":"B2 probe logged; addendum pushed to claude/perms-probe-arm-b2-oobf3b","recent_action":"B2 probe complete: child reply logged, pushed to claude/perms-probe-arm-b2-oobf3b"}
+```
+("child reply logged" per B2's own summary: inferred that B2's child ran send_message to its parent; not verified here.)
+ABOUT TO CALL list_events (B2 pass 2, after last seen id) at 2026-10-07T02:30:22Z
