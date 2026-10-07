@@ -84,3 +84,9 @@ RETURNED get_session at 2026-10-07T02:07:36Z: ran without prompt; id session_01J
 ```
 (model fields trimmed). Note: external_metadata.turn_handoff.tools lists some remote tools (triggers, send_later, add_repo, list_repos) but NOT get_session/list_events/send_message/create_session; get_session nonetheless ran without a prompt.
 ABOUT TO CALL list_events (self, system) at 2026-10-07T02:07:36Z
+RETURNED list_events at 2026-10-07T02:07:45Z: ran without prompt; limit 5 page held no system events
+```
+{"ccr":{"has_more":true, "first_id":"c5cc4d9d-79c2-4ac3-903d-121c411c029e", "last_id":"78b13d6a-bba0-4c34-af1d-1d5ea2dd9caf"}}
+```
+Extra (not in LEAD): retrying with limit 100 to find the init event.
+ABOUT TO CALL list_events (self, system, limit 100) at 2026-10-07T02:07:45Z
