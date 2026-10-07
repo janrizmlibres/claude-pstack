@@ -101,3 +101,7 @@ ABOUT TO CALL list_events (self, control_request, limit 20) at 2026-10-07T02:07:
 RETURNED list_events (control_request, limit 20) at 2026-10-07T02:08:00Z: ran without prompt; no control_request in that page: `{"ccr":{"has_more":true,"first_id":"1962481a-…","last_id":"783d69d9-…"}}`
 Extra: re-reading with limit 100.
 ABOUT TO CALL list_events (self, control_request, limit 100) at 2026-10-07T02:08:00Z
+RETURNED list_events (control_request, limit 100) at 2026-10-07T02:08:05Z: ran without prompt; whole transcript (has_more absent) holds zero control_request events. No permission request raised so far.
+
+## Step 4: Spawn a child
+ABOUT TO CALL create_session at 2026-10-07T02:08:05Z
