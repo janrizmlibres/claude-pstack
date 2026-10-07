@@ -18,7 +18,9 @@ The line before a remote-tool call reads `ABOUT TO CALL <tool> at <UTC time>`. T
 
 ## Steps (all arms)
 
-1. **Environment.** Run and log: `date -u +%FT%TZ`, `whoami`, `claude --version`, `git branch --show-current`, `git log --oneline -1`, `cat .claude/settings.json`, `cat ~/.claude/settings.json` (it may be absent), `env | grep -iE 'permission|allowed|claude_code' | sed 's/=.*token.*/=<redacted>/I'`.
+1. **Environment.** Run and log: `date -u +%FT%TZ`, `whoami`, `claude --version`, `git branch --show-current`, `git log --oneline -1`, `cat .claude/settings.json`, `cat ~/.claude/settings.json` (it may be absent), `env | grep -iE '^[^=]*(permission|allowed|claude_code)' | sed 's/=.*/=<value omitted>/'` (names only).
+
+**Never write the value of any token, secret, key or credential to the log.** This repo is public. Log variable names only.
 2. **Load the tools.** Run `ToolSearch` with query `+claude-code-remote` and `max_results` 30. Log how many tools loaded.
 3. **Own mode.** Call `get_session {}` (no id), then `list_events` on your own session id with `kinds: ["system"]` and `limit: 5`. Log your session id, `lineage`, and from the `init` system event: `permissionMode`, and any field that lists allowed or pre-approved tools. Then call `list_events` on yourself with `kinds: ["control_request"]`, `limit: 20`, and log whether any permission request has been raised so far.
 4. **Spawn a child.** Call `create_session` with:
