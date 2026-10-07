@@ -300,3 +300,23 @@ RETURNED list_events (B2 pass 2) at 2026-10-07T02:30:30Z: only one new control_r
 ABOUT TO CALL get_session (D pass 2) at 2026-10-07T02:30:30Z
 RETURNED get_session (D pass 2) at 2026-10-07T02:30:37Z: unchanged: REQUIRES_ACTION / BLOCKED on create_session, updated_at 02:15:52; connection_status "disconnected"
 ABOUT TO CALL list_events (D pass 2, after last seen id) at 2026-10-07T02:30:37Z
+RETURNED list_events (D pass 2) at 2026-10-07T02:30:57Z: {"ccr":{}}, no new events
+
+## Summary
+- **Arm:** A (lead session session_01HkRZDPY6n5Pgc5xfvQ15FP, source branch probe/perms-allow whose .claude/settings.json allow-lists Bash/Read/Write/Edit + 11 mcp__claude-code-remote__* tools).
+- **My permissionMode:** default (init event). Lineage depth 0, limit 8.
+- **Remote-tool calls that ran without a prompt (lead):** get_session, list_events, create_session (x3), send_message, create_trigger, fire_trigger, delete_trigger. All were in the settings allow list. No DENIED calls. My own control_requests: initialize/get_context_usage only, no can_use_tool.
+- **Raised a control_request (can_use_tool):** none in A. In the children: send_message in X, Y and Z. In the other arms: create_session in C, B1, D (D twice, across a worker restart); a Bash classifier block in B2.
+- **Child X** (extra_allowed_tools = send_message, get_session, list_events, create_session; source main): mode default; BLOCKED on "Approve or deny mcp__claude-code-remote__send_message". Inferred: its get_session ran without a prompt (no can_use_tool for it). The grant did NOT pre-approve send_message.
+- **Child Y** (no grant): identical to X: mode default, BLOCKED on send_message. So extra_allowed_tools made no observable difference.
+- **Child Z** (step 11, same grant as X): identical: mode default, BLOCKED on send_message.
+- **Routine session** (create_new_session_on_fire, fired manually): permissionMode auto (set_permission_mode auto before init), origin force_run_trigger, no repo (cwd /home/user, no sources), model claude-sonnet-5-5, mcp_servers [] so no claude-code-remote tools at all. Completed without prompts, final: "routine FINAL: mode=unknown (list_events unavailable); send_message=denied: the claude-code-remote MCP tools don't exist in this session...". The create_trigger result warned the trigger stores no MCP connectors. Trigger deleted.
+- **Other arms:** C (probe/perms-none, default): blocked on create_session. B1 (probe/perms-none, default): blocked on create_session. B2 (probe/perms-none, **auto**): no remote-tool prompt; by its own summary it COMPLETED with a child reply logged (inferred). D (probe/perms-dontask, init reads **default**): blocked on create_session.
+- **Surprising:**
+  1. extra_allowed_tools on create_session had no visible effect: the granted child and the ungranted child both prompted on send_message. The return value does not echo the grant. (Inferred cause: either the grant is dropped, or it does not reach the child's permission check.)
+  2. In children and in C/B1/D, read tools (get_session, list_events) appear to run without a prompt even with no allow rule, while send_message/create_session prompt (inferred from no can_use_tool events for the read tools).
+  3. Only the settings.json allow list (arm A) and auto mode (B2, routine) avoided prompts for create_session/send_message. Child sessions spawned from main do not inherit the parent's settings allow list.
+  4. D's init reports permissionMode "default" despite running from probe/perms-dontask.
+  5. Routine fresh sessions get auto mode but no claude-code-remote MCP server, so they cannot fan out.
+  6. get_session on other sessions returns no lineage field (only on self).
+- I approved nothing, changed no settings, opened no PR. Children X, Y and Z are left blocked (not archived).
