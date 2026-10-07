@@ -122,3 +122,17 @@ turn_handoff.tools: same list as the lead (includes only these remote tools: lis
 ```
 Stopped polling early: the bucket already read COMPLETED.
 ABOUT TO CALL list_events (child, kinds [system, control_request, result], limit 30) at 2026-10-07T02:22:27Z
+RETURNED list_events (child) at 2026-10-07T02:22:44Z: ran with no prompt; init permissionMode auto, result success, permission_denials []
+```
+init (02:16:53Z): permissionMode: "auto"; no field listing allowed/pre-approved tools.
+  mcp_servers: [1a59c906-04da-521d-bda7-7f71b9f9e01c (dynamic, connected), claude-code-remote (pending), github (pending)]
+  tools: same built-ins as the lead, plus mcp__1a59c906-...__{batch,create,delete,export,guide,query,read,update}
+turn_handoff_available tools: same list as the lead (no send_message/get_session/list_events/create_session in it)
+control_requests in this page: initialize (02:17:07.566Z), get_context_usage x2 (02:17:07.88Z, 02:17:07.96Z). No can_use_tool.
+Stop hook: hook_response exit_code 0
+result (02:17:07Z): subtype success, is_error false, num_turns 5, duration_ms 13712, permission_denials: [], terminal_reason completed, origin.kind task-notification
+result text: "B2-X FINAL: mode=auto; send_message=ran\n\nI ran all four steps. Session `session_01Hfj5VGEYHuw25JF8W33psA` is at lineage depth 1 (limit 8), with parent `session_01SSGvGDAT5TguMNJVMcorvH`. The \"B2-X alive\" message was sent to `@parent`.\n\nThe `list_events` call (limit 3, system events only) came back empty, so there was no init event to read the mode from. The `auto` value comes from `get_session`, which reports `permission_mode: auto`. I didn't change any settings, create sessions, push anything or edit files."
+page: has_more true, first_id d239ec90-0796-4885-be19-5e3a7b183966
+```
+Paging back with before_id to cover the whole transcript for control_requests.
+ABOUT TO CALL list_events (child, kinds [control_request, system], limit 100, before_id d239ec90-...) at 2026-10-07T02:22:44Z
