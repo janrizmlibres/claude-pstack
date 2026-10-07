@@ -85,3 +85,7 @@ CLAUDE_CODE_MESSAGING_TOKEN=<value omitted>
 
 ## 2. Load tools
 ToolSearch +claude-code-remote: not needed explicitly; the harness surfaced 27 mcp__claude-code-remote__* tools as directly callable (add_repo, archive_session, create_session, create_trigger, delete_trigger, fire_trigger, get_event, get_session, get_trigger, interrupt_session, list_environments, list_events, list_repos, list_sessions, list_triggers, read_documentation, register_repo_root, send_later, send_message, set_session_tags, set_session_title, subscribe_pr_activity, unarchive_session, unsubscribe_pr_activity, unwatch_url, update_trigger, watch_url).
+ToolSearch +claude-code-remote max_results=30 returned 27 tools.
+
+## 3. Own mode
+ABOUT TO CALL get_session at 2026-10-07T02:11:35Z
