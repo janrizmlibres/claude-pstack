@@ -76,6 +76,14 @@ _Avoid_: approach, variant, persona
 The part of a review rubric one reviewer owns. The other way a fan-out gets breadth from prompts: reviewers split the rubric instead of each applying all of it.
 _Avoid_: angle, focus, perspective
 
+**Sample**:
+One eval candidate's run of the change under test, on the same organic prompt as every other sample. A measurement, not breadth: identical prompts are the point, so the race rules on distinct briefs do not apply.
+_Avoid_: candidate, run, arm
+
+**Fresh-context review**:
+A review by a worker that is given the work's artifacts but never the reasoning that produced them, such as a blind judge or a trail auditor. What a cross-family review becomes on one model family.
+_Avoid_: independent review, cross-model review, second family
+
 **Entry point**:
 The session where the user starts a run, on either surface. It is the run's lead unless the user hands the run off.
 _Avoid_: launcher, front end
