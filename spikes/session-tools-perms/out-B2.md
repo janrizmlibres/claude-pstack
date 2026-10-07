@@ -34,3 +34,19 @@ ToolSearch "+claude-code-remote" max_results 30 returned 27 tool schemas (add_re
 
 ## Step 3: Own mode
 ABOUT TO CALL get_session at 2026-10-07T02:14:25Z
+RETURNED get_session at 2026-10-07T02:14:40Z: ran with no prompt; id session_01SSGvGDAT5TguMNJVMcorvH, permission_mode auto, lineage depth 0 limit 8
+```
+id: session_01SSGvGDAT5TguMNJVMcorvH
+title: Perms probe ARM B2
+session_status: SESSION_STATUS_RUNNING  status_bucket: SESSION_STATUS_BUCKET_WORKING
+environment_id: env_011fdXavJ6U87ghgCCgmnoee
+source: janrizmlibres/claude-pstack @ probe/perms-none ; outcome branch claude/perms-probe-arm-b2-oobf3b
+session_context.permission_mode: auto ; permission_mode: PERMISSION_MODE_AUTO ; external_metadata.permission_mode: auto (seq 1)
+origin: claude_code_cli ; tags: [config:auto-create-pr:off, config:meta-mcp-own-entry]
+external_metadata.cross_session_inbound: available
+external_metadata.turn_handoff.tools: [Bash, Write, Edit, Read, Glob, Grep, Agent, NotebookEdit, WebFetch, WebSearch, TaskStop, SearchMcpRegistry, SuggestConnectors, ListConnectors, Skill, Artifact, mcp__claude-code-remote__list_triggers, mcp__claude-code-remote__create_trigger, mcp__claude-code-remote__update_trigger, mcp__claude-code-remote__delete_trigger, mcp__claude-code-remote__fire_trigger, mcp__claude-code-remote__send_later, mcp__claude-code-remote__add_repo, mcp__claude-code-remote__check_repo_access, mcp__claude-code-remote__list_repos]
+lineage: {"depth":0,"limit":8}
+```
+Note: the session's source revision is probe/perms-none, while the working branch is claude/perms-probe-arm-b2-oobf3b (HEAD bca13e9).
+
+ABOUT TO CALL list_events (self, kinds [system], limit 5) at 2026-10-07T02:14:40Z
