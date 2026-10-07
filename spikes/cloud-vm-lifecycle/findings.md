@@ -62,12 +62,13 @@ Idle is measured from the session's previous stamp push. Its turn ended a few se
 |---|---|---|---|---|
 | ctlb | 2 h 03 min (01:13 → 03:16Z) | new | present | paused, not reclaimed |
 | ctlc | 6 h 03 min (01:13 → 07:16Z) | new | present | paused, not reclaimed |
+| shell | 12 h 01 min (01:42 → 13:43Z) | new | present | paused, not reclaimed |
 
-**No reclaim was seen within 6 hours.** The reclaim interval is still unknown. A 12-hour sample on the shell session was scheduled after this write-up.
+**No reclaim was seen within 12 hours.** The reclaim interval is still unknown.
 
 ## Waking a session from the CLI
 
-`claude -p "<msg>" --cloud <session_id>` returns in about 2 s with "Sent to cloud session." It prints no reply, so answers have to come back through a pushed branch or the transcript. Each time, the paused session restored and acted on the message with nobody opening the browser. The stamp landed 5–11 s after sending: 10 s for ctla after ~11 min, 11 s for ctlb after 2 h, 5 s for ctlc after 6 h.
+`claude -p "<msg>" --cloud <session_id>` returns in about 2 s with "Sent to cloud session." It prints no reply, so answers have to come back through a pushed branch or the transcript. Each time, the paused session restored and acted on the message with nobody opening the browser. The stamp landed 5–11 s after sending: 10 s for ctla after ~11 min, 11 s for ctlb after 2 h, 5 s for ctlc after 6 h, 15 s for shell after 12 h.
 
 Waking a *reclaimed* session from the CLI is still untested, because no session was reclaimed.
 
