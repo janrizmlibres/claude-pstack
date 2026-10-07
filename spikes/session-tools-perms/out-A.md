@@ -196,3 +196,10 @@ RETURNED get_session (B1) at 2026-10-07T02:19:34Z: REQUIRES_ACTION / BLOCKED, so
 "post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__create_session","needs_action":"Approve or deny mcp__claude-code-remote__create_session"}
 ```
 ABOUT TO CALL list_events (B1, control_request) at 2026-10-07T02:19:34Z
+RETURNED list_events (B1, 2 calls) at 2026-10-07T02:19:47Z: B1 permissionMode=default; one can_use_tool for create_session
+```
+B1 init (02:06:58): "permissionMode":"default"; no allowedTools field.
+B1 control_request 02:08:08.538241Z: can_use_tool tool_name=mcp__claude-code-remote__create_session (title "perms probe B1 child X", same 4 extra_allowed_tools), permission_suggestions addRules localSettings create_session
+others: initialize x5, get_context_usage x2
+```
+ABOUT TO CALL get_session (B2 session_01SSGvGDAT5TguMNJVMcorvH) at 2026-10-07T02:19:47Z
