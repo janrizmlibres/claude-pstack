@@ -70,3 +70,33 @@ Return value (model id fields omitted):
 Note: the return value has no permission_mode field even though "auto" was requested.
 
 ## Step 4 — polling child
+- poll 1 (14:33:34Z): status_bucket=WORKING, needs_action=(no post_turn_summary), task_summary="Committing and pushing probe output"
+- poll 2 (14:34Z): status_bucket=**COMPLETED** (session_status IDLE), post_turn_summary.needs_action=`""` (empty); status_detail "probe completed: token extracted, output written, push succeeded".
+
+### Child transcript (one list_events call, kinds user/system/assistant/result, limit 100 — the whole turn fit in one page)
+
+First user event (14:32:49.727Z, client_platform `claude_code_mcp_seed`, inbound_origin `mcp_create_session`), trimmed:
+```
+/probe-entry
+You are the CHILD session of a small probe. Nobody is watching. SECURITY: this repo is public. Never print, log or push environment variable values, tokens, settings files or anything under ~/.claude. Do not run env or printenv. Do not change any settings or permission mode.
+
+1. Without opening any file first, write spikes/entry-slash/out-child.md containing: (a) whether you know an ENTRY-TOKEN ... [rest = CHILD-PROMPT.txt verbatim]
+```
+=> In the **stored transcript** the child's first user event is the **raw `/probe-entry` line** (plain string, no tags, no skill body) — same as the lead's. But the child **model** did receive it expanded (see its final text below), so expansion happened in the child CLI.
+
+- Child init event: `skills` list **includes `probe-entry`** (also in slash_commands). Note: at init the child's `claude-code-remote` and `github` MCP servers were `pending`.
+- Child tool calls in turn 1: (1) Bash writing out-child.md + `date; git branch; cat .probe/hook.log`; (2) Bash `git add/commit/push origin HEAD:claude/entry-slash-child`. **No Read/cat/grep of `.claude/skills/probe-entry/SKILL.md`** before (or after) it stated the token.
+- Child hook.log (from its tool output): `14:32:55Z HOOKFIRED UserPromptSubmit "prompt":"/probe-entry\nYou are the CHILD session ` and `14:33:06Z PRETOOLHOOK Bash`.
+- Child push: `* [new branch] HEAD -> claude/entry-slash-child` — **allowed** (auto-mode permission check ran ~15 s, then done).
+- Child result event: `origin.kind = "task-notification"`, permission_denials [].
+
+Child final text:
+```
+I got ENTRY-TOKEN `Q7Z4K` from the skill text that was passed to me, without opening any file. I wrote the probe output to `spikes/entry-slash/out-child.md`, and the first push to `claude/entry-slash-child` worked.
+
+- **How it arrived:** there was no ordinary user message. The command came inside two system-reminder blocks, each marked "SYSTEM NOTIFICATION - NOT USER INPUT". The first had the `<command-message>probe-entry</command-message>` and `<command-name>/probe-entry</command-name>` tags plus the arguments. The second had the expanded skill text with the token in it. The file quotes the first block and the start of the second.
+- **Hook log:** `.probe/hook.log` has two lines. One is a `UserPromptSubmit` entry (14:32:55Z) whose prompt starts with `/probe-entry`. The other is a `PRETOOLHOOK Bash` entry, written when my first command ran.
+
+CHILD FINAL: token=Q7Z4K; expanded=yes; hookfired=yes; push=claude/entry-slash-child pushed
+```
+**Surprise:** the child (seeded via create_session) saw the expanded command wrapped as `<system-reminder>` "[SYSTEM NOTIFICATION - NOT USER INPUT] ... automated background-task event" blocks, not as a plain user turn like the lead did. The lead (started from claude_code_cli) saw it as a normal user message with command tags.
