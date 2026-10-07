@@ -284,3 +284,5 @@ Child Z outcome = identical to X and Y: blocked on send_message. Nothing about t
 ABOUT TO CALL get_session (C) at 2026-10-07T02:29:40Z
 RETURNED get_session (C pass 2) at 2026-10-07T02:29:50Z: unchanged: REQUIRES_ACTION / BLOCKED on create_session, updated_at still 02:07:49; connection_status now "disconnected"
 ABOUT TO CALL list_events (C pass 2, control_request) at 2026-10-07T02:29:50Z
+RETURNED list_events (C pass 2, after last seen id) at 2026-10-07T02:30:00Z: {"ccr":{}}, no new system or control_request events since pass 1; mode still default (from pass-1 init)
+ABOUT TO CALL get_session (B1 pass 2) at 2026-10-07T02:30:00Z
