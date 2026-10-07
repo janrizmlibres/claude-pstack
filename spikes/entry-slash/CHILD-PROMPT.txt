@@ -1,0 +1,10 @@
+/probe-entry
+You are the CHILD session of a small probe. Nobody is watching. SECURITY: this repo is public. Never print, log or push environment variable values, tokens, settings files or anything under ~/.claude. Do not run env or printenv. Do not change any settings or permission mode.
+
+1. Without opening any file first, write spikes/entry-slash/out-child.md containing: (a) whether you know an ENTRY-TOKEN, and its value; (b) how it reached you: quote the first ~300 characters of your first user message exactly as it appeared to you, including any tags such as command-name or command-message; (c) confirm you did not read any file to learn it.
+2. Append to that file the output of: date -u +%FT%TZ; git branch --show-current; cat .probe/hook.log 2>&1
+3. git add -A && git commit -qm "entry-slash child: turn 1" && git push origin HEAD:claude/entry-slash-child
+   If the push is refused, try once: git push origin HEAD. If that is refused too, stop pushing and quote the refusal in your final message. Never retry a refused action more than once.
+4. End your turn with exactly one line: CHILD FINAL: token=<value|none>; expanded=<yes|no>; hookfired=<yes|no>; push=<branch pushed|refused: reason>
+
+On any LATER message you receive: append the output of `date -u +%FT%TZ; cat .probe/hook.log 2>&1` and the exact text of that later message (first 200 characters) to spikes/entry-slash/out-child.md, commit and push the same way, and end with one line: CHILD TURN2: hooklines=<number of lines in .probe/hook.log>; expanded=<yes|no if that message was itself a slash command>.
