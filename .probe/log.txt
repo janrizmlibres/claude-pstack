@@ -1,1 +1,2 @@
 start wall=1791335592 up=9.81 boot=7b7f4a68-6c0f-4bdf-a8bb-b85acd829c1b host=vm marker=monitor 1791335592
+hb 1 wall=1791335627 up=45.21 boot=7b7f4a68-6c0f-4bdf-a8bb-b85acd829c1b host=vm marker=monitor 1791335592
