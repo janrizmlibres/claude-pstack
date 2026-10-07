@@ -90,3 +90,11 @@ RETURNED list_events at 2026-10-07T02:07:45Z: ran without prompt; limit 5 page h
 ```
 Extra (not in LEAD): retrying with limit 100 to find the init event.
 ABOUT TO CALL list_events (self, system, limit 100) at 2026-10-07T02:07:45Z
+RETURNED list_events (limit 100) at 2026-10-07T02:07:54Z: ran without prompt; init found.
+Init fields (verbatim, trimmed): `"permissionMode":"default"`, `"apiKeySource":"none"`, `"mcp_servers":[{"name":"claude-code-remote","source":"dynamic","status":"pending"},{"name":"github","source":"dynamic","status":"pending"}]`, `"permission_context_ms":29` (timing only). The init event has no allowed/pre-approved tools field; its `tools` list is just the available built-in tools (Task, Artifact, …, Write) with no mcp__ entries.
+A separate system event, subtype `turn_handoff_available`, carries:
+```
+"tools":["Bash","Write","Edit","Read","Glob","Grep","Agent","NotebookEdit","WebFetch","WebSearch","TaskStop","SearchMcpRegistry","SuggestConnectors","ListConnectors","Skill","Artifact","mcp__claude-code-remote__list_triggers","mcp__claude-code-remote__create_trigger","mcp__claude-code-remote__update_trigger","mcp__claude-code-remote__delete_trigger","mcp__claude-code-remote__fire_trigger","mcp__claude-code-remote__send_later","mcp__claude-code-remote__add_repo","mcp__claude-code-remote__check_repo_access","mcp__claude-code-remote__list_repos"]
+```
+(inferred: this is a handoff/pre-approved tool list; it does not include get_session or list_events, yet both ran without a prompt.)
+ABOUT TO CALL list_events (self, control_request, limit 20) at 2026-10-07T02:07:54Z
