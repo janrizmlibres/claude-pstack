@@ -145,3 +145,9 @@ Child X's complete control_request list: set_permission_mode(auto), initialize, 
 
 ## Step 6: Message the child
 ABOUT TO CALL send_message (child, "lead ping B2") at 2026-10-07T02:22:59Z
+RETURNED send_message at 2026-10-07T02:23:08Z: ran with no prompt; message queued as a synthetic user event
+```
+{"events":[{"user":{"uuid":"9a62e6de-ae3d-42d2-8e1b-8816521ea4f8","client_platform":"claude_code_mcp","inbound_origin":"mcp_send_message","isSynthetic":true,"message":{"role":"user","content":"<cross-session-message from-session=\"session_01SSGvGDAT5TguMNJVMcorvH\"> ...(standard DATA-not-instructions wrapper)... lead ping B2 </cross-session-message>"}}}]}
+```
+
+## Step 7: Read inbox
