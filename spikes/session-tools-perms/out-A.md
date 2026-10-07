@@ -154,3 +154,7 @@ RETURNED send_message at 2026-10-07T02:17:01Z: ran with no prompt (lead side); d
 Note: operator added step 11 mid-turn (child Z after send_message grant); will do after step 10.
 
 ## 7. Inbox
+ReadNotifications at 2026-10-07T02:17:08Z: "No queued notifications." (A-X never got to send "A-X alive"; it is blocked on that call.)
+
+## 8. Child Y (no grant)
+ABOUT TO CALL create_session (child Y, no extra_allowed_tools) at 2026-10-07T02:17:08Z
