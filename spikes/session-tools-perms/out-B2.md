@@ -70,3 +70,9 @@ other system events: permission_check_status checking/done pairs for each classi
 ```
 Observation: the classifier check runs even on Bash, which .claude/settings.json allows. Each check took about 11 to 21 s, and two were denied.
 ABOUT TO CALL list_events (self, kinds [control_request], limit 20) at 2026-10-07T02:15:22Z
+RETURNED list_events at 2026-10-07T02:15:41Z: ran with no prompt; no control_request in the latest 20 events
+```
+{"has_more":true,"first_id":"28f8251c-917f-4b1c-a030-666129bce9a6","last_id":"635b8a87-78d5-41e0-8598-354218a55143"}
+```
+Deviation: re-checking with limit 100 so the window covers the whole session.
+ABOUT TO CALL list_events (self, kinds [control_request], limit 100) at 2026-10-07T02:15:41Z
