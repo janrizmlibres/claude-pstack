@@ -128,3 +128,7 @@ Note: return value does not echo extra_allowed_tools.
 
 ## 5. Watch child X
 ABOUT TO CALL get_session (X poll 1) at 2026-10-07T02:14:51Z
+RETURNED get_session (X poll 1) at 2026-10-07T02:15:04Z: session_status=SESSION_STATUS_REQUIRES_ACTION, status_bucket=SESSION_STATUS_BUCKET_BLOCKED, needs_action="Approve or deny mcp__claude-code-remote__send_message"
+```json
+"post_turn_summary":{"status_category":"need_input","status_detail":"Waiting on permission: mcp__claude-code-remote__send_message","needs_action":"Approve or deny mcp__claude-code-remote__send_message"}, "connection_status":"connected", "parent_session_id":"session_01HkRZDPY6n5Pgc5xfvQ15FP"
+```
