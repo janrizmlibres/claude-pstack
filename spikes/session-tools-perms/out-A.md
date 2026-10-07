@@ -272,3 +272,13 @@ RETURNED get_session (Z poll 1) at 2026-10-07T02:28:45Z: REQUIRES_ACTION / BLOCK
 ABOUT TO CALL get_session (Z poll 2) at 2026-10-07T02:29:17Z
 RETURNED get_session (Z poll 2) at 2026-10-07T02:29:26Z: REQUIRES_ACTION / BLOCKED again. Stop.
 ABOUT TO CALL list_events (Z, control_request/result) at 2026-10-07T02:29:26Z
+RETURNED list_events (Z, 2 calls) at 2026-10-07T02:29:40Z: child Z permissionMode=default; one can_use_tool for send_message; no result
+```
+init (02:28:03): "permissionMode":"default"; no allowedTools field
+control_request 02:28:10.439625Z: {"display_name":"Send Message","input":{"message":"A-Z alive","session_id":"@parent"},"permission_suggestions":[{"behavior":"allow","destination":"localSettings","rules":[{"toolName":"mcp__claude-code-remote__send_message"}],"type":"addRules"}],"subtype":"can_use_tool","tool_name":"mcp__claude-code-remote__send_message","tool_use_id":"toolu_01VvnsfjLekdZmFQ26C8M814"}
+others: initialize, get_context_usage
+```
+Child Z outcome = identical to X and Y: blocked on send_message. Nothing about the grant changed between X and Z from this session's side.
+
+### 11b. Other arms, second pass
+ABOUT TO CALL get_session (C) at 2026-10-07T02:29:40Z
