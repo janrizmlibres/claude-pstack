@@ -127,3 +127,4 @@ RETURNED create_session at 2026-10-07T02:14:19Z: child X = session_01BAPuiRRt26M
 Note: return value does not echo extra_allowed_tools.
 
 ## 5. Watch child X
+ABOUT TO CALL get_session (X poll 1) at 2026-10-07T02:14:51Z
