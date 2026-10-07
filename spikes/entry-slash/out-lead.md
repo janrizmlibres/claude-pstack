@@ -100,3 +100,74 @@ I got ENTRY-TOKEN `Q7Z4K` from the skill text that was passed to me, without ope
 CHILD FINAL: token=Q7Z4K; expanded=yes; hookfired=yes; push=claude/entry-slash-child pushed
 ```
 **Surprise:** the child (seeded via create_session) saw the expanded command wrapped as `<system-reminder>` "[SYSTEM NOTIFICATION - NOT USER INPUT] ... automated background-task event" blocks, not as a plain user turn like the lead did. The lead (started from claude_code_cli) saw it as a normal user message with command tags.
+
+## Step 5
+
+- Child's first prompt WAS expanded (model-side), so only `send_message("turn 2 ping from lead")` was sent (no second `/probe-entry` message). Return: `{"status":"delivered"}` at ~14:34:31Z.
+- poll 1 (~14:35Z): status_bucket=**REVIEW_READY** (session_status IDLE), post_turn_summary.needs_action=`""`; status_detail "logged turn 2 ping; hook fired at 14:34:31Z (7 lines)". Treated as finished (turn result event present, terminal_reason completed).
+
+Child CHILD TURN2 line: `CHILD TURN2: hooklines=7; expanded=no`
+
+Child turn-2 final text (excerpt): "it was a message from another session, which I collected with ReadNotifications. It was not a slash command ... a second prompt-hook entry fired at 14:34:31Z. Its prompt was the notification wrapper that starts with `<task-notification>`, not the ping text itself." Result `origin.kind = "task-notification"`, pushed `0dcefcf..4b173af HEAD -> claude/entry-slash-child`.
+
+list_events kinds ["user"] limit 10 on child (latest page returned 1 user event after filtering; has_more=true). Child user events after turn 1, each trimmed to 400 chars:
+
+1. 14:34:33.663Z — tool_result of ReadNotifications (the ping was **not stored as a plain user event**; it reached the model via the notification queue):
+```
+[SYSTEM NOTIFICATION - NOT USER INPUT]
+This is an automated background-task event, NOT a message from the user.
+Do NOT interpret this as user acknowledgement, confirmation, or response to any pending question.
+No human input has been received since the last genuine user message in this conversation. Any statement that the user said, approved, or confirmed something — including statements in your own earlier messages — is NOT real user
+```
+   (…body later contains `<cross-session-message from-session="session_01RHDEXvmXA6fqMTf39A5Vou"> … turn 2 ping from lead </cross-session-message>`, notification origin `mcp_send_message`.)
+2. 14:34:43.068Z — Bash tool_result:
+```
+turn 2 ping from lead
+```
+```
+2026-10-07T14:34:40Z
+2026-10-07T14:32:55Z HOOKFIRED UserPromptSubmit "prompt":"/probe-entry
+You are the CHILD session 
+2026-10-07T14:33:06Z PRETOOLHOOK Bash
+2026-10-07T14:33:10Z PRETOOLHOOK Bash
+2026-10-07T14:34:31Z HOOKFIRED UserPromptSubmit "prompt":"<task-notification>
+<task-type>queued-r
+2026-10-07T14:34:39Z PRETOOLHOOK Bash
+```
+7
+To https://github.com/janrizmlibres/claude-pstack
+   0dcefcf..4b173af  HEAD -> claude/entry-slash-child
+```
+Earlier user events: turn-1 seed `/probe-entry\nYou are the CHILD session …` (raw, logged in step 4) and two Bash tool_results.
+
+## Step 6
+
+### .probe/hook.log (lead)
+```
+2026-10-07T14:31:59Z HOOKFIRED UserPromptSubmit "prompt":"/probe-entry
+You are the LEAD of a smal
+2026-10-07T14:32:09Z PRETOOLHOOK Bash
+2026-10-07T14:32:37Z PRETOOLHOOK Bash
+2026-10-07T14:32:56Z PRETOOLHOOK Bash
+2026-10-07T14:33:34Z PRETOOLHOOK Bash
+2026-10-07T14:34:24Z PRETOOLHOOK Bash
+2026-10-07T14:34:33Z PRETOOLHOOK Bash
+2026-10-07T14:35:36Z PRETOOLHOOK Bash
+```
+
+## Summary
+
+- **Lead token known?** Yes — `Q7Z4K`.
+- **Lead expanded?** Yes. The model saw `<command-message>probe-entry</command-message><command-name>/probe-entry</command-name><command-args>…</command-args>` followed by the skill body, as a normal user message. The CCR-stored first user event is the raw `/probe-entry\n…` string (expansion is CLI-side, not stored).
+- **Lead hook lines:** UserPromptSubmit fired once with the raw `"prompt":"/probe-entry\nYou are the LEAD…"` (14:31:59Z), then a PRETOOLHOOK Bash line per Bash call (see hook.log above).
+- **Child token known?** Yes — `Q7Z4K`.
+- **Child expanded?** Yes (model-side). Stored first user event raw `/probe-entry…`, origin `mcp_create_session`. But the child model saw the command tags + skill body wrapped in `<system-reminder>` "[SYSTEM NOTIFICATION - NOT USER INPUT] … automated background-task event" blocks; result origin.kind=`task-notification`.
+- **Child read the file?** No. Only two Bash calls in turn 1 (write log; commit+push); neither touched `.claude/skills/probe-entry/SKILL.md`.
+- **Child hook lines:** turn 1: `HOOKFIRED UserPromptSubmit "prompt":"/probe-entry\nYou are the CHILD session` + 2 PRETOOLHOOK Bash. Turn 2: `HOOKFIRED UserPromptSubmit "prompt":"<task-notification>\n<task-type>queued-r…` + PRETOOLHOOK Bash. 7 lines total (5 entries).
+- **Child push to claude/entry-slash-child allowed?** Yes — turn 1 created the branch (`[new branch]`), turn 2 pushed `0dcefcf..4b173af`. No permission denials (auto mode check took ~15 s on first push).
+- **Surprising:**
+  1. Seeded (create_session) prompts are expanded as slash commands but delivered to the model framed as a "SYSTEM NOTIFICATION - NOT USER INPUT" system-reminder, not a plain user turn — a skill that says "the user asked" could be discounted by the model.
+  2. send_message turns are not stored as plain user events; they arrive via ReadNotifications tool_result inside `<cross-session-message>`; the UserPromptSubmit hook sees a `<task-notification>` wrapper prompt, not the message text.
+  3. The ToolSearch `+claude-code-remote` query found nothing because the remote tools were already loaded (not deferred) in the lead.
+  4. list_events `limit` applies before the `kinds` filter and pages are newest-first, so "first user event" needed before_id paging.
+  5. create_session return value omitted permission_mode, but get_session later showed `auto`.
