@@ -39,3 +39,4 @@ hb 37 wall=1791336788 up=1204.16 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=
 hb 38 wall=1791336820 up=1236.37 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=vm marker=shell 1791335594
 hb 39 wall=1791336852 up=1268.44 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=vm marker=shell 1791335594
 hb 40 wall=1791336884 up=1300.45 boot=0d98f5af-e6e4-42d6-8a05-6fd858cf45c1 host=vm marker=shell 1791335594
+followup 2 wall=1791337344 up=9.19 boot=d25d4158-c467-44e9-9f5d-c872e1af9843 host=vm marker=shell 1791335594
