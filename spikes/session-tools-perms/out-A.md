@@ -246,3 +246,9 @@ Note: session_request.config has allowed_tools:[] and sources:[] (no repo).
 ABOUT TO CALL fire_trigger at 2026-10-07T02:24:00Z
 RETURNED fire_trigger at 2026-10-07T02:25:02Z: no prompt; returns the trigger echo plus "session_id":"cse_01J7FWdCdr7GnHGdrHSZtPhK","conversation_id":""
 ABOUT TO CALL get_session (routine session_01J7FWdCdr7GnHGdrHSZtPhK, poll 1; cse_ -> session_ prefix is my guess) at 2026-10-07T02:25:34Z
+RETURNED get_session (routine poll 1) at 2026-10-07T02:25:44Z: session_status=SESSION_STATUS_IDLE, status_bucket=SESSION_STATUS_BUCKET_REVIEW_READY, no post_turn_summary/needs_action; permission_mode=PERMISSION_MODE_AUTO
+```json
+{"id":"session_01J7FWdCdr7GnHGdrHSZtPhK","title":"⚡ perms probe routine","session_context":{"autofix_on_pr_create":true,"permission_mode":"auto"},"origin":"force_run_trigger","permission_mode":"PERMISSION_MODE_AUTO","tags":["config:auto-create-pr:off","config:routine-lineage-none","config:session-created","routine:agent-minted","routine_notify_push"],"external_metadata":{"last_served_model":"claude-sonnet-5-5","permission_mode":"auto","permission_mode_seq":"1"},"status_bucket":"SESSION_STATUS_BUCKET_REVIEW_READY"}
+```
+repo/branch: session_context has no sources/outcomes (no repo). No parent_session_id. Served model differs from mine (claude-sonnet-5-5; no configured_model field).
+ABOUT TO CALL list_events (routine, system/control_request/result) at 2026-10-07T02:25:44Z
