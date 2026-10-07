@@ -135,3 +135,15 @@ RETURNED get_session (X poll 1) at 2026-10-07T02:15:04Z: session_status=SESSION_
 ABOUT TO CALL get_session (X poll 2) at 2026-10-07T02:15:36Z
 RETURNED get_session (X poll 2) at 2026-10-07T02:15:49Z: REQUIRES_ACTION / BLOCKED again (identical, updated_at 02:14:23), needs_action="Approve or deny mcp__claude-code-remote__send_message". BLOCKED twice -> stop watching.
 ABOUT TO CALL list_events (X, system/control_request/result, limit 30) at 2026-10-07T02:15:49Z
+RETURNED list_events (X) at 2026-10-07T02:16:03Z: child X permissionMode=default; one can_use_tool control_request for send_message; no result event (turn still blocked)
+```
+init: "permissionMode":"default"; mcp_servers: [{"name":"1a59c906-04da-521d-bda7-7f71b9f9e01c","source":"dynamic","status":"pending"},{"name":"claude-code-remote",...},{"name":"github",...}]  (extra unnamed-uuid MCP server vs parent: inferred to be something seed-related, not verified)
+init has no allowedTools field.
+control_request 02:14:22.574791Z: {"request":{"display_name":"Send Message","input":{"message":"A-X alive","session_id":"@parent"},"mcp_server":{"name":"claude-code-remote","source":"dynamic"},"permission_suggestions":[{"behavior":"allow","destination":"localSettings","rules":[{"toolName":"mcp__claude-code-remote__send_message"}],"type":"addRules"}],"subtype":"can_use_tool","tool_name":"mcp__claude-code-remote__send_message","tool_use_id":"toolu_019YiH2VV5Fv18fkF6vSeADD"}}
+other control_requests: initialize (02:14:42), get_context_usage x2 (02:14:42)
+result: none
+```
+Observation: no can_use_tool for get_session appears before the send_message one, so (inferred) child X's get_session ran without a prompt; send_message prompted although it was in extra_allowed_tools AND in the parent's settings allow list.
+
+## 6. Message child X
+ABOUT TO CALL send_message (to X) at 2026-10-07T02:16:03Z
