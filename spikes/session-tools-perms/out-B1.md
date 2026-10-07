@@ -98,3 +98,6 @@ A separate system event, subtype `turn_handoff_available`, carries:
 ```
 (inferred: this is a handoff/pre-approved tool list; it does not include get_session or list_events, yet both ran without a prompt.)
 ABOUT TO CALL list_events (self, control_request, limit 20) at 2026-10-07T02:07:54Z
+RETURNED list_events (control_request, limit 20) at 2026-10-07T02:08:00Z: ran without prompt; no control_request in that page: `{"ccr":{"has_more":true,"first_id":"1962481a-…","last_id":"783d69d9-…"}}`
+Extra: re-reading with limit 100.
+ABOUT TO CALL list_events (self, control_request, limit 100) at 2026-10-07T02:08:00Z
