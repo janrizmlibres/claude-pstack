@@ -56,3 +56,17 @@ RETURNED list_events at 2026-10-07T02:15:02Z: ran with no prompt; data empty (fi
 ```
 Deviation: re-reading with limit 100 to reach the init event.
 ABOUT TO CALL list_events (self, kinds [system], limit 100) at 2026-10-07T02:15:02Z
+RETURNED list_events at 2026-10-07T02:15:22Z: ran with no prompt; init found, permissionMode auto
+```
+init (2026-10-07T02:07:07Z, trimmed): permissionMode: "auto", claude_code_version: 2.1.292, model: claude-opus-5-5, apiKeySource: none,
+  mcp_servers: [claude-code-remote (dynamic, pending), github (dynamic, pending)]
+  tools: [Task, Artifact, ArtifactComments, ArtifactData, AskUserQuestion, Bash, CronCreate, CronDelete, CronList, DesignSync, Edit, EnterPlanMode, EnterWorktree, ExitPlanMode, ExitWorktree, Glob, Grep, ListAgents, ListConnectors, ListPlugins, ListSkills, Monitor, NotebookEdit, PushNotification, Read, ReadNotifications, ReportFindings, ScheduleWakeup, SearchMcpRegistry, SearchPlugins, SearchSkills, SendMessage, SendUserFile, ShowOnboardingRolePicker, Skill, SuggestConnectors, SuggestPluginInstall, SuggestSkills, TaskCreate, TaskGet, TaskList, TaskStop, TaskUpdate, ToolSearch, WebFetch, WebSearch, Workflow, Write]
+  (no field in init lists allowed or pre-approved tools)
+turn_handoff_available (02:07:06Z) tools: [Bash, Write, Edit, Read, Glob, Grep, Agent, NotebookEdit, WebFetch, WebSearch, TaskStop, SearchMcpRegistry, SuggestConnectors, ListConnectors, Skill, Artifact, mcp__claude-code-remote__list_triggers, mcp__claude-code-remote__create_trigger, mcp__claude-code-remote__update_trigger, mcp__claude-code-remote__delete_trigger, mcp__claude-code-remote__fire_trigger, mcp__claude-code-remote__send_later, mcp__claude-code-remote__add_repo, mcp__claude-code-remote__check_repo_access, mcp__claude-code-remote__list_repos]
+other system events: permission_check_status checking/done pairs for each classifier check; two permission_denied events:
+  {tool_name: Bash, decision_reason_type: classifier, decision_reason: "[Credential Leakage]", subtype: permission_denied}  (02:07:43Z)
+  {tool_name: Bash, decision_reason_type: classifier, decision_reason: "[Sensitive-Source Provenance]", subtype: permission_denied} (02:08:16Z)
+  background_tasks_changed x3, vcs_state_changed (push)
+```
+Observation: the classifier check runs even on Bash, which .claude/settings.json allows. Each check took about 11 to 21 s, and two were denied.
+ABOUT TO CALL list_events (self, kinds [control_request], limit 20) at 2026-10-07T02:15:22Z
