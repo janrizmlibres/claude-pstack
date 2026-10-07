@@ -11,12 +11,24 @@ The pstack plugin as published in `cursor/plugins`, the source this repo ports f
 _Avoid_: original, source plugin, Cursor version
 
 **Snapshot**:
-The copy of upstream, at one recorded upstream version, that the current port was made from.
+The verbatim copy of upstream, at one recorded upstream commit, that the current port was made from. Never edited by hand; only a sync advances it.
 _Avoid_: vendor copy, mirror, base
 
 **Port**:
 The Claude Code edition of pstack that this repo publishes.
 _Avoid_: fork, conversion, adaptation
+
+**Translated file**:
+A port file made from its upstream counterpart by applying the conversion rules. A sync re-translates it when its counterpart changes.
+_Avoid_: generated file, converted file
+
+**Override**:
+A port file written by hand for Claude Code in place of translating its upstream counterpart. A sync never re-translates it; a change to its counterpart flags it for reconsideration.
+_Avoid_: patch, customization, fork
+
+**Port-only file**:
+A port file with no upstream counterpart, such as a manifest or a hook the port adds.
+_Avoid_: extra, addition
 
 **Sync**:
 Bringing the port up to a newer upstream: diff upstream against the snapshot, carry each change into the port, then advance the snapshot.
