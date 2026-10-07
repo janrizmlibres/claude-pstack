@@ -76,7 +76,7 @@ CLAUDE_CODE_POST_FOR_SESSION_INGRESS_V2=true
 CLAUDE_CODE_ORGANIZATION_UUID=33bc4728-9bd0-49c0-8d77-31e0b3743238
 CLAUDE_CODE_SYNC_SKILLS=1
 CLAUDE_CODE_HOLD_UNANSWERED_PARKED_PERMISSION=1
-CLAUDE_CODE_MESSAGING_TOKEN=<redacted>
+CLAUDE_CODE_MESSAGING_TOKEN=<value omitted>
 ```
 
 NOTE: the LEAD.md sed only redacts when 'token' appears in the value, so CLAUDE_CODE_MESSAGING_TOKEN leaked in the first push; redacted here and the commit was amended + force-pushed.
@@ -141,3 +141,5 @@ Step 3 result: no permission request raised so far. get_session and list_events 
 
 ## Step 4 Spawn child D-X
 ABOUT TO CALL create_session at 2026-10-07T02:08:59Z (source main, title "perms probe D child X", extra_allowed_tools = send_message, get_session, list_events, create_session)
+NOTE 2026-10-07T02:15:49Z: the session worker restarted after the line above, before create_session was called. At the operator's request the history was squashed onto 0bde2c0 and secret-named env values were removed.
+ABOUT TO CALL create_session at 2026-10-07T02:15:49Z
