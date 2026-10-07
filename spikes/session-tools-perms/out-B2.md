@@ -76,3 +76,17 @@ RETURNED list_events at 2026-10-07T02:15:41Z: ran with no prompt; no control_req
 ```
 Deviation: re-checking with limit 100 so the window covers the whole session.
 ABOUT TO CALL list_events (self, kinds [control_request], limit 100) at 2026-10-07T02:15:41Z
+RETURNED list_events at 2026-10-07T02:16:22Z: ran with no prompt; 6 control_requests, one of them a can_use_tool PERMISSION REQUEST on Bash
+```
+02:07:02Z set_permission_mode {mode: auto}
+02:08:40Z can_use_tool  tool_name: Bash  tool_use_id: toolu_01VR4WjUHqSM5BcpXZnnc3Vs  decision_reason_type: classifier
+          decision_reason: "3 consecutive actions were blocked. Please review the transcript before continuing.\n\nLatest blocked action: [Auto-Mode Bypass]"
+          permission_suggestions: []   input.command: (my third step-1 attempt, the one without env and ~/.claude reads)
+02:09:00Z initialize
+02:09:01Z get_context_usage
+02:12:03Z initialize
+02:14:12Z initialize
+```
+Facts: after two classifier denials, the third Bash call (allowed by .claude/settings.json) was escalated to a human can_use_tool prompt instead of being auto-decided. It was raised at 02:08:40Z. That command's own output shows `date` = 02:14:13Z, so it waited about 5.5 min before it was let through.
+Inferred: someone approved the prompt from a claude.ai client (the initialize events at 02:09, 02:12 and 02:14 look like client connects, and the last one comes 1 s before the command ran). There is no control_response in this listing to confirm who resolved it.
+Also inferred: the classifier labelled my re-run, with the flagged items removed, as "[Auto-Mode Bypass]".
