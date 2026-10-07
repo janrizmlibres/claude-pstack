@@ -245,3 +245,4 @@ warning: this trigger stores no MCP connectors, so the sessions it fires will ru
 Note: session_request.config has allowed_tools:[] and sources:[] (no repo).
 ABOUT TO CALL fire_trigger at 2026-10-07T02:24:00Z
 RETURNED fire_trigger at 2026-10-07T02:25:02Z: no prompt; returns the trigger echo plus "session_id":"cse_01J7FWdCdr7GnHGdrHSZtPhK","conversation_id":""
+ABOUT TO CALL get_session (routine session_01J7FWdCdr7GnHGdrHSZtPhK, poll 1; cse_ -> session_ prefix is my guess) at 2026-10-07T02:25:34Z
