@@ -288,3 +288,5 @@ RETURNED list_events (C pass 2, after last seen id) at 2026-10-07T02:30:00Z: {"c
 ABOUT TO CALL get_session (B1 pass 2) at 2026-10-07T02:30:00Z
 RETURNED get_session (B1 pass 2) at 2026-10-07T02:30:07Z: unchanged: REQUIRES_ACTION / BLOCKED on create_session, updated_at 02:08:08; connection_status "disconnected"
 ABOUT TO CALL list_events (B1 pass 2, after last seen id) at 2026-10-07T02:30:07Z
+RETURNED list_events (B1 pass 2) at 2026-10-07T02:30:13Z: {"ccr":{}}, no new events
+ABOUT TO CALL get_session (B2 pass 2) at 2026-10-07T02:30:13Z
