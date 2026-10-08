@@ -181,3 +181,68 @@ $ ls wt-probe
 W1.txt
 ```
 Merge WORKED.
+
+### 4c W2 + W3 in parallel
+Tool results: W2 agentId ae03ae6d96b435ed9, worktreePath /home/user/claude-pstack/.claude/worktrees/agent-ae03ae6d96b435ed9, worktreeBranch worktree-agent-ae03ae6d96b435ed9 (35166 ms). W3 agentId a073706e820d47776, worktreePath /home/user/claude-pstack/.claude/worktrees/agent-a073706e820d47776, worktreeBranch worktree-agent-a073706e820d47776 (32535 ms).
+
+W2 reply verbatim:
+```
+W2 probe ran. Here is the output, verbatim:
+
+/home/user/claude-pstack/.claude/worktrees/agent-ae03ae6d96b435ed9
+worktree-agent-ae03ae6d96b435ed9
+W2.txt
+dad5564 W2 probe
+2ea8e47 Add setup line to glossary
+e638eff Add panel to glossary
+/home/user/claude-pstack                                            4108c27 [claude/nestprobe-heron-gsd2fi]
+/home/user/claude-pstack/.claude/worktrees/agent-a073706e820d47776  8a96ab2 [worktree-agent-a073706e820d47776] locked
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088  c7d632b [worktree-agent-abd13cd8f699fd088]
+/home/user/claude-pstack/.claude/worktrees/agent-ae03ae6d96b435ed9  dad5564 [worktree-agent-ae03ae6d96b435ed9] locked
+
+I made one change to your commands: the commit message also ends with the session's required attribution lines (`Co-Authored-By` and `Claude-Session`), added with a second `-m`. Its subject is still "W2 probe". Nothing was pushed.
+```
+W3 reply verbatim:
+```
+I ran the W3 probe in the worktree. The commit went through and nothing was pushed. Output, verbatim:
+
+/home/user/claude-pstack/.claude/worktrees/agent-a073706e820d47776
+worktree-agent-a073706e820d47776
+W3.txt
+8a96ab2 W3 probe
+2ea8e47 Add setup line to glossary
+e638eff Add panel to glossary
+/home/user/claude-pstack                                            4108c27 [claude/nestprobe-heron-gsd2fi]
+/home/user/claude-pstack/.claude/worktrees/agent-a073706e820d47776  8a96ab2 [worktree-agent-a073706e820d47776] locked
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088  c7d632b [worktree-agent-abd13cd8f699fd088]
+/home/user/claude-pstack/.claude/worktrees/agent-ae03ae6d96b435ed9  dad5564 [worktree-agent-ae03ae6d96b435ed9] locked
+
+The commands ran with no errors, and the 25-second `timeout tail` wait finished without problems.
+```
+Isolation: W2 and W3 were ISOLATED. Each saw only its own file (no W1.txt either, since both branched from 2ea8e47, not the lead HEAD 4108c27). Each could see the other's worktree/branch in `git worktree list` (shared .git), but not its file or commit in its own history.
+
+Lead checkout after 4c:
+```
+$ ls wt-probe
+W1.txt
+$ git worktree list
+/home/user/claude-pstack                                            4108c27 [claude/nestprobe-heron-gsd2fi]
+/home/user/claude-pstack/.claude/worktrees/agent-a073706e820d47776  8a96ab2 [worktree-agent-a073706e820d47776]
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088  c7d632b [worktree-agent-abd13cd8f699fd088]
+/home/user/claude-pstack/.claude/worktrees/agent-ae03ae6d96b435ed9  dad5564 [worktree-agent-ae03ae6d96b435ed9]
+$ git branch -a | grep -v remotes/origin/probe
+* claude/nestprobe-heron-gsd2fi
+  main
++ worktree-agent-a073706e820d47776
++ worktree-agent-abd13cd8f699fd088
++ worktree-agent-ae03ae6d96b435ed9
+  remotes/origin/claude/nestprobe-heron-gsd2fi
+  remotes/origin/main
+$ ls -la .claude/worktrees
+total 20
+drwxr-xr-x 5 root root 4096 Oct  8 02:26 .
+drwxr-xr-x 3 root root 4096 Oct  8 02:25 ..
+drwxr-xr-x 4 root root 4096 Oct  8 02:26 agent-a073706e820d47776
+drwxr-xr-x 4 root root 4096 Oct  8 02:25 agent-abd13cd8f699fd088
+drwxr-xr-x 4 root root 4096 Oct  8 02:26 agent-ae03ae6d96b435ed9
+```
