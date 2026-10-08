@@ -11,6 +11,24 @@
       "why": "poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads"
     },
     {
+      "path": "pstack/skills/deslop",
+      "kind": "translated",
+      "why": "vendored from cursor-team-kit, which the port doesn't ship, so poteto-mode can read it by path",
+      "sources": ["upstream/cursor-team-kit/skills/deslop"]
+    },
+    {
+      "path": "pstack/skills/control-ui",
+      "kind": "translated",
+      "why": "vendored from cursor-team-kit, which the port doesn't ship, so poteto-mode can read it by path",
+      "sources": ["upstream/cursor-team-kit/skills/control-ui"]
+    },
+    {
+      "path": "pstack/skills/control-cli",
+      "kind": "translated",
+      "why": "vendored from cursor-team-kit, which the port doesn't ship, so poteto-mode can read it by path",
+      "sources": ["upstream/cursor-team-kit/skills/control-cli"]
+    },
+    {
       "path": "pstack/automations/benny",
       "kind": "dropped",
       "why": "Cursor Slack automations, outside the port's scope"
