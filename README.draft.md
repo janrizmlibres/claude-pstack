@@ -24,7 +24,7 @@ the PRs. It runs the same way on your machine and in a Claude Code cloud session
 ## Install (local)
 
 **Prerequisites**
-- Claude Code **[verify: minimum version]**
+- Claude Code **[verify: minimum version — the one the QA plan runs on]**
 - `gh`, signed in
 - **Bun, or Node ≥ 22.18** — needed for orchestrate, babysitting PRs, shipping and multi-phase
   plans. Without one, those steps stop and say so.
@@ -68,7 +68,7 @@ by default. That needs:
 1. **Auto mode** on your account (the lead starts cloud workers with
    `claude --cloud --permission-mode auto`). Every other mode stops on a click per worker.
 2. A **default cloud environment** that carries the setup line (next section) — cloud workers
-   launch there. Set it with `/remote-env` **[verify]**.
+   launch there. Pick it with `/remote-env`, which saves it to your user settings.
 
 Say **"local only"** in a request to keep everything on your machine; the big fan-outs then run
 in parallel local worktrees. If the lead can't start cloud workers, it falls back to local-only
@@ -90,8 +90,9 @@ Changing a model means editing the line.
 
 - Put the line in **every environment that should carry pstack.**
 - **One environment per repo**, e.g. `Mira` for one project: set
-  `"remote": { "defaultEnvironmentId": "<id>" }` **[verify key and where the id comes from]** in
-  that repo's `.claude/settings.local.json`. Then `claude --cloud` and a local lead's cloud workers
+  `"remote": { "defaultEnvironmentId": "<env_ id>" }` in that repo's `.claude/settings.local.json`
+  (pick it once with `/remote-env`, then move the key from `~/.claude/settings.json`). Local settings
+  outrank user settings. Then `claude --cloud` and a local lead's cloud workers
   use it there without naming it each run.
 
 <!-- [choice] Cloud install comes after local and the cloud-workers section, since most users
@@ -124,7 +125,7 @@ A Feature can run up to three panels:
 | implementation arena | 3 Work runners + 1 Judgement judge |
 | interrogate | 3 Judgement reviewers |
 
-On the defaults that is up to **13 Opus agents** for one feature **[verify: table sums to 11]**.
+On the defaults that is up to **11 Opus agents** for one feature, plus the lead.
 Most bug fixes run no panel. To spend less, waive a panel in the request ("skip the arena") or in
 your `CLAUDE.md`; the run records it as `skip: user waived`. pstack never skips one on its own.
 
