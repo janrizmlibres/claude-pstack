@@ -2,14 +2,14 @@ import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { runScript, tempDir } from "./test/harness.ts";
-import { fixtureUpstream, portAt, snapshotPaths, upstreamFiles } from "./test/upstream-fixture.ts";
+import { fixtureUpstream, inSnapshot, portAt, snapshotPaths, upstreamFiles } from "./test/upstream-fixture.ts";
 
 const upstreamSnapshot = (cwd: string, ...args: string[]) => runScript("upstream-snapshot.ts", args, { cwd });
 const pathArgs = snapshotPaths.flatMap((p) => ["--path", p]);
 const record = (port: string) => JSON.parse(readFileSync(join(port, "upstream", "snapshot.json"), "utf8"));
 
 describe("upstream-snapshot", () => {
-  test("mirrors the listed paths at a ref byte for byte and records the snapshot", () => {
+  test("copies the listed paths at a ref byte for byte and records the snapshot", () => {
     const { upstream, first } = fixtureUpstream();
     upstream.commit({ write: { "pstack/README.md": "# pstack\n\nLater.\n" } });
     const port = tempDir("pstack-port-");
@@ -20,7 +20,7 @@ describe("upstream-snapshot", () => {
     expect(result.exitCode).toBe(0);
     for (const [path, entry] of Object.entries(upstreamFiles)) {
       const file = join(port, "upstream", path);
-      if (!snapshotPaths.some((p) => path.startsWith(`${p}/`))) {
+      if (!inSnapshot(path)) {
         expect(existsSync(file)).toBe(false);
         continue;
       }

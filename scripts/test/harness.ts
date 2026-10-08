@@ -1,6 +1,6 @@
 // Shared harness for testing repo and plugin scripts through their command
 // line: each test gets its own temp directory and fake HOME, scripts run as
-// child processes, and git remotes are local fixture repos.
+// child processes, and git remotes are local fake remotes.
 import { afterEach } from "bun:test";
 import { chmodSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -87,12 +87,12 @@ export function writeFiles(root: string, files: Files): void {
  * over file:// with shallow, filtered and by-SHA fetches allowed as GitHub
  * allows them.
  */
-export class FixtureRepo {
+export class FakeRemote {
   readonly dir: string;
   readonly url: string;
 
   constructor() {
-    this.dir = tempDir("pstack-fixture-");
+    this.dir = tempDir("pstack-remote-");
     git(this.dir, "init", "-q", "-b", "main");
     git(this.dir, "config", "user.name", "Fixture");
     git(this.dir, "config", "user.email", "fixture@example.com");

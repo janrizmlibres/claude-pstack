@@ -7,7 +7,16 @@
 // Exit 0 when the diff ran (and, with --verify, nothing differs), 1 when
 // --verify found a difference, 2 on a usage or git failure.
 import { parseArgs } from "node:util";
-import { gitRun, readRecord, runCommand, snapshotTree, UsageError, withUpstreamClone } from "./lib/upstream.ts";
+import {
+  gitRun,
+  readRecord,
+  readVersion,
+  runCommand,
+  snapshotTree,
+  strayFiles,
+  UsageError,
+  withUpstreamClone,
+} from "./lib/upstream.ts";
 
 function main(): number {
   const { values, positionals: refs } = parseArgs({ options: { verify: { type: "boolean" } }, allowPositionals: true });
@@ -26,12 +35,23 @@ function main(): number {
     const target = `${record.repo}@${clone.commit}`;
 
     if (verify) {
-      if (!changed) {
+      const problems: string[] = [];
+      const version = readVersion(clone.dir, ref);
+      if (record.version !== version) {
+        problems.push(`snapshot.json records version ${record.version}, but ${target} is ${version}.`);
+      }
+      const strays = strayFiles(root, record.paths);
+      if (strays.length > 0) {
+        problems.push(`Files outside the recorded paths:\n${strays.map((f) => `  upstream/${f}`).join("\n")}`);
+      }
+      if (changed) {
+        problems.push(`upstream/ differs from ${target}, the commit snapshot.json records:\n\n${diff.stdout}`);
+      }
+      if (problems.length === 0) {
         console.log(`upstream/ matches ${target}.`);
         return 0;
       }
-      console.log(`upstream/ differs from ${target}, the commit snapshot.json records. Hand edits?\n`);
-      process.stdout.write(diff.stdout);
+      console.log(`The snapshot was edited by hand.\n\n${problems.join("\n\n")}`);
       return 1;
     }
 

@@ -1,8 +1,8 @@
 // The snapshot of upstream under `upstream/` and its machine-written record,
 // `upstream/snapshot.json`, shared by upstream-diff and upstream-snapshot.
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 
 export type SnapshotRecord = {
   /** Clone URL of the upstream repo. */
@@ -11,7 +11,7 @@ export type SnapshotRecord = {
   commit: string;
   /** pstack's version at that commit. */
   version: string;
-  /** Upstream paths mirrored under `upstream/`, at the same relative paths. */
+  /** Upstream paths copied under `upstream/`, at the same relative paths. */
   paths: string[];
   /** ISO time the snapshot was taken. */
   taken: string;
@@ -19,6 +19,26 @@ export type SnapshotRecord = {
 
 export const snapshotDir = (root: string) => join(root, "upstream");
 export const recordFile = (root: string) => join(snapshotDir(root), "snapshot.json");
+
+/** Where pstack's version lives, relative to upstream's root. */
+export const versionFile = "pstack/.cursor-plugin/plugin.json";
+
+/** pstack's version in a checkout of upstream. */
+export function readVersion(checkout: string, ref: string): string {
+  const file = join(checkout, versionFile);
+  if (!existsSync(file)) throw new UsageError(`${versionFile} is missing at ${ref}`);
+  return (JSON.parse(readFileSync(file, "utf8")) as { version: string }).version;
+}
+
+/** Files under `upstream/` that belong to no recorded path, `snapshot.json` aside. */
+export function strayFiles(root: string, paths: string[]): string[] {
+  const dir = snapshotDir(root);
+  return readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter((entry) => !entry.isDirectory())
+    .map((entry) => relative(dir, join(entry.parentPath, entry.name)))
+    .filter((file) => file !== "snapshot.json" && !paths.some((p) => file.startsWith(`${p}/`)))
+    .sort();
+}
 
 /** Thrown for a failure the user can act on; the command prints it and exits 2. */
 export class UsageError extends Error {}
@@ -29,16 +49,18 @@ export function readRecord(root: string): SnapshotRecord {
   return JSON.parse(readFileSync(file, "utf8")) as SnapshotRecord;
 }
 
-export type Run = { code: number; stdout: string; stderr: string };
-
-export function run(cmd: string[], cwd: string, env: Record<string, string> = {}): Run {
-  const proc = Bun.spawnSync({ cmd, cwd, env: { ...process.env, ...env }, stdout: "pipe", stderr: "pipe" });
-  return { code: proc.exitCode ?? -1, stdout: proc.stdout.toString(), stderr: proc.stderr.toString() };
-}
+export type ProcessResult = { code: number; stdout: string; stderr: string };
 
 /** Run git with the user's excludes and colour switched off. */
-export function gitRun(cwd: string, args: string[], env: Record<string, string> = {}): Run {
-  return run(["git", "-c", "core.excludesFile=", "-c", "color.ui=false", ...args], cwd, env);
+export function gitRun(cwd: string, args: string[], env: Record<string, string> = {}): ProcessResult {
+  const proc = Bun.spawnSync({
+    cmd: ["git", "-c", "core.excludesFile=", "-c", "color.ui=false", ...args],
+    cwd,
+    env: { ...process.env, ...env },
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  return { code: proc.exitCode ?? -1, stdout: proc.stdout.toString(), stderr: proc.stderr.toString() };
 }
 
 /** As gitRun, but throw on failure and return stdout. */
@@ -98,7 +120,7 @@ export function snapshotTree(clone: UpstreamClone, root: string, paths: string[]
   const work = snapshotDir(root);
   const present = paths.filter((p) => existsSync(join(work, p)));
   const env = { GIT_INDEX_FILE: join(clone.dir, ".git", "snapshot.index") };
-  const repo = ["--git-dir", join(clone.dir, ".git"), "--work-tree", work, "-c", "core.sparseCheckout=false"];
-  if (present.length > 0) git(work, [...repo, "add", "-A", "--", ...present], env);
-  return git(work, [...repo, "write-tree"], env).trim();
+  const onSnapshot = ["--git-dir", join(clone.dir, ".git"), "--work-tree", work, "-c", "core.sparseCheckout=false"];
+  if (present.length > 0) git(work, [...onSnapshot, "add", "-A", "--", ...present], env);
+  return git(work, [...onSnapshot, "write-tree"], env).trim();
 }

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { appendFileSync, chmodSync, rmSync, writeFileSync } from "node:fs";
+import { appendFileSync, chmodSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { git, runScript } from "./test/harness.ts";
 import { fixtureUpstream, portAt } from "./test/upstream-fixture.ts";
@@ -12,7 +12,7 @@ function upstreamMovedOn() {
     write: {
       "pstack/README.md": "# pstack\n\nWorkflows, now faster.\n",
       "pstack/skills/new/SKILL.md": "A new skill.\n",
-      "kit/skills/other/SKILL.md": "Still not vendored, but changed.\n",
+      "kit/skills/other/SKILL.md": "Still outside the snapshot, but changed.\n",
       "unrelated/file.md": "Changed outside the snapshot.\n",
     },
     remove: ["pstack/skills/a"],
@@ -122,6 +122,30 @@ describe("upstream-diff", () => {
 
       expect(result.exitCode).toBe(1);
       expect(result.stdout).toContain("pstack/scripts/run.sh");
+    });
+
+    test("fails when snapshot.json's version was edited by hand", () => {
+      const { upstream, first } = fixtureUpstream();
+      const port = portAt(upstream, first);
+      const file = join(port, "upstream", "snapshot.json");
+      writeFileSync(file, readFileSync(file, "utf8").replace('"1.2.3"', '"9.9.9"'));
+
+      const result = upstreamDiff(port, "--verify");
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stdout).toContain("9.9.9");
+      expect(result.stdout).toContain("1.2.3");
+    });
+
+    test("fails on files outside the recorded paths", () => {
+      const { upstream, first } = fixtureUpstream();
+      const port = portAt(upstream, first);
+      writeFileSync(join(port, "upstream", "stray.md"), "Not under any recorded path.\n");
+
+      const result = upstreamDiff(port, "--verify");
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stdout).toContain("stray.md");
     });
 
     test("fails when an executable bit was changed by hand", () => {
