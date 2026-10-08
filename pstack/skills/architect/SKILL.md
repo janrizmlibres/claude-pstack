@@ -30,7 +30,7 @@ Skip Phase A only when the work is genuinely greenfield with no surrounding syst
 
 Run the **arena** skill (read ${CLAUDE_PLUGIN_ROOT}/skills/arena/SKILL.md) with the design-sketch task and the Phase A grounding artifacts. Pass `references/runner-prompt.md` as each runner's prompt, with arena's directed or fourth-way block where the runner prompt marks its place. Each candidate produces a design package shaped per `references/rationale-template.md`.
 
-On a spec, put its Implementation Decisions in every runner's brief as fixed constraints. Directions differ inside them and may not move them. A direction that can't meet one returns `DIRECTION FAILS` naming it.
+On a spec, put its Implementation Decisions in every runner's brief as fixed constraints. Directions differ inside them and may not move them.
 
 Design it twice. Require at least two structurally distinct candidates before synthesis, even when the first looks sufficient. Arena's two directions meet this: name them as whole-shape alternatives, not point fixes inside one shape. If `DIRECTION FAILS` returns leave fewer than two candidates, name another direction and run it before synthesis. This is the **exhaust-the-design-space** principle skill made concrete (read ${CLAUDE_PLUGIN_ROOT}/skills/principle-exhaust-the-design-space/SKILL.md).
 
