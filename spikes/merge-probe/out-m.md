@@ -22,3 +22,4 @@ S5 Squash (REST): FAILED: not run — no squash PR number (S2)
 S6 Rebase (REST): FAILED: not run — no rebase PR number (S2)
 S7 Merge parent of open stack (REST): FAILED: not run — no stack-a/stack-b/stack-c PR numbers (S2)
 S8 Merge through gh CLI: FAILED: not run — no ghcli PR number (S2)
+S9 Repo setting from the cloud (REST): FAILED: `{"message":"Repository settings writes are not permitted through this proxy.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"} gh: Repository settings writes are not permitted through this proxy. (HTTP 403)` — blocked by the session's agent proxy (HTTP 403), not by the permission system
