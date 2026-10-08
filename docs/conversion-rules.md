@@ -279,6 +279,7 @@ These keep `skills/poteto-mode/SKILL.md` translated:
 - the router names `playbooks/hand-off.md` in one line, read by path;
 - beside the todolist's `skip: <reason>`, a short passage says a panel step a playbook lists unconditionally, or whose condition holds, is never the agent's to skip and has no size gate, and that only the user can waive it, in the run prompt or `CLAUDE.md`, recorded as `skip: user waived` in the list and the Reply;
 - the router sends a spec handed in (`build <issue URL>`, an issue number, a spec file) or a request for a plan ("plan only", "plan #42") to the multi-phase-plan playbook first, whatever its size and ahead of figure-it-out and Orchestrate, in one entry that also says it carries on unless only the plan was asked for;
+- "Defaults for every `Agent` call" opens with the brief contract, by path, for every spawn, not only a playbook step's;
 - "You own every subagent's work" gains one sentence: a worker's worktree is removed once its result is integrated or discarded, keeping its branch;
 - the router's "work the user steps away from goes to `figure-it-out`" clause is narrowed: being handed off doesn't count as stepping away.
 
