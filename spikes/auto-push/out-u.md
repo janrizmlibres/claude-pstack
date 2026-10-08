@@ -17,3 +17,4 @@ S1 unit branch push: OK — pstack/probe-u/unit-a pushed from /tmp/units worktre
 S2 stacked branch push: OK — pstack/probe-u/unit-b (on unit-a) pushed
 S3 parent fast-forward push: OK — unit-a advanced by one commit
 S4 restack child force-with-lease push: OK — unit-b rebased onto new unit-a and force-pushed with lease
+S5 orphan data branch push: OK — commit eca111c pushed to pstack/probe-u/store; stderr showed "fatal: expected 'acknowledgments', received 'packfile'" / "warning: push negotiation failed; proceeding anyway with push" but push succeeded (ls-remote confirms)
