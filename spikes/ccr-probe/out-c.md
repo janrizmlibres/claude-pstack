@@ -27,3 +27,11 @@ S1 Read review threads: OK — JSON array of objects {resolved, outdated, path, 
 ```
 
 S2 Resolve T2: OK — POST returns {comment_ids, resolved}; re-read (same shape) shows T2 resolved=true; T1/T3 unchanged.
+
+### S3 unresolve T1 by reply id
+
+```
+{"comment_ids":[4215160454,4215161740],"resolved":false}
+```
+
+S3 Unresolve T1 by reply id: OK — reply id 4215161740 accepted (response lists both thread comment ids), so root-id fallback not needed; re-read shows T1 resolved=false.
