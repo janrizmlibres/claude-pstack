@@ -35,7 +35,7 @@ const markSession = (s: Session, id = sessionId) => writeFiles(s.home, { [`.clau
 const writeTranscript = (s: Session) => writeFiles(s.home, { [transcriptPath]: "{}\n" });
 
 /** Make `cwd` a git repo with one commit of `subject` and `body`; returns its short SHA. */
-function commit(s: Session, subject: string, body = "") {
+function repoWithCommit(s: Session, subject: string, body = "") {
   git(s.cwd, "init", "-q", "-b", "work");
   git(s.cwd, "config", "user.name", "Lead");
   git(s.cwd, "config", "user.email", "lead@example.com");
@@ -78,7 +78,7 @@ describe("poteto-mode compaction hook", () => {
     const s = session();
     writeTranscript(s);
     writeFiles(s.cwd, { ".claude/pstack/orchestrate/migrate/units.tsv": "", "decisions.tsv": "" });
-    commit(s, "wip: halfway", "resume here");
+    repoWithCommit(s, "wip: halfway", "resume here");
     markSession(s, "another-session");
 
     const result = compacted(s);
@@ -97,7 +97,7 @@ describe("poteto-mode compaction hook", () => {
       "decisions.tsv": "",
       ".audit/rename.tsv": "",
     });
-    const sha = commit(s, "wip: halfway through the rename", "Intent: rename the store.");
+    const sha = repoWithCommit(s, "wip: halfway through the rename", "Intent: rename the store.");
 
     const result = compacted(s);
 
@@ -129,7 +129,7 @@ describe("poteto-mode compaction hook", () => {
     markSession(s);
     writeTranscript(s);
     writeFiles(s.cwd, { ".audit/fix.tsv": "", ".claude/pstack/orchestrate/.keep": "" });
-    commit(s, "Fix the parser", "wip: not a pause");
+    repoWithCommit(s, "Fix the parser", "wip: not a pause");
 
     const result = compacted(s);
 

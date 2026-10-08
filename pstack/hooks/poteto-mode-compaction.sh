@@ -12,7 +12,8 @@
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 input="$(cat)"
 
-# The value of a top-level string field of the hook input.
+# The value of a top-level string field of the hook input. A key inside a JSON
+# string value is escaped (\"key\"), so a value can't forge one.
 field() {
   if [[ $input =~ \"$1\"[[:space:]]*:[[:space:]]*\"([^\"]*)\" ]]; then
     printf '%s' "${BASH_REMATCH[1]}"
