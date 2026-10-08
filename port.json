@@ -128,6 +128,31 @@
       "path": "pstack/skills/poteto-mode/scripts/node_modules/commander",
       "kind": "port-only",
       "why": "commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install"
+    },
+    {
+      "path": "pstack/skills/poteto-help/SKILL.md",
+      "kind": "override",
+      "why": "Cursor-only sections (Custom Mode, Option+Enter, .cursor/rules, /add-plugin) rewritten for Claude Code's install, settings and surfaces, with a row for re-entering the mode after a resume"
+    },
+    {
+      "path": "pstack/README.md",
+      "kind": "translated",
+      "why": "adds the port-only Hand-off playbook to the playbook table, points cloud installs to the setup line, and names orchestrate's lead as the orchestrate override does"
+    },
+    {
+      "path": "pstack/docs/guide/01-setup.md",
+      "kind": "translated",
+      "why": "adds the port's install prerequisites (the Read rule, gh, Bun or Node), the panel waiver and the machine lock to setup and cost"
+    },
+    {
+      "path": "pstack/docs/guide/02-poteto-mode.md",
+      "kind": "translated",
+      "why": "counts and names the port-only Hand-off playbook, and says what cloud workers need (Auto, a default environment, \"local only\")"
+    },
+    {
+      "path": "pstack/docs/guide/07-overnight.md",
+      "kind": "translated",
+      "why": "names orchestrate's lead as the orchestrate override does, and says what a routine run gets under ADR 0001"
     }
   ]
 }

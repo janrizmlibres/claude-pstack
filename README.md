@@ -199,6 +199,7 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `skills/architect/SKILL.md` | override | Phase B's two distinct candidates come from arena's directions, the architect runners model line goes, and a spec's Implementation Decisions reach every runner as fixed constraints |
 | `skills/architect/references/runner-prompt.md` | override | arena's directed or fourth-way block replaces the each-on-a-different-model paragraph, and a spec's Implementation Decisions bind every shape |
 | `skills/arena/SKILL.md` | override | runners on Work with two whole-shape directions, a fourth-way seat and their escapes, and a blind judge on every arena, in place of a runner per model family and a cross-family judge |
+| `skills/poteto-help/SKILL.md` | override | Cursor-only sections (Custom Mode, Option+Enter, .cursor/rules, /add-plugin) rewritten for Claude Code's install, settings and surfaces, with a row for re-entering the mode after a resume |
 | `skills/setup-pstack/SKILL.md` | override | shows the three settings, points to /config, prints the setup line and shows the Read rule, in place of writing a Cursor model rule |
 | `.claude-plugin/plugin.json` | port-only | Claude Code's plugin manifest, with the three model settings as userConfig and no version |
 | `agents/judgement-reader.md` | port-only | the Judgement setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, high effort |
