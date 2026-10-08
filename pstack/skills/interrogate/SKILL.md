@@ -43,16 +43,18 @@ The lens table assigns `references/rubric.md` and `references/code-quality-revie
 | Fit | Root Causes vs. Symptoms, Structural Integrity, and every rubric heading this table doesn't list | none |
 | Simplicity | Complexity Budget | all of `references/code-quality-review.md` |
 
-A heading the rubric gains goes to Fit until this table names it. Fit reads beyond the diff: callers, callees, type definitions and sibling modules.
+Fit reads beyond the diff: callers, callees, type definitions and sibling modules.
 
 Read `references/reviewer-prompt.md` and fill in the template once per lens with:
 1. The lens name
 2. The stated intent
 3. The diff or file contents
-4. The lens's sections, copied verbatim under their headings from `references/rubric.md`, plus all of `references/code-quality-review.md` for Simplicity
+4. The lens's sections, copied verbatim under their headings from `references/rubric.md`, plus all of `references/code-quality-review.md` for Simplicity. Leave out the rubric's opening line: it calls the rubric's own sections lenses, which a reviewer holding one lens would misread
 5. The other two lenses' names and headings, so the reviewer knows what lies outside its lens
 
 Outside its lens a reviewer may report only a `critical` finding, in one line with evidence. Spillover counts as corroboration, never as a requirement: a lens that raises none has missed nothing.
+
+If a reviewer fails to return, retry it once on the same model and effort. If it fails again, its lens goes under Gaps with the failure, and the verdict says that lens is missing.
 
 ## Step 4, Synthesize
 
@@ -60,7 +62,7 @@ As results come back, build a unified picture:
 
 1. **Parse all findings** from the reviewers, with each lens's Checked list.
 2. **Deduplicate**. Different lenses may describe the same issue differently. Merge these and note which lenses raised it, and whether in their lens or as spillover.
-3. **Note corroboration**. A spillover finding that matches another lens's finding corroborates it. Corroboration earns a finding attention, never a place in Act on: Step 5's verification decides that.
+3. **Note corroboration**. A spillover finding that matches another lens's finding corroborates it. Corroboration earns a finding attention, never a place in Act on.
 4. **Note disagreements**. If one lens flags something and another lens's Checked list says it examined that code and found it clean, that's useful context for the verdict.
 5. **Map coverage**. Compare the three Checked lists against the changed files and the behaviour the intent describes. Whatever no lens examined is a Gap.
 
@@ -70,7 +72,7 @@ You are the lead reviewer, a pragmatic senior engineer, not a neutral aggregator
 
 Read `references/lead-judgment.md` for the full framework.
 
-**Verify before you categorize.** On one model family, agreement between reviewers is weak evidence, so verification replaces consensus. Trace the execution path of every finding you would put in Act on, and run a test when that's cheap. Re-check every `critical` finding you would dismiss. An unverified finding can't go in Act on: put it in Consider, marked unverified, with what would verify it.
+Run its verification gate before you categorize: on one model family, verification replaces consensus, and an unverified finding can't go in Act on.
 
 Categorize every finding using these buckets:
 
@@ -93,7 +95,7 @@ Present the verdict in this structure:
 > [The stated intent paragraph from Step 2]
 
 ### Reviewers
-- [Lens]: [N findings], [M spillover] (one bullet per lens)
+- [Lens]: [the rubric headings it owned] (one bullet per lens)
 
 ### Act On
 [Findings that should be addressed. For each: description, which lenses raised it, how you verified it, why it matters.]

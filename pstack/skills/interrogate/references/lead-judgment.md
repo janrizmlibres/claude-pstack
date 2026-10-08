@@ -17,7 +17,7 @@ You have the full conversation context. Use it.
 
 The reviewers share one model family, so two of them agreeing rules out a fluke, not a shared blind spot. Agreement can't carry a finding; verification does.
 
-- **Act on needs a verified path.** Trace the execution path of every finding you would act on, from a real caller to the failure. Run a test or a one-off check when that's cheap. A finding you couldn't verify goes in Consider, marked unverified, with what would verify it.
+- **Act on needs a traced path.** Trace the execution path of every finding you would act on, from a real caller to the failure. Run a test or a one-off check when that's cheap. A finding you couldn't verify goes in Consider, marked unverified, with what would verify it.
 - **Re-check every critical you would dismiss.** Before dismissing a `critical`, trace it a second time, looking for the path the reviewer saw. Dismiss it only when you can say where that path breaks.
 - **Spillover is corroboration.** A lens reporting a critical outside its lens points you at a finding worth tracing. It never stands in for the trace, and a lens that raised no spillover has missed nothing.
 
