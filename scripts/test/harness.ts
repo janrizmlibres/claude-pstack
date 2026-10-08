@@ -7,6 +7,8 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 
 export const scriptsDir = resolve(import.meta.dir, "..");
+/** The plugin a marketplace install copies: `pstack/` at the repo root. */
+export const pluginDir = resolve(scriptsDir, "..", "pstack");
 
 const made: string[] = [];
 
@@ -33,9 +35,18 @@ export type RunOptions = {
 
 /** Run `bun <script> ...args`, with `script` relative to `scripts/`. */
 export function runScript(script: string, args: string[], options: RunOptions): RunResult {
+  return run([process.execPath, join(scriptsDir, script), ...args], options);
+}
+
+/** Run `bash <script> ...args`, with `script` relative to the plugin, as Claude Code runs a hook command. */
+export function runPluginScript(script: string, args: string[], options: RunOptions): RunResult {
+  return run(["bash", join(pluginDir, script), ...args], options);
+}
+
+function run(cmd: string[], options: RunOptions): RunResult {
   const home = options.home ?? tempDir("pstack-home-");
   const proc = Bun.spawnSync({
-    cmd: [process.execPath, join(scriptsDir, script), ...args],
+    cmd,
     cwd: options.cwd,
     env: {
       PATH: process.env.PATH ?? "",

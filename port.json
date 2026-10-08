@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "path": "pstack/.claude-plugin/plugin.json",
+      "kind": "port-only",
+      "why": "Claude Code's plugin manifest, with the three model settings as userConfig and no version"
+    },
+    {
+      "path": "pstack/hooks/poteto-mode-reminder.sh",
+      "kind": "port-only",
+      "why": "poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads"
+    },
+    {
       "path": "pstack/automations/benny",
       "kind": "dropped",
       "why": "Cursor Slack automations, outside the port's scope"

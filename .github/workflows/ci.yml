@@ -31,6 +31,21 @@ jobs:
       # (exit 2) fails. Files left to port hold back a release, not a PR.
       - name: Port coverage (report)
         run: bun scripts/check-port-json.ts --coverage || [ $? -eq 1 ]
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@2.1.294
+      # Fails on any error or warning but the missing version: the port carries
+      # no version on purpose, since every merge to main is a release.
+      - name: Marketplace and plugin validate
+        shell: bash
+        run: |
+          out="$RUNNER_TEMP/validate.json"
+          for target in . pstack; do
+            claude plugin validate "$target" --json > "$out" || { cat "$out"; exit 1; }
+            unexpected=$(jq -r '(.manifest, .contents[]) | .file as $f | .warnings[]
+              | "\($f): \(.path): \(.message)" | select(test("(: |→ )version: ") | not)' "$out")
+            if [ -n "$unexpected" ]; then echo "$unexpected"; exit 1; fi
+            echo "$target: valid"
+          done
       - name: Typecheck scripts
         run: bun run typecheck
       - name: Script tests
