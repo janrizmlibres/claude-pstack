@@ -262,7 +262,7 @@
     {
       "path": "pstack/skills/poteto-mode/playbooks/hand-off.md",
       "kind": "port-only",
-      "why": "the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --cloud --permission-mode auto` and a fixed brief, then prints the link and ends, or says why once and stays local"
+      "why": "the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --permission-mode auto --cloud` and a fixed brief, then prints the link and ends, or says why once and stays local"
     }
   ]
 }

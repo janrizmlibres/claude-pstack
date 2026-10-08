@@ -74,7 +74,7 @@ checkout is left alone.
 A local lead sends **swarm workers, orchestrate units and autopilot owners** to Claude Code cloud
 sessions by default. That needs:
 1. **Auto mode** on your account: the lead starts cloud workers with
-   `claude --cloud --permission-mode auto`. Any other mode would stop on a click per worker.
+   `claude --permission-mode auto --cloud`. Any other mode would stop on a click per worker.
 2. A **default cloud environment** that carries the setup line (next section), since cloud workers
    launch there. Pick it with `/remote-env`, which saves it to your user settings.
 
@@ -224,7 +224,7 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `hooks/poteto-mode-compaction.sh` | port-only | after a compaction in a marked poteto-mode session, lists the durable state to re-read before acting: the skill, any store, the transcript, a trail and a resume note |
 | `hooks/poteto-mode-reminder.sh` | port-only | poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads |
 | `scripts/heavy` | port-only | the machine lock: runs one heavy command at a time per machine, released by the kernel when its holder dies |
-| `skills/poteto-mode/playbooks/hand-off.md` | port-only | the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --cloud --permission-mode auto` and a fixed brief, then prints the link and ends, or says why once and stays local |
+| `skills/poteto-mode/playbooks/hand-off.md` | port-only | the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --permission-mode auto --cloud` and a fixed brief, then prints the link and ends, or says why once and stays local |
 | `skills/poteto-mode/references/brief-contract.md` | port-only | the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and a sub-lead's timebox |
 | `skills/poteto-mode/scripts/node_modules/commander/` | port-only | commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install |
 | `skills/poteto-mode/scripts/run` | port-only | the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install |
