@@ -8,7 +8,8 @@
 // that file and the action the sync rules give the change. The Reason column
 // is left for the sync to fill. Changes to dropped files are listed only,
 // collapsed below the table.
-// Exit 0 when it ran (nothing to sync included), 2 on a usage or git failure.
+// Exit 0 when it ran (nothing to sync included), 2 on a malformed port.json,
+// a usage or a git failure.
 import { parseArgs } from "node:util";
 import { syncRows, upstreamChanges, type SyncRow } from "./lib/changes.ts";
 import { readPortRecord } from "./lib/port.ts";

@@ -1,6 +1,6 @@
 // A small stand-in for cursor/plugins, and a port checkout holding a
-// hand-copied snapshot of it, shared by the upstream-diff and
-// upstream-snapshot tests.
+// hand-copied snapshot of it, shared by the upstream-diff,
+// upstream-snapshot, sync-changes and sync-gate tests.
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { FakeRemote, tempDir, writeFiles, type Files } from "./harness.ts";

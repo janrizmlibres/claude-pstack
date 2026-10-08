@@ -53,6 +53,9 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ github.token }}
           prompt: "/sync-upstream ${{ steps.gate.outputs.commit }}"
+          # The skill's own commands: the repo scripts, git, reading upstream's
+          # commits and PRs, opening the PR, and re-copying the vendored
+          # commander (npm pack, tar, cp) when upstream moves its pin.
           claude_args: |
             --model opus
             --allowedTools "Read,Write,Edit,Glob,Grep,Agent,Bash(bun scripts/:*),Bash(bun run:*),Bash(git:*),Bash(gh api repos/cursor/plugins/:*),Bash(gh pr create:*),Bash(npm pack:*),Bash(tar:*),Bash(mkdir:*),Bash(cp:*),Bash(rm:*),Bash(ls:*)"

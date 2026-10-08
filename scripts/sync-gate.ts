@@ -53,14 +53,14 @@ function main(): number {
       return 0;
     }
 
-    for (const pr of open) tellSyncPr(pr, clone, snapshot, version);
+    for (const pr of open) commentOnSyncPr(pr, clone, snapshot, version);
     output({ sync: "false" });
     return 0;
   });
 }
 
 /** Say on an open sync PR that upstream has moved past its snapshot, once per upstream commit. */
-function tellSyncPr(pr: Pr, clone: UpstreamClone, snapshot: SnapshotRecord, version: string): void {
+function commentOnSyncPr(pr: Pr, clone: UpstreamClone, snapshot: SnapshotRecord, version: string): void {
   const record = JSON.parse(
     gh([
       "api",

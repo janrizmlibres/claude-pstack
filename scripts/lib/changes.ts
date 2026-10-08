@@ -2,7 +2,7 @@
 // does with each change given port.json: the per-change rules of a sync.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { covers, entryFor, type PortEntry, type PortRecord } from "./port.ts";
+import { counterpart, covers, entryFor, type PortEntry, type PortRecord } from "./port.ts";
 import { git, snapshotTree, type UpstreamClone } from "./upstream.ts";
 
 export type ChangeStatus = "added" | "modified" | "deleted" | "renamed";
@@ -52,13 +52,17 @@ export type SyncRow = {
 
 const reconsider = "edit the override: absorbed, partly absorbed or ignored";
 
+/** A path relative to upstream's root (`x`) as a snapshot path (`upstream/x`), and back. */
+const toSnapshot = (upstreamPath: string) => `upstream/${upstreamPath}`;
+const fromSnapshot = (snapshotPath: string) => snapshotPath.slice("upstream/".length);
+
 /** Where a snapshot path lands in the port, and the port.json entry that governs it. */
-function target(record: PortRecord, snapshotPath: string): { port: string; entry?: PortEntry } {
+function portTarget(record: PortRecord, snapshotPath: string): { port: string; entry?: PortEntry } {
   for (const entry of record.entries) {
     const source = entry.sources?.find((s) => covers(s, snapshotPath));
     if (source) return { port: entry.path + snapshotPath.slice(source.length), entry };
   }
-  const port = snapshotPath.slice("upstream/".length);
+  const port = fromSnapshot(snapshotPath);
   return { port, entry: entryFor(record, port) };
 }
 
@@ -72,27 +76,27 @@ function collision(entry: PortEntry | undefined, snapshotPath: string): boolean 
 const aKind = (kind: string) => `${/^[aeiou]/.test(kind) ? "an" : "a"} ${kind}`;
 
 /**
- * The rows a sync acts on for `changes`. `root` is the port checkout; `clone`
+ * The rows a sync acts on for `changes`. `root` is the port checkout; `cloneDir`
  * holds upstream after the changes, to tell whether a deletion emptied an entry.
  */
-export function syncRows(record: PortRecord, changes: UpstreamChange[], root: string, clone: string): SyncRow[] {
+export function syncRows(record: PortRecord, changes: UpstreamChange[], root: string, cloneDir: string): SyncRow[] {
   const goneUpstream = (entry: PortEntry) =>
-    (entry.sources ?? [`upstream/${entry.path}`]).every((s) => !existsSync(join(clone, s.slice("upstream/".length))));
+    (entry.sources ?? [counterpart(entry.path)]).every((s) => !existsSync(join(cloneDir, fromSnapshot(s))));
   const rows: SyncRow[] = [];
 
   for (const change of changes) {
-    const snapshotPath = `upstream/${change.path}`;
-    const own = target(record, snapshotPath);
+    const snapshotPath = toSnapshot(change.path);
+    const own = portTarget(record, snapshotPath);
     const changeText = change.status === "renamed" ? `renamed from ${change.from}` : change.status;
     const add = (row: Omit<SyncRow, "upstream" | "change">) => rows.push({ upstream: change.path, change: changeText, ...row });
 
     if (change.status === "renamed") {
-      add(renamedRow(change, target(record, `upstream/${change.from}`), own, root));
+      add(renamedRow(change, portTarget(record, toSnapshot(change.from!)), own, root));
     } else {
       add(changedRow(change.status, snapshotPath, own, root, goneUpstream));
     }
 
-    const touched = [snapshotPath, ...(change.from ? [`upstream/${change.from}`] : [])];
+    const touched = [snapshotPath, ...(change.from ? [toSnapshot(change.from)] : [])];
     const follow =
       change.status === "deleted" ? "; drop the path from depends_on" : change.status === "renamed" ? "; repoint depends_on" : "";
     for (const entry of record.entries) {
@@ -104,7 +108,7 @@ export function syncRows(record: PortRecord, changes: UpstreamChange[], root: st
   return rows.sort((a, b) => a.port.localeCompare(b.port) || a.upstream.localeCompare(b.upstream));
 }
 
-type Target = ReturnType<typeof target>;
+type Target = ReturnType<typeof portTarget>;
 type RowBody = Omit<SyncRow, "upstream" | "change">;
 
 /** The row for an upstream file added, modified or deleted in place. */
