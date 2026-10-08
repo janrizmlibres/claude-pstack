@@ -275,6 +275,7 @@ undetectable: a missing ending is an absence in an agent's frontmatter, which no
 These keep `skills/poteto-mode/SKILL.md` translated:
 
 - frontmatter gains the reminder hook;
+- frontmatter's `name` is `poteto-mode`, not upstream's `Poteto Mode`, so the slash menu shows the `/pstack:poteto-mode` every doc names;
 - one line, once: pstack skills are reached by reading their `SKILL.md`; the Skill tool refuses them by design, so a read is the intended route, not a workaround;
 - the router names `playbooks/hand-off.md` in one line, read by path;
 - beside the todolist's `skip: <reason>`, a short passage says a panel step a playbook lists unconditionally, or whose condition holds, is never the agent's to skip and has no size gate, and that only the user can waive it, in the run prompt or `CLAUDE.md`, recorded as `skip: user waived` in the list and the Reply;
