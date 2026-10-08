@@ -11,6 +11,16 @@
       "why": "poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads"
     },
     {
+      "path": "pstack/hooks/hooks.json",
+      "kind": "port-only",
+      "why": "registers the compaction hook on SessionStart's compact matcher, which skill frontmatter can't: its SessionStart never fires"
+    },
+    {
+      "path": "pstack/hooks/poteto-mode-compaction.sh",
+      "kind": "port-only",
+      "why": "after a compaction in a marked poteto-mode session, lists the durable state to re-read before acting: the skill, any store, the transcript, a trail and a resume note"
+    },
+    {
       "path": "pstack/agents/work.md",
       "kind": "port-only",
       "why": "the Work setting's writer: upstream's poteto-agent body on the Work default model at medium effort, in the background"
@@ -153,6 +163,11 @@
       "path": "pstack/docs/guide/07-overnight.md",
       "kind": "translated",
       "why": "names orchestrate's lead as the orchestrate override does, and says what a routine run gets under ADR 0001"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/references/brief-contract.md",
+      "kind": "port-only",
+      "why": "the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and a sub-lead's timebox"
     }
   ]
 }

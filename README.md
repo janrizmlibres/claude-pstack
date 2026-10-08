@@ -208,8 +208,11 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `agents/volume.md` | port-only | the Volume setting's writer: upstream's poteto-agent body on the Volume default model at high effort, in the background |
 | `agents/work-reader.md` | port-only | the Work setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, medium effort |
 | `agents/work.md` | port-only | the Work setting's writer: upstream's poteto-agent body on the Work default model at medium effort, in the background |
+| `hooks/hooks.json` | port-only | registers the compaction hook on SessionStart's compact matcher, which skill frontmatter can't: its SessionStart never fires |
+| `hooks/poteto-mode-compaction.sh` | port-only | after a compaction in a marked poteto-mode session, lists the durable state to re-read before acting: the skill, any store, the transcript, a trail and a resume note |
 | `hooks/poteto-mode-reminder.sh` | port-only | poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads |
 | `scripts/heavy` | port-only | the machine lock: runs one heavy command at a time per machine, released by the kernel when its holder dies |
+| `skills/poteto-mode/references/brief-contract.md` | port-only | the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and a sub-lead's timebox |
 | `skills/poteto-mode/scripts/node_modules/commander/` | port-only | commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install |
 | `skills/poteto-mode/scripts/run` | port-only | the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install |
 | `agents/poteto-agent.md` | dropped | replaced by the three writer agents, which carry its body |

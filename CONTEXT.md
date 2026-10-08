@@ -136,6 +136,14 @@ _Avoid_: project (a Claude Project is a claude.ai product), campaign, epic
 A program's durable bookkeeping: its standing orders, units, verification ledger, inbox, human gates and status. The lead keeps it and checkpoints it where it outlives the session, so a lead coming back from compaction or a restart rebuilds its view from the store, not from memory.
 _Avoid_: state, scratch, notes
 
+**Restart**:
+A lead taking a run up again in a new session or through `--resume`. Its in-VM workers are dead and its separate-session workers alive, so it rebuilds from durable state and respawns what died. Contrast compaction, where the same session goes on and its in-VM workers are still running, so it re-reads its durable state and respawns nothing.
+_Avoid_: reboot, relaunch, recovery
+
+**Resume note**:
+The checkpoint Pause safely writes into the body of its `wip:` commit (pushed to the session's own branch in cloud): intent, progress, what's verified, next steps, key files and gotchas. Session pickup reads it first.
+_Avoid_: handoff note, resume file, checkpoint file
+
 **Stacker**:
 The one worker allowed to rewrite a stack's topology (rebase, force-push), for conflicted merges and restacks. Clean landings are not its job; the lead or sub-lead does those.
 _Avoid_: restacker, topology writer, babysitter (watches one stack's PRs and reports to the stacker)
