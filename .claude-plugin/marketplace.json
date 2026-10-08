@@ -1,0 +1,11 @@
+{
+  "name": "pstack-mkt-probe",
+  "owner": { "name": "janrizmlibres" },
+  "plugins": [
+    {
+      "name": "probe",
+      "source": "./spikes/marketplace-install/plugin",
+      "description": "Wayfinder probe: plugin mechanics on a marketplace and cloud install"
+    }
+  ]
+}

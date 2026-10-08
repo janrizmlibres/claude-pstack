@@ -1,0 +1,9 @@
+{
+  "name": "probe",
+  "description": "Wayfinder probe: plugin mechanics on a marketplace and cloud install",
+  "userConfig": {
+    "set_opt": { "type": "string", "title": "Set option", "description": "Set by --config in cloud; left unset locally", "default": "DEFAULT-SET-W2" },
+    "unset_opt": { "type": "string", "title": "Unset option", "description": "Never configured; has a default", "default": "DEFAULT-UNSET-J6" },
+    "nodefault_opt": { "type": "string", "title": "No-default option", "description": "Never configured; no default" }
+  }
+}
