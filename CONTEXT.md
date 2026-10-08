@@ -108,6 +108,10 @@ _Avoid_: launcher, front end
 An entry point passing a run to a lead on the other surface, when the user chooses to. The input (a spec, a file, or the task verbatim) is pushed first; the entry point keeps no control afterwards.
 _Avoid_: delegation (a lead giving work to its workers), dispatch
 
+**Local-only**:
+A run in which a local lead starts no cloud workers, so work that would go to them runs in parallel local worktrees instead. The user asks for it per run, or the lead falls back to it, and says so once, when it can't start cloud workers.
+_Avoid_: offline, no-cloud mode
+
 **Heavy command**:
 A command whose cost is bounded by the machine rather than the model: a test runner, a build, a whole-project typecheck or lint, a dev server, a browser session. Scoped to one file it is still heavy; a dev server or browser session stays heavy for as long as it is up.
 _Avoid_: test run, heavy run (a run is a pstack run)
