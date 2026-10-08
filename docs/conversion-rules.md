@@ -277,6 +277,7 @@ These keep `skills/poteto-mode/SKILL.md` translated:
 - frontmatter gains the reminder hook;
 - one line, once: pstack skills are reached by reading their `SKILL.md`; the Skill tool refuses them by design, so a read is the intended route, not a workaround;
 - the router names `playbooks/hand-off.md` in one line, read by path;
+- the router sends a spec handed in (`build <issue URL>`, an issue number, a spec file) or a request for a plan ("plan only", "plan #42") to the multi-phase-plan playbook first, whatever its size, in one line;
 - the router's "work the user steps away from goes to `figure-it-out`" clause is narrowed: being handed off doesn't count as stepping away.
 
 ```detect
@@ -350,6 +351,7 @@ after: `control-cli` and `control-ui` ship with pstack too.
 These keep `skills/poteto-mode/playbooks/multi-phase-plan.md` translated while it takes a spec to a plan and on to execution:
 
 - a first step reads the input: a spec is read and never edited, and an issue (a URL or a number) is read with `gh api` REST on both surfaces, comments included;
+- step 2's one-or-two-file skip never applies to a spec handed in or a request for the plan;
 - the plan file goes to `.claude/pstack/plans/<slug>.md` unless the operator names a path, listed in the exclude file `git rev-parse --git-path info/exclude` names, and is never committed on the run branch; the plan keeps `${CLAUDE_PLUGIN_ROOT}` literal;
 - `check-plan.mjs` runs through the runtime launcher, `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/scripts/run`; with no runtime (exit 69) the plan is posted as not linted, never linted by hand;
 - the plan is posted beside the input, never in it: as a comment on a spec issue, or for other input on the orphan branch `pstack/plan/<slug>` through git plumbing, with no worktree;
