@@ -35,7 +35,7 @@ export type RunOptions = {
 
 /** Run `bun <script> ...args`, with `script` relative to `scripts/`. */
 export function runScript(script: string, args: string[], options: RunOptions): RunResult {
-  return run([process.execPath, join(scriptsDir, script), ...args], options);
+  return runProgram([process.execPath, join(scriptsDir, script), ...args], options);
 }
 
 /** Run `bash <script> ...args`, with `script` relative to the plugin, as Claude Code runs a hook command. */
@@ -45,15 +45,16 @@ export function runPluginScript(script: string, args: string[], options: RunOpti
 
 /** Run `bash <file> ...args`, with `file` an absolute path. */
 export function runBashScript(file: string, args: string[], options: RunOptions): RunResult {
-  return run(["bash", file, ...args], options);
+  return runProgram(["bash", file, ...args], options);
 }
 
 /** Run a command line through `sh -c`, as Claude Code runs a settings hook command. */
 export function runShell(command: string, options: RunOptions): RunResult {
-  return run(["sh", "-c", command], options);
+  return runProgram(["sh", "-c", command], options);
 }
 
-function run(cmd: string[], options: RunOptions): RunResult {
+/** Run `cmd` to completion; `options.env` may replace PATH. */
+export function runProgram(cmd: string[], options: RunOptions): RunResult {
   const home = options.home ?? tempDir("pstack-home-");
   const proc = Bun.spawnSync({
     cmd,

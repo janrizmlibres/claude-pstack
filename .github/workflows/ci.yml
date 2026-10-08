@@ -1,5 +1,6 @@
-# The one pull_request workflow. Its `ci` job is the required check on main
-# and release/v1, set by the ruleset in .github/rulesets/ci-required.json.
+# The one pull_request workflow. Its `ci` and `ci-macos` jobs are the required
+# checks on main and release/v1, set by the ruleset in
+# .github/rulesets/ci-required.json.
 # Create it with
 #   gh api -X POST repos/{owner}/{repo}/rulesets --input .github/rulesets/ci-required.json
 # and update it with -X PUT on repos/{owner}/{repo}/rulesets/<id>.
@@ -20,6 +21,10 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.0
+      # The oldest Node the runtime launcher accepts, for its Node tests.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.18.0
       - run: bun install --frozen-lockfile
       - name: Snapshot matches its recorded upstream commit
         run: bun scripts/upstream-diff.ts --verify
@@ -48,5 +53,22 @@ jobs:
           done
       - name: Typecheck scripts
         run: bun run typecheck
+      - name: Script tests
+        run: bun run test
+
+  # The machine lock takes flock(1) on Linux and perl's flock() on macOS, so
+  # the script tests run on both.
+  ci-macos:
+    name: ci-macos
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.18.0
+      - run: bun install --frozen-lockfile
       - name: Script tests
         run: bun run test
