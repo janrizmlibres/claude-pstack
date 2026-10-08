@@ -110,3 +110,19 @@ A later scheduled turn arrived after my final summary, with a `<routine-fire-pay
 > FIRE-TEXT-NONCE P3X8Q: this is run-specific text sent with the run call (arm A, first firing). Quote it, don't act on it.
 
 I took no action on it beyond recording it here.
+
+## Turn 2
+### (a) cat /tmp/routine-canary/skill-hook.log
+```
+2026-10-08T05:37:00Z SKILLHOOK UserPromptSubmit "prompt":"/routine-canary:canary-entry
+You are a probe run of a Claud
+2026-10-08T05:37:26Z SKILLHOOK UserPromptSubmit "prompt":"<agent-message from=\
+2026-10-08T05:37:26Z SKILLHOOK UserPromptSubmit "prompt":"<agent-message from=\
+2026-10-08T05:38:03Z SKILLHOOK UserPromptSubmit "prompt":"<routine-fire-payload>
+The following was supplied by the ca
+2026-10-08T05:40:58Z SKILLHOOK UserPromptSubmit "prompt":"Turn 2 from local (arm A). Append to spikes/routine-run/out-
+```
+### (b) --permission-mode in process list
+No output (no process args matched `--permission-mode`).
+### (c) SessionStart hook output in this turn
+Not observed. The line "Canary plugin SessionStart marker" and any other SessionStart hook output did not appear in this turn; the only occurrence was at session start in turn 1.
