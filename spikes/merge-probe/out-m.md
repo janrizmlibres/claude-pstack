@@ -55,3 +55,10 @@ LEAD from origin/research/merge-probe; the only change from run 1 is the S1 prep
 R2-S1 Branches: OK — prep created 8 local branches; push succeeded; ls-remote returned 8 refs (base 84ec1bc, merge 9b309f3, squash a5707cd, rebase 0ef827f, stack-a 91901b4, stack-b 92f0d66, stack-c fa59761, ghcli 466c142)
 R2-S2 Open the PRs (REST): OK — merge #49, squash #50, rebase #51, stack-a #52, stack-b #53 (base stack-a), stack-c #54 (base stack-a), ghcli #55
 R2-S3 Close stacked PR without retargeting (REST): OK — #54 → `{"base":"pstack/probe-m/stack-a","state":"closed"}`; branch pstack/probe-m/stack-c still on remote (fa59761)
+R2-S4 Merge commit (REST): OK — #49 merged (sha 4cb92b9); ls-remote after 15s empty → GitHub deleted head pstack/probe-m/merge
+
+### R2-S4 response
+
+```
+{"sha":"4cb92b9b383bbbe4570be5877c61a1bf11018681","merged":true,"message":"Pull Request successfully merged"}
+```
