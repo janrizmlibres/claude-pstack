@@ -36,6 +36,8 @@ jobs:
       # (exit 2) fails. Files left to port hold back a release, not a PR.
       - name: Port coverage (report)
         run: bun scripts/check-port-json.ts --coverage || [ $? -eq 1 ]
+      - name: README's generated blocks are current
+        run: bun scripts/render-readme.ts --check
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code@2.1.294
       # Fails on any error or warning but the missing version: the port carries
