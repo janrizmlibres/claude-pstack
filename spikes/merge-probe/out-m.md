@@ -76,3 +76,10 @@ R2-S6 Rebase (REST): OK — #51 merged (sha 058842c); ls-remote after 15s empty 
 ```
 {"sha":"058842cface4a4e8baf0ae86ec48ab731b154c38","merged":true,"message":"Pull Request successfully merged"}
 ```
+R2-S7 Merge parent of open stacked PR (REST): OK — #52 squash-merged (sha 4e15c82); ls-remote after 15s empty → GitHub deleted head pstack/probe-m/stack-a; open child #53 retargeted to pstack/probe-m/base (`{"base":"pstack/probe-m/base","state":"open"}`); closed child #54 NOT retargeted (`{"base":"pstack/probe-m/stack-a","state":"closed"}`), its base branch no longer exists
+
+### R2-S7 response
+
+```
+{"sha":"4e15c82afc4e2550bdf77cec0da49f9b804682b1","merged":true,"message":"Pull Request successfully merged"}
+```
