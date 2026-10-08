@@ -1,0 +1,35 @@
+{
+  "name": "pstack",
+  "displayName": "pstack",
+  "description": "A Claude Code port of pstack, Lauren Tan's agent workflows: if you want to go fast, go deep first. Write less, but higher quality code, with rigorous workflows you can parallelize with confidence.",
+  "author": {
+    "name": "Janriz Libres"
+  },
+  "homepage": "https://github.com/janrizmlibres/claude-pstack",
+  "repository": "https://github.com/janrizmlibres/claude-pstack",
+  "license": "MIT",
+  "keywords": ["pstack", "poteto-mode", "workflow", "principles", "subagents", "unslop"],
+  "userConfig": {
+    "work_model": {
+      "type": "string",
+      "title": "Work model",
+      "description": "Model for the Work setting: code delegates, arena runners, unit workers and sub-leads. Effort is fixed at medium.",
+      "options": ["opus", "sonnet", "haiku", "fable"],
+      "default": "opus"
+    },
+    "judgement_model": {
+      "type": "string",
+      "title": "Judgement model",
+      "description": "Model for the Judgement setting: the hardest tasks, judges, reviewers and fresh-context reviews. Effort is fixed at high.",
+      "options": ["opus", "sonnet", "haiku", "fable"],
+      "default": "opus"
+    },
+    "volume_model": {
+      "type": "string",
+      "title": "Volume model",
+      "description": "Model for the Volume setting: swarm and first-pass race workers and bulk readers. Effort is fixed at high.",
+      "options": ["opus", "sonnet", "haiku", "fable"],
+      "default": "sonnet"
+    }
+  }
+}
