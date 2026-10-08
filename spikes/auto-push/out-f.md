@@ -19,3 +19,4 @@ S3 parent fast-forward push: OK — unit-a advanced by one commit
 S4 restack force-with-lease push: OK — unit-b rebased onto unit-a and force-with-lease pushed
 S5 orphan data branch push: OK — store c975577 pushed; push printed 'fatal: expected 'acknowledgments', received 'packfile'' + 'push negotiation failed; proceeding anyway' but the ref was created
 S6 data branch fast-forward push: OK — store advanced to d15b0e1 (parent c975577)
+S7 subagent push: call 1 FAILED: '/bin/bash: line 1: /tmp/units/probe-f/c.txt: No such file or directory'; call 2 push OK — not refused; LEAD.md prep bug (probe-f/ dir absent on origin/main, needs mkdir -p), so unit-c was pushed identical to origin/main
