@@ -36,7 +36,7 @@ If that log push is itself refused, record it in your final message and keep goi
 **S1. Branches.**
 - Prep (one Bash call):
   ```
-  git fetch -q origin main && git worktree add -q -b pstack/probe-m/base /tmp/m origin/main && cd /tmp/m && mkdir -p probe-m && for h in merge squash rebase stack-a ghcli; do git checkout -q -b pstack/probe-m/$h pstack/probe-m/base && echo $h > probe-m/$h.txt && git add -A && git commit -qm "probe m: $h"; done && for h in stack-b stack-c; do git checkout -q -b pstack/probe-m/$h pstack/probe-m/stack-a && echo $h > probe-m/$h.txt && git add -A && git commit -qm "probe m: $h on stack-a"; done && git branch --list 'pstack/probe-m/*'
+  git fetch -q origin main && git worktree add -q -b pstack/probe-m/base /tmp/m origin/main && cd /tmp/m && for h in merge squash rebase stack-a ghcli; do git checkout -q -b pstack/probe-m/$h pstack/probe-m/base && mkdir -p probe-m && echo $h > probe-m/$h.txt && git add -A && git commit -qm "probe m: $h"; done && for h in stack-b stack-c; do git checkout -q -b pstack/probe-m/$h pstack/probe-m/stack-a && mkdir -p probe-m && echo $h > probe-m/$h.txt && git add -A && git commit -qm "probe m: $h on stack-a"; done && git branch --list 'pstack/probe-m/*'
   ```
 - Push (its own Bash call): `git -C /tmp/m push -q -u origin pstack/probe-m/base pstack/probe-m/merge pstack/probe-m/squash pstack/probe-m/rebase pstack/probe-m/stack-a pstack/probe-m/stack-b pstack/probe-m/stack-c pstack/probe-m/ghcli`
 - Check: `git ls-remote origin 'refs/heads/pstack/probe-m/*'` and note how many refs came back (expect 8).
