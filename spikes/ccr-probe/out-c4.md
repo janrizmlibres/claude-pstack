@@ -41,3 +41,15 @@ false
 ```
 
 S4 Read: OK — PR #60 reads draft=false
+
+## Summary
+
+| Step | Outcome | Response / error |
+|---|---|---|
+| S0 Baseline | OK | 2026-10-08T05:54:52Z · 2.1.294 (Claude Code) · claude/lead-4-ccr-probe-tytveb |
+| S1 Convert to draft | OK | `{"draft":true}` |
+| S2 Read | OK | `true` |
+| S3 Ready for review | OK | `{"draft":false}` |
+| S4 Read | OK | `false` |
+
+No refusals or failures.
