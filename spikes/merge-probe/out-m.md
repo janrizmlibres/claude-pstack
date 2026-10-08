@@ -85,3 +85,26 @@ R2-S7 Merge parent of open stacked PR (REST): OK — #52 squash-merged (sha 4e15
 ```
 R2-S8 Merge through gh CLI: FAILED: `non-200 OK status code: 403 Forbidden body: "{\"message\":\"GitHub GraphQL is not available from Claude Code sessions; use the REST API (gh api repos/{owner}/{repo}/...). For review threads, auto-merge, and draft/ready-for-review use the CCR routes on api.github.com: GET /repos/{owner}/{repo}/pulls/{n}/ccr/review_threads, POST /repos/{owner}/{repo}/pulls/{n}/ccr/comments/{comment_id}/resolve (or /unresolve), PUT or DELETE /repos/{owner}/{repo}/pulls/{n}/ccr/auto_merge, POST /repos/{owner}/{repo}/pulls/{n}/ccr/ready_for_review, POST /repos/{owner}/{repo}/pulls/{n}/ccr/convert_to_draft.\",\"documentation_url\":\"https://docs.anthropic.com/en/docs/claude-code/github-actions\"}"` — yes, the error mentions GraphQL (blocked by the session proxy, HTTP 403); #55 left open
 R2-S9 Repo setting from the cloud: skipped per owner (answered in run 1: HTTP 403 from proxy)
+R2-S10 What is left: OK — remaining remote refs: pstack/probe-m/base (4e15c82), pstack/probe-m/ghcli (466c142), pstack/probe-m/stack-b (92f0d66), pstack/probe-m/stack-c (fa59761); ghcli PR #55 state: open. Still open PRs: #53 (stack-b → base), #55 (ghcli → base). Local worktree /tmp/m and local probe branches remain in this container.
+
+## Run 2 summary
+
+| Step | Outcome | Head branch deleted? | Verbatim error / refusal |
+|---|---|---|---|
+| R2-S1 Branches | OK | n/a | — (8/8 refs pushed) |
+| R2-S2 Open PRs (REST) | OK | n/a | — (#49 merge, #50 squash, #51 rebase, #52 stack-a, #53 stack-b, #54 stack-c, #55 ghcli) |
+| R2-S3 Close stacked PR #54 | OK | No (closing does not delete; stack-c still present) | — |
+| R2-S4 Merge commit #49 | OK | Yes | — |
+| R2-S5 Squash #50 | OK | Yes | — |
+| R2-S6 Rebase #51 | OK | Yes | — |
+| R2-S7 Merge stack parent #52 | OK | Yes (stack-a); open child #53 retargeted to base; closed child #54 not retargeted | — |
+| R2-S8 `gh pr merge 55 --squash` | FAILED (HTTP 403) | No (PR still open, ghcli present) | `GitHub GraphQL is not available from Claude Code sessions; use the REST API (gh api repos/{owner}/{repo}/...)...` (mentions GraphQL) |
+| R2-S9 Repo setting | Skipped | n/a | (run 1: `Repository settings writes are not permitted through this proxy.`, HTTP 403) |
+| R2-S10 What is left | OK | n/a | refs left: base, ghcli, stack-b, stack-c; #53 and #55 open |
+
+Permission mode: auto. No tool call was refused by the permission system; every log push succeeded.
+
+Surprising / notes:
+- All three REST merge methods work from the cloud session, and "Automatically delete head branches" deleted each merged head within 15 s.
+- Deleting a merged parent's branch auto-retargets the OPEN stacked child to the parent's base, but leaves a CLOSED child pointing at the deleted base (it could not be reopened without a retarget).
+- `gh pr merge` uses GraphQL, which the session proxy blocks; the 403 body points to the REST routes and lists proxy-specific `/ccr/` routes for review threads, auto-merge, and draft/ready toggles.
