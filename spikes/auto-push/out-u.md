@@ -21,3 +21,4 @@ S5 orphan data branch push: OK — commit eca111c pushed to pstack/probe-u/store
 S6 data branch fast-forward push: OK — commit 09ea32d (parent eca111c) pushed to pstack/probe-u/store
 S7 push from subagent: OK (push) / prep FAILED: "/bin/bash: line 1: /tmp/units/probe-u/c.txt: No such file or directory" — probe script bug (probe-u/ dir absent on origin/main, no mkdir); subagent push of pstack/probe-u/unit-c was not refused and succeeded, but the branch equals origin/main (no probe commit)
 S8 open parent PR (REST): OK — PR #41 unit-a -> main
+S9 open stacked PR (REST): OK — PR #43 unit-b -> unit-a
