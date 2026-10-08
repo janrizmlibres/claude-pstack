@@ -127,7 +127,7 @@ Comments follow the same rule as the reply. Write them clean as you go. Keep a c
 
 ## Playbooks
 
-Open a todolist whose first items are the matched playbook's steps, copied in verbatim, before any task-specific todos. A step you choose not to do stays in the list with a one-line `skip: <reason>`. Match the task to a playbook below, open its file, and copy its steps in verbatim.
+Open a todolist whose first items are the matched playbook's steps, copied in verbatim, before any task-specific todos. A step you choose not to do stays in the list with a one-line `skip: <reason>`. A panel step (`architect`, `arena`, `interrogate`, a review or verification fan-out) whose trigger holds is never yours to skip, however small the change: panels have no size gate. Only the user can waive one, in the run prompt or `CLAUDE.md`. Then the step reads `skip: user waived`, word for word, in the list and in the Reply. Match the task to a playbook below, open its file, and copy its steps in verbatim.
 
 A large or cross-cutting effort (a migration across many call sites, an ambitious multi-part change), or work the user steps away from to trust later (being handed off doesn't count as stepping away), routes to the **figure-it-out** skill (read ${CLAUDE_PLUGIN_ROOT}/skills/figure-it-out/SKILL.md) even when a narrower playbook like Feature fits. Use **figure-it-out** whenever no bundled playbook fits. It designs a bespoke, rigorous playbook for the task. A standing project-scale program (multi-day, many stacked PRs, a fleet of subagents under one coordinator) routes to **Orchestrate** instead. figure-it-out designs one bespoke run, orchestrate runs the program.
 

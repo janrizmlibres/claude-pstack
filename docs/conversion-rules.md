@@ -277,6 +277,7 @@ These keep `skills/poteto-mode/SKILL.md` translated:
 - frontmatter gains the reminder hook;
 - one line, once: pstack skills are reached by reading their `SKILL.md`; the Skill tool refuses them by design, so a read is the intended route, not a workaround;
 - the router names `playbooks/hand-off.md` in one line, read by path;
+- beside the todolist's `skip: <reason>`, one line says a panel step whose trigger holds is never the agent's to skip, has no size gate, and only the user can waive it, recorded as `skip: user waived` in the list and the Reply;
 - the router sends a spec handed in (`build <issue URL>`, an issue number, a spec file) or a request for a plan ("plan only", "plan #42") to the multi-phase-plan playbook first, whatever its size, in one line;
 - the router's "work the user steps away from goes to `figure-it-out`" clause is narrowed: being handed off doesn't count as stepping away.
 
