@@ -120,6 +120,18 @@ _Avoid_: test lock, build lock, mutex
 A project's whole verification (the full suite, the build, end-to-end checks), run at an integration point by the lead, or by a sub-lead for its piece. Workers run only heavy commands scoped to the files they own.
 _Avoid_: CI run, final check, verification pass
 
+**Program**:
+A run too large for any single agent, such as a multi-day effort landing many stacked PRs, driven by one lead through orchestrate. A run one agent could finish within its budget is not a program, however it is phrased.
+_Avoid_: project (a Claude Project is a claude.ai product), campaign, epic
+
+**Store**:
+A program's durable bookkeeping: its standing orders, units, verification ledger, inbox, human gates and status. The lead keeps it and checkpoints it where it outlives the session, so a lead coming back from compaction or a restart rebuilds its view from the store, not from memory.
+_Avoid_: state, scratch, notes
+
+**Stacker**:
+The one worker allowed to rewrite a stack's topology (rebase, force-push), for conflicted merges and restacks. Clean landings are not its job; the lead or sub-lead does those.
+_Avoid_: restacker, topology writer, babysitter (watches one stack's PRs and reports to the stacker)
+
 **Setup line**:
 The command a user pastes into a cloud environment's setup script to install the port there, carrying their model choices. The only way the port reaches the cloud surface.
 _Avoid_: cloud line, install command
