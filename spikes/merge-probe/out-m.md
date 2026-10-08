@@ -23,3 +23,27 @@ S6 Rebase (REST): FAILED: not run — no rebase PR number (S2)
 S7 Merge parent of open stack (REST): FAILED: not run — no stack-a/stack-b/stack-c PR numbers (S2)
 S8 Merge through gh CLI: FAILED: not run — no ghcli PR number (S2)
 S9 Repo setting from the cloud (REST): FAILED: `{"message":"Repository settings writes are not permitted through this proxy.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"} gh: Repository settings writes are not permitted through this proxy. (HTTP 403)` — blocked by the session's agent proxy (HTTP 403), not by the permission system
+S10 What is left: OK — remote `refs/heads/pstack/probe-m/*`: none (0 refs); PRs with head pstack/probe-m/ghcli: none. Local-only leftovers in this container: worktree /tmp/m and local branches pstack/probe-m/{base,merge,squash,rebase,stack-a,ghcli} (never pushed)
+
+## Summary
+
+| Step | Outcome | Head branch deleted? | Verbatim error / refusal |
+|---|---|---|---|
+| S0 Baseline | OK | n/a | — (delete_branch_on_merge=true; merge/squash/rebase all allowed) |
+| S1 Branches | FAILED | n/a | `/bin/bash: line 1: probe-m/squash.txt: No such file or directory` (also rebase, stack-a, ghcli); push: `error: src refspec pstack/probe-m/stack-b does not match any`, `error: src refspec pstack/probe-m/stack-c does not match any`, `error: failed to push some refs`; 0 of 8 refs on remote |
+| S2 Open PRs (REST) | FAILED | n/a | `Validation Failed` 422: base invalid, head invalid (all 7) |
+| S3 Close stacked PR | FAILED (not run) | n/a | no PR number from S2 |
+| S4 Merge commit | FAILED (not run) | n/a | no PR number from S2 |
+| S5 Squash | FAILED (not run) | n/a | no PR number from S2 |
+| S6 Rebase | FAILED (not run) | n/a | no PR number from S2 |
+| S7 Merge stack parent | FAILED (not run) | n/a | no PR numbers from S2 |
+| S8 gh pr merge | FAILED (not run) | n/a | no PR number from S2 |
+| S9 Repo setting PATCH | FAILED (HTTP 403) | n/a | `Repository settings writes are not permitted through this proxy.` |
+| S10 What is left | OK | n/a | no remote probe refs, no probe PRs |
+
+Permission mode: auto. No tool call was refused by the permission system.
+
+Surprising / notes:
+- Root cause of the cascade is a bug in the S1 prep script: `mkdir -p probe-m` runs once, but the empty directory is removed by git when the loop does `git checkout -q -b pstack/probe-m/<h> pstack/probe-m/base` after the first commit (the base has no tracked files under `probe-m/`). The first iteration (`merge`) succeeds; later `echo $h > probe-m/$h.txt` calls fail, and the trailing `&&` then skips the stack-b/stack-c loop. Fix: move `mkdir -p probe-m` inside the loop (before the `echo`).
+- `gh api` reads (repo GET, pulls GET) and REST PR creation reached GitHub (422 was a real GitHub validation error). Repository settings writes are blocked by the session's agent proxy (403), separate from the permission system.
+- Merge behaviour (S4–S8) and auto-deletion of head branches were never exercised; the probe needs a re-run with the fixed prep script.
