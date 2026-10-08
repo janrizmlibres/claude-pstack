@@ -135,3 +135,13 @@ _Avoid_: restacker, topology writer, babysitter (watches one stack's PRs and rep
 **Setup line**:
 The command a user pastes into a cloud environment's setup script to install the port there, carrying their model choices. The only way the port reaches the cloud surface.
 _Avoid_: cloud line, install command
+
+### Run input
+
+**Spec**:
+The planning output a run is handed: a GitHub issue written by the user's planning tools, saying what to build and why but not how to slice it into PRs. pstack reads a spec and never edits it. Handing pstack a spec is the go to execute it, unless the request asks for a plan only.
+_Avoid_: PRD, ticket, plan
+
+**Plan**:
+The checklist pstack writes from a spec when the work spans several PRs: the PR slicing, their dependencies, each PR's evidence and the playbook that executes it. It lives beside the spec, never in it.
+_Avoid_: spec, roadmap
