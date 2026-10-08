@@ -120,3 +120,64 @@ exit=0
 Background nesting: SAME as foreground (depth 1). Background subagent had a slightly smaller tool set (no ListAgents/ReportFindings/SendUserFile/ShowOnboardingRolePicker/SuggestSkills) but listed EnterWorktree/ExitWorktree as deferred.
 
 Note: before committing step 3 I added `.claude/worktrees/` to .git/info/exclude (local only), because `git add -A` would otherwise stage the agent worktree under .claude/worktrees as an embedded repo.
+
+## Step 4: worktree isolation
+### 4a W1
+Tool result: agentId abd13cd8f699fd088, `worktreePath: /home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088`, `worktreeBranch: worktree-agent-abd13cd8f699fd088`, 3 tool uses, 11712 ms. No explicit kept/removed field; worktree was KEPT (it has a commit).
+W1 reply verbatim:
+```
+I ran both command groups in the worktree. The probe commit `c7d632b` is on branch `worktree-agent-abd13cd8f699fd088`, and nothing was pushed.
+
+**First command group** (`git status --short` printed nothing, so the working tree was clean):
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088
+worktree-agent-abd13cd8f699fd088
+2ea8e472c7bf7adf44b2eeb4ce1d286d3664db88
+/home/user/claude-pstack                                            dcb4d2d [claude/nestprobe-heron-gsd2fi]
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088  2ea8e47 [worktree-agent-abd13cd8f699fd088] locked
+
+**Second command group** (mkdir, add, commit, `git log --oneline -2`):
+c7d632b W1 probe
+2ea8e47 Add setup line to glossary
+
+One change from your exact command: the commit has a body with the session's required `Co-Authored-By` and `Claude-Session` lines. The subject is still `W1 probe`, so the one-line log looks the same as it would have without them.
+```
+Observation: worktree was based on 2ea8e47 (origin/main / session start commit), NOT the lead's current HEAD dcb4d2d. It was `locked` while the agent ran; lock gone afterwards.
+
+Lead checkout after W1:
+```
+/home/user/claude-pstack
+ls: cannot access 'wt-probe': No such file or directory
+/home/user/claude-pstack                                            c5b91e7 [claude/nestprobe-heron-gsd2fi]
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088  c7d632b [worktree-agent-abd13cd8f699fd088]
+* claude/nestprobe-heron-gsd2fi
+  main
++ worktree-agent-abd13cd8f699fd088
+  remotes/origin/claude/nestprobe-heron-gsd2fi
+  remotes/origin/main
+c5b91e7 nestprobe lead: step 3
+c7d632b W1 probe
+dcb4d2d nestprobe lead: step 2
+08a7cf0 nestprobe lead: step 1
+2ea8e47 Add setup line to glossary
+$ ls -la /home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088
+drwxr-xr-x 4 root root 4096 Oct  8 02:25 .
+drwxr-xr-x 3 root root 4096 Oct  8 02:25 ..
+-rw-r--r-- 1 root root   72 Oct  8 02:25 .git
+-rw-r--r-- 1 root root  408 Oct  8 02:25 AGENTS.md
+-rw-r--r-- 1 root root 5338 Oct  8 02:25 CONTEXT.md
+drwxr-xr-x 4 root root 4096 Oct  8 02:25 docs
+drwxr-xr-x 2 root root 4096 Oct  8 02:25 wt-probe
+```
+
+### 4b merge
+```
+$ git merge --no-edit worktree-agent-abd13cd8f699fd088
+Merge made by the 'ort' strategy.
+ wt-probe/W1.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 wt-probe/W1.txt
+exit=0
+$ ls wt-probe
+W1.txt
+```
+Merge WORKED.
