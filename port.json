@@ -11,6 +11,41 @@
       "why": "poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads"
     },
     {
+      "path": "pstack/agents/work.md",
+      "kind": "port-only",
+      "why": "the Work setting's writer: upstream's poteto-agent body on the Work default model at medium effort, in the background"
+    },
+    {
+      "path": "pstack/agents/work-reader.md",
+      "kind": "port-only",
+      "why": "the Work setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, medium effort"
+    },
+    {
+      "path": "pstack/agents/judgement.md",
+      "kind": "port-only",
+      "why": "the Judgement setting's writer: upstream's poteto-agent body on the Judgement default model at high effort, in the background"
+    },
+    {
+      "path": "pstack/agents/judgement-reader.md",
+      "kind": "port-only",
+      "why": "the Judgement setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, high effort"
+    },
+    {
+      "path": "pstack/agents/volume.md",
+      "kind": "port-only",
+      "why": "the Volume setting's writer: upstream's poteto-agent body on the Volume default model at high effort, in the background"
+    },
+    {
+      "path": "pstack/agents/volume-reader.md",
+      "kind": "port-only",
+      "why": "the Volume setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, high effort"
+    },
+    {
+      "path": "pstack/skills/setup-pstack/SKILL.md",
+      "kind": "override",
+      "why": "shows the three settings, points to /config, prints the setup line and shows the Read rule, in place of writing a Cursor model rule"
+    },
+    {
       "path": "pstack/automations/benny",
       "kind": "dropped",
       "why": "Cursor Slack automations, outside the port's scope"
