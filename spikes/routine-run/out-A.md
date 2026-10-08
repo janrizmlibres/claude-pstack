@@ -226,4 +226,29 @@ Designated branch: `claude/hopeful-curie-b7wqvk`. Instruction quote:
 
 ## 9. Push
 
-(see below)
+Push to `claude/hopeful-curie-b7wqvk` (commit with this file): **accepted**, rc=0.
+```
+remote: 
+remote: Create a pull request for 'claude/hopeful-curie-b7wqvk' on GitHub by visiting:        
+remote:      https://github.com/janrizmlibres/claude-pstack/pull/new/claude/hopeful-curie-b7wqvk        
+remote: 
+To https://github.com/janrizmlibres/claude-pstack
+ * [new branch]      claude/hopeful-curie-b7wqvk -> claude/hopeful-curie-b7wqvk
+branch 'claude/hopeful-curie-b7wqvk' set up to track 'origin/claude/hopeful-curie-b7wqvk'.
+```
+
+Push of the same commit to `probe/routine-run-push-A` (`git push origin HEAD:refs/heads/probe/routine-run-push-A`): **refused**, rc=1 — but as a git non-fast-forward rejection (the remote ref already exists with commits not present locally), *not* a proxy/policy refusal. Whether a policy would have blocked a non-`claude/` push is therefore not observed. Not retried.
+```
+To https://github.com/janrizmlibres/claude-pstack
+ ! [rejected]        HEAD -> probe/routine-run-push-A (fetch first)
+error: failed to push some refs to 'https://github.com/janrizmlibres/claude-pstack'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+## Summary
+
+`entry=R8V3T setup=ok(marker CANARY-HOOK-7m2p seen) plugin_agent=K2W9N depth_L2=ok(agent_tool=yes,depth=3) model=claude-opus-5-5 remote_tools=add_repo,subscribe_pr_activity,unsubscribe_pr_activity(no create_session) claude_push=accepted other_push=rejected(non-fast-forward "fetch first", not policy)`
