@@ -23,3 +23,4 @@ S7 push from subagent: OK (push) / prep FAILED: "/bin/bash: line 1: /tmp/units/p
 S8 open parent PR (REST): OK — PR #41 unit-a -> main
 S9 open stacked PR (REST): OK — PR #43 unit-b -> unit-a
 S10 retarget stacked PR (REST): OK — PR #43 base now main
+S11 close both PRs (REST): OK — #41 closed, #43 closed
