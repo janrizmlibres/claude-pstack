@@ -71,7 +71,7 @@ Each candidate gets a tracking issue with the release checks as checkboxes, each
 | `landing-refused` | release | cloud | A refused merge (the fixture's `gated` branch needs a review) stops the PR at merge-ready, reported as a gate, never retried or worked around. |
 | **Routines** | | | |
 | `routine-run-now` | release | cloud | The README's routine with the task in its prompt, fired with Run now, runs start to finish. |
-| `routine-label` | release | cloud | The README's GitHub-label routine waits for the trigger context as the next message, then runs start to finish. |
+| `routine-label` | release | cloud | The README's GitHub-label routine waits for the trigger context as the next message, then runs start to finish. Its work lands on the PR's head branch. |
 | **Last** | | | |
 | `dogfood` | release | cloud | A spec issue on one of the maintainer's personal repos runs end to end with `/pstack:poteto-mode build <issue URL>`. Not in the fixture: it has no brief and reports on the tracking issue. |
 
