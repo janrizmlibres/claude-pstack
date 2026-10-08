@@ -253,10 +253,13 @@ In cloud, `gh pr merge <pr> --squash` → `gh api -X PUT repos/{owner}/{repo}/pu
 ```detect
 pattern: /ccr/auto_merge\b
 pattern: \bscripts/watch-pr/watch-pr\b
+pattern: `/loop` in dynamic mode\b
 before: In cloud, arm merge-when-ready with `gh api -X PUT repos/{owner}/{repo}/pulls/<n>/ccr/auto_merge`.
 before: On GitHub, status comes from `scripts/watch-pr/watch-pr`. Run it directly.
+before: Run `drive` and `background` under `/loop` in dynamic mode.
 after: In cloud, for merge-when-ready, watch the checks from a background wait, then merge.
 after: Status comes from the watcher, run through the runtime launcher: `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/scripts/run watch-pr/watch-pr`.
+after: Run `drive` and `background` from a background wait: run the watcher with `run_in_background: true` or under Monitor.
 ```
 
 ## 14. Agent descriptions
