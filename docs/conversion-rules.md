@@ -282,6 +282,7 @@ These keep `skills/poteto-mode/SKILL.md` translated:
 - "Defaults for every `Agent` call" opens with the brief contract, by path, for every spawn, not only a playbook step's;
 - "You own every subagent's work" gains one sentence: a worker's worktree is removed once its result is integrated or discarded, keeping its branch;
 - the router's "work the user steps away from goes to `figure-it-out`" clause is narrowed: being handed off doesn't count as stepping away.
+- beside "Always pause", a short passage holds the lead to the brief contract's missing-files rule for its own setup: a missing gitignored file stops the step and is never created, from a template or otherwise;
 
 ```detect
 undetectable: each asks for a line to be present in poteto-mode's SKILL.md, and an absence is not a line a pattern can match
