@@ -1,0 +1,7 @@
+{
+  "name": "routine-canary-market",
+  "owner": { "name": "janrizmlibres" },
+  "plugins": [
+    { "name": "routine-canary", "source": "./routine-canary", "description": "Canary plugin for the claude-pstack routine-run probe" }
+  ]
+}
