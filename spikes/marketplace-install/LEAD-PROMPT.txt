@@ -1,0 +1,31 @@
+/probe:entry
+Mktprobe heron: you are the LEAD of a tiny probe of a plugin installed by this environment's setup script. Nobody is watching: work unattended to the end and never call AskUserQuestion. SECURITY: this repo is public. Never print, log or push tokens, keys or secrets. Do not run bare env or printenv; run only the exact commands below. Do not change any settings or the permission mode. Never retry a refused action more than once. If a step fails, log the error verbatim and go on. No builds, no installs.
+
+Your log is out.md at the repo root. You are on your designated claude/... branch.
+
+1. Before running any tool, write out.md with: (a) the ENTRY-TOKEN if you know one; (b) the four "entry ..." substitution lines verbatim as they reached you; (c) any PROBE-REMINDER text in your context, verbatim, or "none"; (d) the first ~300 characters of your first user message exactly as it appeared to you, tags included; (e) whether you have the Agent tool (direct or deferred).
+
+2. Run each of these and paste command and output verbatim into out.md:
+   date -u +%FT%TZ; git branch --show-current; git log --oneline -1; claude --version
+   cat /var/log/mkt-probe-setup.log 2>&1
+   cat /var/log/mkt-probe-pull.log 2>&1
+   cat .probe/hook.log 2>&1
+   printenv CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH; echo exit=$?
+   jq -c '{envKeys: (.env // {} | keys), depth: .env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH, hookEvents: (.hooks // {} | keys), enabledPlugins, probeConfig: (.pluginConfigs // {})["probe@pstack-mkt-probe"]}' ~/.claude/settings.json 2>&1
+   claude plugin list 2>&1
+   git -C /opt/claude-pstack log --oneline -1 2>&1
+
+3. Call the Skill tool with skill "probe:visible" and paste its five substitution lines verbatim. Then use the Read tool on the exact plugin-root path it printed and log the token or the error verbatim.
+
+4. Call the Agent tool once: subagent_type "probe:prober", foreground, no isolation, with exactly this prompt:
+   "Depth 1. (a) Copy the plugin-root, set_opt and unset_opt lines from your own instructions verbatim. (b) Read that plugin-root path with the Read tool and report the token or error verbatim. (c) Run: printenv CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH; echo exit=$? and paste the output. (d) If you have the Agent tool (load it with ToolSearch first if deferred), call it with subagent_type probe:prober, foreground, no isolation, and this prompt: 'Depth 2. Copy the plugin-root line from your own instructions verbatim. Read that path with the Read tool and report the token or error verbatim. Then Read the playbooks/deep.md file in the same directory and report its token or error. Say whether you have the Agent tool. Do not spawn agents.' Relay its full reply verbatim under CHILD REPLY; quote any error verbatim. If you have no Agent tool, say so."
+   Paste the full reply verbatim into out.md.
+
+5. Append one line: "SUMMARY: entry_token=<value|none>; reminder_seen=<yes|no>; hook_lines=<count in .probe/hook.log>; hook_root=<root= value from the last hook line>; visible_root_substituted=<yes|no>; set_opt=<value as it reached visible>; unset_opt=<value>; nodefault_opt=<value>; lead_read=<token|error>; lead_depth=<value>; L1_agent=<yes|no>; L1_read=<token|error>; L2_spawned=<yes|no>; L2_read=<token|error>; L2_deep=<token|error>; error=<verbatim or none>"
+
+6. git add out.md && git commit -qm "Mktprobe heron: probe output" && git push origin HEAD
+   If the push is refused, try once more; if refused again, put out.md's contents in your final message.
+
+End your turn with the SUMMARY line.
+
+If you later receive another message: quote verbatim any PROBE-REMINDER text in your context for that turn (or "none"), append it and the output of `date -u +%FT%TZ; cat .probe/hook.log` to out.md under "## Later turn", commit and push, and end with the word the reminder asks for if it asks for one.
