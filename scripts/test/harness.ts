@@ -40,7 +40,12 @@ export function runScript(script: string, args: string[], options: RunOptions): 
 
 /** Run `bash <script> ...args`, with `script` relative to the plugin, as Claude Code runs a hook command. */
 export function runPluginScript(script: string, args: string[], options: RunOptions): RunResult {
-  return run(["bash", join(pluginDir, script), ...args], options);
+  return runBashScript(join(pluginDir, script), args, options);
+}
+
+/** Run `bash <file> ...args`, with `file` an absolute path. */
+export function runBashScript(file: string, args: string[], options: RunOptions): RunResult {
+  return run(["bash", file, ...args], options);
 }
 
 function run(cmd: string[], options: RunOptions): RunResult {
