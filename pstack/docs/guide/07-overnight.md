@@ -101,7 +101,6 @@ Give each body of work its own lead session, such as a feature, a migration, a p
 
 A few habits help:
 
-- Start each lead by loading its context with `/pstack:recall` over related sessions, finished ones included.
 - Give each PR a verification swarm before it merges, and let Autopilot-stack or Autopilot-full carry the queue.
 - Ask the lead for a plan backed by data, and have it answer open questions with prototypes before it asks you.
 
@@ -118,7 +117,7 @@ Every loop above still waits for you to start it. A scheduled or event-driven au
 - Every stage can stop the line. Triage can decide the report is expected behavior, repro can fail to reproduce it, and the fixer can judge the change too risky. Each of those outcomes is useful, because it keeps bad work from reaching the next stage, where it costs more to undo.
 - Every stage hands over evidence. Repro attaches screenshots and video of the broken state, and the fix attaches before-and-after proof. A human can then check that the agent fixed the right thing before reading a line of code.
 
-In Claude Code, such an automation is a routine (`/schedule`): a cloud session that starts on a schedule, an API call, or a GitHub event. A routine whose prompt starts with `/pstack:poteto-mode` runs as a lead like any other.
+In Claude Code, such an automation is a routine (`/schedule`): a cloud session that starts on a schedule, an API call, or a GitHub event. A routine set up with the repo and an environment carrying pstack's setup line, whose prompt starts with `/pstack:poteto-mode`, runs as a cloud lead, on in-VM subagents only.
 
 **Pitfall:** a duration is not a finish condition. "work on this for 4 hours" gives the agent nothing to check, and you'll wake up to four hours of motion instead of a result. Give `/goal` a condition that can pass or fail.
 

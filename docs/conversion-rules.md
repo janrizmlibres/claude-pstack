@@ -179,7 +179,7 @@ after: Review bots (e.g. Claude Code Review, Bugbot, Copilot) or security-review
 
 ## 10. Loops
 
-User-facing "/loop until X" → "type `/goal X`" (trigger phrases accept both). A lead's wake becomes a watcher subagent or Monitor for events, and `/loop <interval> <prompt>` through the Skill tool for cadence; a loop prompt reads poteto-mode by path, since a scheduled fire can't run a hidden skill. visual-parity's "`/loop` per component" → "repeat until the diff is zero". Surface line in autonomous-run and autopilot: in cloud, cadence runs from a background wait, since a pending loop won't wake a paused VM.
+User-facing "/loop until X" → "type `/goal X`" (trigger phrases accept both), and a user-facing "give `/loop` a predicate" → "give `/goal` a condition". A lead's wake becomes a watcher subagent or Monitor for events, and `/loop <interval> <prompt>` through the Skill tool for cadence; a loop prompt reads poteto-mode by path, since a scheduled fire can't run a hidden skill. visual-parity's "`/loop` per component" → "repeat until the diff is zero". Surface line in autonomous-run and autopilot: in cloud, cadence runs from a background wait, since a pending loop won't wake a paused VM.
 
 ```detect
 pattern: /loop until\b
@@ -267,7 +267,7 @@ undetectable: each asks for a line to be present in poteto-mode's SKILL.md, and 
 
 ## 16. Install and settings
 
-`/add-plugin pstack` becomes the two `/plugin` commands, `/plugin marketplace add janrizmlibres/claude-pstack` then `/plugin install pstack@claude-pstack`, with the marketplace's auto-update on. `setup-pstack`'s model rule, its reasoning budgets and the `auto` and `inherit-parent` values become the three settings: the user picks each setting's model in `/config` (in cloud, with the setup line's `--config`), the port fixes each setting's effort, and `/pstack:setup-pstack` shows them. A changed setting reaches the sessions started after it.
+`/add-plugin pstack` becomes the two `/plugin` commands, `/plugin marketplace add janrizmlibres/claude-pstack` then `/plugin install pstack@claude-pstack`, with the marketplace's auto-update on. `setup-pstack`'s model rule, its reasoning budgets and the `auto` and `inherit-parent` values become the three settings: the user picks each setting's model in `/config` or `/plugin configure` (in cloud, with the setup line's `--config`), the port fixes each setting's effort, and `/pstack:setup-pstack` shows them.
 
 ```detect
 pattern: (?<![\w-])/add-plugin\b
@@ -294,7 +294,7 @@ after: After `--resume`, type `/pstack:poteto-mode` again, because a resume drop
 
 ## 18. Cloud workers and other Cursor products
 
-Cursor as the product pstack runs in becomes Claude Code. Cursor cloud agents, cloud subagents and the `/in-cloud` command become cloud workers, placed as ADR 0001 places them: a local lead sends swarm workers, orchestrate units and autopilot owners to cloud workers by default (Auto on the account and a default cloud environment), "local only" keeps them in local worktrees, and "hand this off" moves the whole run to a cloud lead. A Cursor Project becomes one lead session per body of work, local or handed off. Cursor automations become routines (`/schedule`). A link to cursor.com becomes the matching Claude Code docs page, or goes when none matches.
+Cursor as the product pstack runs in becomes Claude Code. Cursor cloud agents, cloud subagents and the `/in-cloud` command become cloud workers, placed as ADR 0001 places them: a local lead sends swarm workers, orchestrate units and autopilot owners to cloud workers by default (Auto on the account and a default cloud environment), "local only" keeps them in local worktrees, and "hand this off" moves the whole run to a cloud lead. A Cursor Project becomes one lead session per body of work, local or handed off. Cursor automations become routines (`/schedule`), each a cloud lead as ADR 0001 describes. A Cursor-only habit with no counterpart, such as dragging chats into a Project, goes. A link to cursor.com becomes the matching Claude Code docs page, or goes when none matches.
 
 ```detect
 pattern: \bCursor cloud agents?\b

@@ -49,8 +49,6 @@ Say yes and it writes `.claude/skills/verify-<app>/`, a project-local skill that
 
 If you're new to pstack, say yes. An agent that can check its own work keeps going until the check passes. An agent that can't hands every result back to you to check by hand. Of everything in this guide, the verification skill pays off the most.
 
-After you change a setting, start a new session. A changed setting reaches the sessions started after it.
-
 ## Keep the cost in check
 
 pstack spends extra tokens on subagents and review panels. That's the price of the rigor. To spend fewer:
@@ -59,7 +57,7 @@ pstack spends extra tokens on subagents and review panels. That's the price of t
 - Waive a panel in your own words when the change doesn't need it. The run records the step as `skip: user waived`. pstack never skips a panel on its own judgment.
 - Save `/pstack:poteto-mode` for work that needs rigor. A small, obvious edit doesn't.
 
-Heavy commands, such as test runs, builds and dev servers, run one at a time per machine across every pstack session, so parallel workers don't exhaust your RAM.
+Heavy commands, such as test runners, builds and dev servers, run one at a time per machine across every pstack session, so parallel workers don't exhaust your RAM.
 
 ## Run your first task
 

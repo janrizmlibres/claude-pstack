@@ -28,7 +28,7 @@ The design isn't sacred once code starts. If implementation shows the same worka
 /pstack:arena take my prompt to the arena verbatim. i want to compare their proposals with yours.
 ```
 
-[`/pstack:arena`](../../skills/arena/SKILL.md) is the general tool underneath. Runners attempt the same design or code brief in parallel, each writing to its own worktree or directory. The parent gives each runner its own direction, a structurally distinct whole shape to build, plus one fourth-way runner that looks for a shape outside all of them. A read-only judge reads every candidate blind, in a fresh context, and scores it against a rubric. The parent reads each candidate end to end too, picks a base, grafts in the best ideas from the losers, and verifies the result.
+[`/pstack:arena`](../../skills/arena/SKILL.md) is the general tool underneath. Runners attempt the same design or code brief in parallel, each writing to its own worktree or directory. The lead gives each runner its own direction, a structurally distinct whole shape to build, plus one fourth-way runner that looks for a shape outside all of them. A read-only judge reads every candidate blind, in a fresh context, and scores it against a rubric. The lead reads each candidate end to end too, picks a base, grafts in the best ideas from the losers, and verifies the result.
 
 ```mermaid
 flowchart LR
@@ -44,7 +44,7 @@ flowchart LR
     H --> I[Verify]
 ```
 
-The runners run on the Work setting, and the judge on Judgement. The parent adds a direction whenever it can name another distinct shape, and you can adjust the count per task. Ask for more candidates when the decision matters, fewer when it doesn't:
+The runners run on the Work setting, and the judge on Judgement. The lead adds a direction whenever it can name another distinct shape, and you can adjust the count per task. Ask for more candidates when the decision matters, fewer when it doesn't:
 
 ```text
 /pstack:arena this, 5 candidates. the cache key format is expensive to change later.

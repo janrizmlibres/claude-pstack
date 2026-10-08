@@ -37,7 +37,7 @@ When every setting is unset and it matters, offer once to pick models now. It ma
 
 1. Install locally with two commands in a Claude Code session: `/plugin marketplace add janrizmlibres/claude-pstack`, then `/plugin install pstack@claude-pstack`. In `/plugin`, turn on auto-update for the `claude-pstack` marketplace so every release reaches them.
 2. In the default permission mode, add `Read(~/.claude/plugins/cache/claude-pstack/**)` to `permissions.allow` in the user settings, so pstack's reads of its own files don't prompt or get denied in subagents.
-3. Optionally pick a model for each setting in `/config` or `/plugin configure`. Run [`/pstack:setup-pstack`](../setup-pstack/SKILL.md) to see the settings. It also prints the setup line filled in with them. A changed setting reaches the sessions started after it.
+3. Optionally pick a model for each setting in `/config` or `/plugin configure`. Run [`/pstack:setup-pstack`](../setup-pstack/SKILL.md) to see the settings. It also prints the setup line filled in with them.
 4. For cloud sessions, paste that setup line into the setup script of every cloud environment that should carry pstack.
 5. Start a real task with `/pstack:poteto-mode`, a goal, and a check that can pass or fail.
 
@@ -78,7 +78,7 @@ The default answer is `/pstack:poteto-mode`, which runs most of the others when 
 | Know what a small diff could break outside itself | [`/pstack:blast-radius`](../blast-radius/SKILL.md) |
 | Settle types and module shape before code that crosses a function boundary | [`/pstack:architect`](../architect/SKILL.md) |
 | Get several attempts at one brief, each in its own direction, merged into the best one | [`/pstack:arena`](../arena/SKILL.md) |
-| Run parallel checks over slices, or race workers, as cloud workers | [`/pstack:swarm`](../swarm/SKILL.md) |
+| Run parallel checks over slices, or race workers | [`/pstack:swarm`](../swarm/SKILL.md) |
 | Have three reviewers, one lens each, review a diff and try to break it | [`/pstack:interrogate`](../interrogate/SKILL.md) |
 | Fix a bug test-first when a cheap local test exists | [`/pstack:tdd`](../tdd/SKILL.md) |
 | Apply TypeScript rules to `.ts` or `.tsx` work | [`/pstack:typescript-best-practices`](../typescript-best-practices/SKILL.md) |
@@ -141,7 +141,7 @@ Principles are one-rule skills that `/pstack:poteto-mode` reads and cites in its
 | The mode stopped applying after a resume | `--resume` drops the reminder hook. Type `/pstack:poteto-mode` again. |
 | The mode stopped applying in a new session | It is on per session. Type `/pstack:poteto-mode` at the start of each, or ask for it in `CLAUDE.md`. |
 | A question got treated as the next step of the last task | Say "new task", or say the turn doesn't need the mode. |
-| A new model choice had no effect | A changed setting reaches the sessions started after it. Start one. In cloud, settings come from the setup line's `--config` values, so edit the setup line. |
+| A new model choice had no effect | Run `/pstack:setup-pstack` to see what the session has, and start a new session if it still shows the old model. In cloud, settings come from the setup line's `--config` values, so edit the setup line. |
 | Runs cost more than expected | See the cost paragraph under Get set up. |
 | A skill didn't load on its own | Only `/pstack:setup-pstack` loads from the user's words. The others load when the user types them or when `/pstack:poteto-mode` reads them, and it doesn't read every skill. |
 | pstack's reads prompt the user, or a subagent's read was denied | Add the `Read` rule under Get set up. |
@@ -158,7 +158,7 @@ For a run that drifts, [`references/prompting.md`](references/prompting.md) has 
 - [`/pstack:reflect`](../reflect/SKILL.md) after a session turns its lessons into skill edits the user approves.
 - `/pstack:poteto-mode write a skill for <workflow>` runs the authoring playbook. The eval playbook tests a skill change blind.
 - Fix a misbehaving skill in its own PR, not inside the feature work where it went wrong.
-- The user's `CLAUDE.md` outranks pstack's text, so a rule there (a merge method, a PR title style, stacking with `gh stack`) changes what the playbooks do.
+- The user's `CLAUDE.md` outranks pstack's text, so a rule there (a merge method, a PR title style, a stacking tool) changes what the playbooks do.
 
 [Guide page 9](../../docs/guide/09-make-it-yours.md) covers each of these.
 
