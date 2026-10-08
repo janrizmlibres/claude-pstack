@@ -63,7 +63,7 @@ workers), and each PR works from a worktree off its base, `develop` or any other
 checkout is left alone.
 - Worktrees hold tracked files only. List the gitignored files workers need, such as `.env`, in a
   `.worktreeinclude` at your repo root. A worker missing one stops with `BLOCKED: missing <file>`
-  rather than copying it.
+  rather than creating it, even from a template such as `.env.example`.
 - `worktree.symlinkDirectories` (for `node_modules`, say) is yours to opt into. pstack never sets
   it, since one worktree's install would then change every other's.
 - Worktrees cost disk. The lead removes workers' worktrees once their work is integrated and keeps

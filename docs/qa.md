@@ -32,7 +32,7 @@ Each candidate gets a tracking issue with the release checks as checkboxes, each
 | `exclude-line` | release | local | The lead adds `.claude/worktrees/` to `.git/info/exclude` once, the first time it creates a worktree. |
 | `worktree-removal` | release | local | The lead removes each worker's worktree once its result is integrated or discarded, and keeps the branch. |
 | `swarm-local-only` | release | local | Under "local only", a swarm runs in parallel local worktrees. |
-| `missing-env` | release | local | A worker in a fresh worktree without `.env` returns `BLOCKED: missing .env` and copies nothing. |
+| `missing-env` | release | local | A worker in a fresh worktree with `.env.example` but no `.env` returns `BLOCKED: missing .env` and creates or copies nothing. |
 | `cloud-worker-nonce` | release | local | A local lead finds its cloud worker's report branch by its `Pstack-Nonce` trailer and reads the trailered report commit. |
 | `cloud-sub-lead` | release | cloud | A cloud worktree sub-lead spawns worktree workers of its own. |
 | `swarm-window` | release | cloud | Swarm keeps at most 10 slices in flight, and a refused spawn is backpressure: no slice dropped. |

@@ -93,6 +93,8 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 **Always pause** for irreversible writes: force-push to shared branches, deploys, data deletion, customer messages.
 
+**Missing files stop the step.** When your own setup (a dependency install, a baseline run) needs a gitignored file that isn't there, such as `.env`, report it missing and stop that step. Never create it, whether by copying it from another checkout, by copying a template such as `.env.example`, or by writing it.
+
 **Session overrides:** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going.
 
 **No is an acceptable answer.** Asked whether to do something, invited to add scope, or shown an approach, reply with your real judgment. Decline, push back, or say "this doesn't earn its place" when true. A recommendation is a judgment, not a validation. Agreement is not the default, candor over sycophancy.
