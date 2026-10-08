@@ -309,3 +309,57 @@ Agent isolation values: worktree, remote
 - How it reached me: a system "task-notification" (queued-remote-notifications) prompted ReadNotifications, which returned a cross-session-message from session_01FWterKmc4p3rzCwvx4fphG (origin: message from another Claude session, via send_message). First 300 chars as seen:
   > Answer from lead: Blue. Please finish now.
 ```
+
+## Step 6: final checks
+```
+$ git worktree list
+/home/user/claude-pstack                                            b8d1cc8 [claude/nestprobe-heron-gsd2fi]
+/home/user/claude-pstack/.claude/worktrees/agent-a073706e820d47776  8a96ab2 [worktree-agent-a073706e820d47776]
+/home/user/claude-pstack/.claude/worktrees/agent-abd13cd8f699fd088  c7d632b [worktree-agent-abd13cd8f699fd088]
+/home/user/claude-pstack/.claude/worktrees/agent-ae03ae6d96b435ed9  dad5564 [worktree-agent-ae03ae6d96b435ed9]
+$ git branch -a | grep -v remotes/origin/probe
+* claude/nestprobe-heron-gsd2fi
+  main
++ worktree-agent-a073706e820d47776
++ worktree-agent-abd13cd8f699fd088
++ worktree-agent-ae03ae6d96b435ed9
+  remotes/origin/claude/nestprobe-child
+  remotes/origin/claude/nestprobe-heron-gsd2fi
+  remotes/origin/main
+$ ls .claude
+worktrees
+$ ls -la .claude/worktrees
+total 20
+drwxr-xr-x 5 root root 4096 Oct  8 02:26 .
+drwxr-xr-x 3 root root 4096 Oct  8 02:25 ..
+drwxr-xr-x 4 root root 4096 Oct  8 02:26 agent-a073706e820d47776
+drwxr-xr-x 4 root root 4096 Oct  8 02:25 agent-abd13cd8f699fd088
+drwxr-xr-x 4 root root 4096 Oct  8 02:26 agent-ae03ae6d96b435ed9
+```
+
+## Summary
+- **Foreground nesting depth: 1.** The level-1 general-purpose subagent has no Agent tool (its tool list: Artifact, Bash, Edit, Glob, Grep, ListAgents, Read, ReportFindings, SendUserFile, ShowOnboardingRolePicker, Skill, SuggestSkills, ToolSearch, Write, SubagentHandback + claude-code-remote MCP tools). Agent is not even deferred, so the limit is enforced by removing the tool, not by an error.
+- **Background nesting depth: 1.** Same as foreground. The background subagent also has no Agent tool, and its tool set is slightly smaller.
+- **CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1**, set in the lead's env and inherited by subagents (printenv -> 1).
+- Possible escape hatch: subagents keep mcp__claude-code-remote__create_session/send_message, so a subagent could start a full child *session*. Not tested.
+- **Worktrees:**
+  - Location: `<repo>/.claude/worktrees/agent-<agentId>`. Branch name: `worktree-agent-<agentId>`.
+  - Base commit: `2ea8e47` (origin/main, the session start commit), NOT the lead's current HEAD. So W1/W2/W3 did not see the lead's unpushed/new commits or the merged W1.
+  - Each worktree is `locked` while its agent runs, then unlocked.
+  - All 3 worktrees and branches were KEPT after completion (each had a commit). The tool result reports worktreePath and worktreeBranch but no kept/removed field.
+  - `.claude/` is not gitignored. I added `.claude/worktrees/` to .git/info/exclude so `git add -A` would not stage the worktrees as embedded repos.
+- **Isolation:** W2 and W3 ran in parallel and were isolated. Each saw only its own file and commit, though both appeared in `git worktree list` because they share one .git.
+- **Merge:** `git merge --no-edit worktree-agent-<id>` worked (ort merge, wt-probe/W1.txt brought into the lead branch). Subagents added Co-Authored-By/Claude-Session trailers to their commits on their own.
+- **Child session `session_01TnE4qtDH4SijE5uVkiy7GV`:**
+  - AskUserQuestion PRESENT, Agent PRESENT (isolation worktree|remote), claude-code-remote PRESENT. The child also had an extra MCP server (mcp__1a59c906-...) that the lead did not have.
+  - The child pushed its tool list, then called AskUserQuestion at 02:25:49Z.
+  - While the question was pending: status=SESSION_STATUS_REQUIRES_ACTION, status_bucket=SESSION_STATUS_BUCKET_BLOCKED, post_turn_summary.needs_action="Approve or deny AskUserQuestion" (status_detail "Waiting on permission: AskUserQuestion"). So the question shows up as a pending *permission*.
+  - It stayed that way for ~5.5 min. connection_status went to disconnected around 02:31.
+  - After send_message (`{"status":"delivered"}`): the worker restarted (epoch 1->2) and the pending AskUserQuestion was dropped with no tool_result. The message arrived as a task-notification -> ReadNotifications cross-session-message, not as the answer to the question.
+  - The child then went to SESSION_STATUS_IDLE / SESSION_STATUS_BUCKET_COMPLETED and wrongly reported "asked=no".
+- **VM:** 4 vCPU, 15 GiB RAM, no swap, 252G disk (30G available), Claude Code 2.1.293.
+- **Surprises:**
+  - (1) Worktrees branch from the session start commit, not HEAD.
+  - (2) In a cloud child, AskUserQuestion is a permission-gated block that nobody can answer remotely; send_message does not answer it.
+  - (3) The child's restart erased its memory of the pending call, so its own report contradicts its transcript.
+  - (4) Subagent reports come back via a SubagentHandback message rather than in the Agent tool result.
