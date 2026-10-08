@@ -225,6 +225,7 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `hooks/hooks.json` | port-only | registers the compaction hook on SessionStart's compact matcher, which skill frontmatter can't: its SessionStart never fires |
 | `hooks/poteto-mode-compaction.sh` | port-only | after a compaction in a marked poteto-mode session, lists the durable state to re-read before acting: the skill, any store, the transcript, a trail and a resume note |
 | `hooks/poteto-mode-reminder.sh` | port-only | poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads |
+| `scripts/exclude-worktrees` | port-only | adds .claude/worktrees/ to the exclude file once, one plain command a worktree-isolated agent's guard accepts |
 | `scripts/heavy` | port-only | the machine lock: runs one heavy command at a time per machine, released by the kernel when its holder dies |
 | `scripts/wait-report` | port-only | a sub-lead's wait on a worker's report commit, one plain command a worktree-isolated agent's guard accepts |
 | `skills/poteto-mode/playbooks/hand-off.md` | port-only | the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --permission-mode auto --cloud` and a fixed brief, then prints the link and ends, or says why once and stays local |

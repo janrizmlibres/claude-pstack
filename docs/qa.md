@@ -34,7 +34,7 @@ Each candidate gets a tracking issue with the release checks as checkboxes, each
 | `swarm-local-only` | release | local | Under "local only", a swarm runs in parallel local worktrees. |
 | `missing-env` | release | local | A worker in a fresh worktree with `.env.example` but no `.env` returns `BLOCKED: missing .env` and creates or copies nothing. |
 | `cloud-worker-nonce` | release | local | A local lead finds its cloud worker's report branch by its `Pstack-Nonce` trailer and reads the trailered report commit. |
-| `cloud-sub-lead` | release | cloud | A cloud worktree sub-lead spawns worktree workers of its own, waits for each with pstack's wait command, and the worktree guard refuses none of its commands. |
+| `cloud-sub-lead` | release | cloud | A cloud worktree sub-lead spawns worktree workers of its own, waits for each with pstack's wait command, and the worktree guard refuses none of the commands pstack's text tells it to run. A refused command of the sub-lead's own is recorded, not failed. |
 | `swarm-window` | release | cloud | Swarm keeps at most 10 slices in flight, and a refused spawn is backpressure: no slice dropped. |
 | **Machine lock** | | | |
 | `lock-taskstop` | release | cloud | `TaskStop` on an in-VM subagent holding the lock kills its child processes and frees the lock. |
