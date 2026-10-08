@@ -25,3 +25,11 @@ true
 ```
 
 S2 Read: OK — PR #60 reads draft=true
+
+### S3
+
+```
+{"draft":false}
+```
+
+S3 Ready for review: OK — proxy route returned {"draft":false}
