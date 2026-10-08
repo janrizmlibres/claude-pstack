@@ -57,3 +57,22 @@ S3 Arm auto-merge with each merge method: REFUSED: Permission for this action wa
 S4 Auto-merge on a PR that is already mergeable: REFUSED: not attempted — S3's auto-merge arm was refused by the auto mode classifier ([Modify Shared Resources], then [Merge Without Review]); issuing the same arm call on #61 would be working around that refusal
 S5 Turn the gate green: REFUSED: not attempted — posting probe-gate only serves to let the refused auto-merges land ([Merge Without Review]); the owner posts the statuses from outside if wanted
 S6 Wait for the merges: REFUSED: not attempted — nothing is armed (S1 arm was disarmed in S2, S3/S4 refused), so there are no merges to wait for
+
+### S7 git log base/open
+
+```
+* e66df57 Add release and QA terms to glossary
+* 84ec1bc Allow local worktrees in ADR 0001 and add local-only to glossary
+* 18017b5 Add spec and plan to glossary
+* c76f97c Make cloud workers a local lead's default in ADR 0001
+* 37c8df6 Add program, store and stacker to glossary
+* 81d232e Add heavy command, machine lock and full gate to glossary
+* dbb02a4 Allow in-VM sub-leads in ADR 0001 and add leaf worker to glossary
+* 2ddbb97 Settle worker backends in ADR 0001 and add sub-lead to glossary
+e66df57 Add release and QA terms to glossary
+84ec1bc Allow local worktrees in ADR 0001 and add local-only to glossary
+18017b5 Add spec and plan to glossary
+c76f97c Make cloud workers a local lead's default in ADR 0001
+```
+
+S7 What landed on the base: OK — both base and open sit at e66df57 (the fork point); nothing from #61–#64 landed, so no merge method to verify
