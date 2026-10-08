@@ -108,6 +108,18 @@ _Avoid_: launcher, front end
 An entry point passing a run to a lead on the other surface, when the user chooses to. The input (a spec, a file, or the task verbatim) is pushed first; the entry point keeps no control afterwards.
 _Avoid_: delegation (a lead giving work to its workers), dispatch
 
+**Heavy command**:
+A command whose cost is bounded by the machine rather than the model: a test runner, a build, a whole-project typecheck or lint, a dev server, a browser session. Scoped to one file it is still heavy; a dev server or browser session stays heavy for as long as it is up.
+_Avoid_: test run, heavy run (a run is a pstack run)
+
+**Machine lock**:
+The bound that lets one heavy command at a time run on a machine, shared by every pstack session on it. On the cloud surface the machine is the VM.
+_Avoid_: test lock, build lock, mutex
+
+**Full gate**:
+A project's whole verification (the full suite, the build, end-to-end checks), run at an integration point by the lead, or by a sub-lead for its piece. Workers run only heavy commands scoped to the files they own.
+_Avoid_: CI run, final check, verification pass
+
 **Setup line**:
 The command a user pastes into a cloud environment's setup script to install the port there, carrying their model choices. The only way the port reaches the cloud surface.
 _Avoid_: cloud line, install command
