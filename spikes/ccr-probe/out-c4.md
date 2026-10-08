@@ -17,3 +17,11 @@ S0 Baseline: OK — date, CLI version and branch recorded
 ```
 
 S1 Convert to draft: OK — proxy route returned {"draft":true}
+
+### S2
+
+```
+true
+```
+
+S2 Read: OK — PR #60 reads draft=true
