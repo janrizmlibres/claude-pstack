@@ -83,3 +83,5 @@ R2-S7 Merge parent of open stacked PR (REST): OK — #52 squash-merged (sha 4e15
 ```
 {"sha":"4e15c82afc4e2550bdf77cec0da49f9b804682b1","merged":true,"message":"Pull Request successfully merged"}
 ```
+R2-S8 Merge through gh CLI: FAILED: `non-200 OK status code: 403 Forbidden body: "{\"message\":\"GitHub GraphQL is not available from Claude Code sessions; use the REST API (gh api repos/{owner}/{repo}/...). For review threads, auto-merge, and draft/ready-for-review use the CCR routes on api.github.com: GET /repos/{owner}/{repo}/pulls/{n}/ccr/review_threads, POST /repos/{owner}/{repo}/pulls/{n}/ccr/comments/{comment_id}/resolve (or /unresolve), PUT or DELETE /repos/{owner}/{repo}/pulls/{n}/ccr/auto_merge, POST /repos/{owner}/{repo}/pulls/{n}/ccr/ready_for_review, POST /repos/{owner}/{repo}/pulls/{n}/ccr/convert_to_draft.\",\"documentation_url\":\"https://docs.anthropic.com/en/docs/claude-code/github-actions\"}"` — yes, the error mentions GraphQL (blocked by the session proxy, HTTP 403); #55 left open
+R2-S9 Repo setting from the cloud: skipped per owner (answered in run 1: HTTP 403 from proxy)
