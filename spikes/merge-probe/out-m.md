@@ -62,3 +62,10 @@ R2-S4 Merge commit (REST): OK — #49 merged (sha 4cb92b9); ls-remote after 15s 
 ```
 {"sha":"4cb92b9b383bbbe4570be5877c61a1bf11018681","merged":true,"message":"Pull Request successfully merged"}
 ```
+R2-S5 Squash (REST): OK — #50 merged (sha 3c84ab4); ls-remote after 15s empty → GitHub deleted head pstack/probe-m/squash
+
+### R2-S5 response
+
+```
+{"sha":"3c84ab41ed2e61c9b1f338602d95c6dac2199275","merged":true,"message":"Pull Request successfully merged"}
+```
