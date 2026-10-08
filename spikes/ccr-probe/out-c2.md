@@ -76,3 +76,40 @@ c76f97c Make cloud workers a local lead's default in ADR 0001
 ```
 
 S7 What landed on the base: OK — both base and open sit at e66df57 (the fork point); nothing from #61–#64 landed, so no merge method to verify
+
+### S8 POST pulls/60/ccr/convert_to_draft
+
+```
+REFUSED: Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources].
+```
+
+S8 Convert to draft: REFUSED: Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources]. — follow-up read of .draft not run
+S9 Ready for review: REFUSED: not attempted — same category of write as the refused S8, and with S8 refused #60 is not a draft, so the call would test nothing
+
+## Summary
+
+| Step | Outcome | Verbatim error / refusal reason |
+|---|---|---|
+| S0 Baseline | OK | — (allow_auto_merge=true, delete_branch_on_merge=false) |
+| S1 Arm auto-merge, no body (#63) | OK | — `{"enabled":true,"merge_method":"merge"}`; PR shows auto_merge.merge_method=merge, enabled_by=janrizmlibres |
+| S2 Disarm auto-merge (#63) | OK | — `{"enabled":false}`; PR shows auto_merge=null |
+| S3 Arm with each merge method | REFUSED | `Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources].` (#62 merge); read of #62–#64 then refused with `Reason: [Merge Without Review].` |
+| S4 Auto-merge on mergeable PR (#61) | REFUSED (not attempted) | Same intent as the S3 refusal; not retried |
+| S5 Turn the gate green | REFUSED (not attempted) | Only serves the refused merges; owner can post statuses from outside |
+| S6 Wait for the merges | REFUSED (not attempted) | Nothing armed |
+| S7 What landed on the base | OK | — base and open both at e66df57; nothing landed |
+| S8 Convert to draft (#60) | REFUSED | `Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources].` |
+| S9 Ready for review (#60) | REFUSED (not attempted) | Same write category as S8; #60 isn't a draft |
+
+**Request shapes that worked**
+- Arm: `gh api -X PUT repos/{owner}/{repo}/pulls/{n}/ccr/auto_merge` with no body → `{"enabled":true,"merge_method":"merge"}` (default method `merge`). REST `GET pulls/{n}` then reflects it in `auto_merge`.
+- Disarm: `gh api -X DELETE repos/{owner}/{repo}/pulls/{n}/ccr/auto_merge` → `{"enabled":false}`.
+- The `merge_method` body format (`-f merge_method=merge`) is untested: the call never reached the proxy.
+- convert_to_draft / ready_for_review: untested (refused before reaching the proxy).
+
+**Permission mode:** auto mode (the refusals came from the Claude Code auto mode classifier).
+
+**Surprising**
+- The proxy accepted the /ccr/auto_merge routes; every failure came from the local auto-mode classifier, not from GitHub or the proxy.
+- The classifier allowed S1 and S2 (arm and disarm on #63), then refused the next arm (#62, with merge_method) as [Modify Shared Resources]. After that it refused even a read-only `GET pulls/{62,63,64}` as [Merge Without Review]. So it appears to judge the whole session's direction, not just each single call.
+- convert_to_draft (a reversible state flip on a throwaway PR) was also refused as [Modify Shared Resources].
