@@ -282,6 +282,7 @@ These keep `skills/poteto-mode/SKILL.md` translated:
 - "Defaults for every `Agent` call" opens with the brief contract, by path, for every spawn, not only a playbook step's;
 - "You own every subagent's work" gains one sentence: a worker's worktree is removed once its result is integrated or discarded, keeping its branch;
 - the router's "work the user steps away from goes to `figure-it-out`" clause is narrowed: being handed off doesn't count as stepping away.
+- the router gains one line for a run that starts detached at a PR's head (a GitHub-fired routine): it pushes to the PR's head branch, falls back to a `claude/` branch and a PR against the head when that push is refused, and never force-pushes the head;
 
 ```detect
 undetectable: each asks for a line to be present in poteto-mode's SKILL.md, and an absence is not a line a pattern can match
