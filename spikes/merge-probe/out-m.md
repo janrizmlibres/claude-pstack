@@ -47,3 +47,9 @@ Surprising / notes:
 - Root cause of the cascade is a bug in the S1 prep script: `mkdir -p probe-m` runs once, but the empty directory is removed by git when the loop does `git checkout -q -b pstack/probe-m/<h> pstack/probe-m/base` after the first commit (the base has no tracked files under `probe-m/`). The first iteration (`merge`) succeeds; later `echo $h > probe-m/$h.txt` calls fail, and the trailing `&&` then skips the stack-b/stack-c loop. Fix: move `mkdir -p probe-m` inside the loop (before the `echo`).
 - `gh api` reads (repo GET, pulls GET) and REST PR creation reached GitHub (422 was a real GitHub validation error). Repository settings writes are blocked by the session's agent proxy (403), separate from the permission system.
 - Merge behaviour (S4–S8) and auto-deletion of head branches were never exercised; the probe needs a re-run with the fixed prep script.
+
+# Run 2
+
+LEAD from origin/research/merge-probe; the only change from run 1 is the S1 prep fix (`mkdir -p probe-m` moved inside both loops). S9 skipped per owner.
+
+R2-S1 Branches: OK — prep created 8 local branches; push succeeded; ls-remote returned 8 refs (base 84ec1bc, merge 9b309f3, squash a5707cd, rebase 0ef827f, stack-a 91901b4, stack-b 92f0d66, stack-c fa59761, ghcli 466c142)
