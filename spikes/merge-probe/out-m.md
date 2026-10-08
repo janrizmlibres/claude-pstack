@@ -14,3 +14,4 @@ gh version 2.89.0 (2026-03-26)
 ## Steps
 
 S0 Baseline: OK — gh api works; delete_branch_on_merge=true, all three merge methods allowed
+S1 Branches: FAILED: prep: `/bin/bash: line 1: probe-m/squash.txt: No such file or directory` (same for rebase, stack-a, ghcli); push: `error: src refspec pstack/probe-m/stack-b does not match any` / `error: src refspec pstack/probe-m/stack-c does not match any` / `error: failed to push some refs` — prep script bug: `mkdir -p probe-m` creates an empty dir that git removes on `git checkout pstack/probe-m/base`, so only `merge` got its commit; squash/rebase/stack-a/ghcli were created with no commit, stack-b/stack-c never created; push sent nothing; ls-remote returned 0 refs (expected 8)
