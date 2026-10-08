@@ -108,6 +108,10 @@ _Avoid_: launcher, front end
 An entry point passing a run to a lead on the other surface, when the user chooses to. The input (a spec, a file, or the task verbatim) is pushed first; the entry point keeps no control afterwards.
 _Avoid_: delegation (a lead giving work to its workers), dispatch
 
+**Routine run**:
+A cloud session started by a routine set up with the repo and an environment carrying the setup line. An entry point like any other: its input is in the routine's prompt or, when an API call or GitHub event fires it, arrives as the next message.
+_Avoid_: scheduled run, triggered session
+
 **Local-only**:
 A run in which a local lead starts no cloud workers, so work that would go to them runs in parallel local worktrees instead. The user asks for it per run, or the lead falls back to it, and says so once, when it can't start cloud workers.
 _Avoid_: offline, no-cloud mode
@@ -135,6 +139,14 @@ _Avoid_: state, scratch, notes
 **Stacker**:
 The one worker allowed to rewrite a stack's topology (rebase, force-push), for conflicted merges and restacks. Clean landings are not its job; the lead or sub-lead does those.
 _Avoid_: restacker, topology writer, babysitter (watches one stack's PRs and reports to the stacker)
+
+**Landing**:
+Merging a verified PR into its base: through the forge's merge, or, in a program, by the lead pushing a fast-forward or clean cherry-pick of the unit's commit.
+_Avoid_: shipping (the playbook), merge (too broad: a stacker's conflicted merge is not a landing)
+
+**Landing grant**:
+A request's explicit permission to land. Withheld unless the request gives it; with it, a refused merge still stops that PR at merge-ready for the user, never routed around.
+_Avoid_: merge authority, landing authority
 
 **Setup line**:
 The command a user pastes into a cloud environment's setup script to install the port there, carrying their model choices. The only way the port reaches the cloud surface.
