@@ -34,6 +34,26 @@
       "path": "pstack/skills/poteto-mode/scripts/bun.lock",
       "kind": "dropped",
       "why": "a runtime lockfile for bootstrap.ts's install; kept for development only"
+    },
+    {
+      "path": "pstack/skills/poteto-help/SKILL.md",
+      "kind": "override",
+      "why": "Cursor-only sections (Custom Mode, Option+Enter, .cursor/rules, /add-plugin) rewritten for Claude Code's install, settings and surfaces, with a row for re-entering the mode after a resume"
+    },
+    {
+      "path": "pstack/README.md",
+      "kind": "translated",
+      "why": "adds the port-only Hand-off playbook to the playbook table and points cloud installs to the setup line"
+    },
+    {
+      "path": "pstack/docs/guide/01-setup.md",
+      "kind": "translated",
+      "why": "adds the port's install prerequisites (the Read rule, gh, Bun or Node), the panel waiver and the machine lock to setup and cost"
+    },
+    {
+      "path": "pstack/docs/guide/02-poteto-mode.md",
+      "kind": "translated",
+      "why": "counts and names the port-only Hand-off playbook"
     }
   ]
 }

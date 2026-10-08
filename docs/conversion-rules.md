@@ -31,6 +31,10 @@ after: Use the **arena** skill: read ${CLAUDE_PLUGIN_ROOT}/skills/arena/SKILL.md
 after: [`/pstack:poteto-mode`](./skills/poteto-mode/SKILL.md) and the agents route through the same wrapper.
 after: Run /pstack:setup-pstack once, then /pstack:principle-fix-root-causes when a bug recurs.
 after: Seed the hypotheses with /how over the affected subsystem (read ${CLAUDE_PLUGIN_ROOT}/skills/how/SKILL.md).
+allow: pstack/docs/guide/02-poteto-mode.md | departure board listing | the image's alt text quotes the lettering in the picture
+allow: pstack/docs/guide/03-understand.md | links clues under | the image's alt text quotes the lettering in the picture
+allow: pstack/docs/guide/04-design.md | interrogate panels | the image's alt text quotes the lettering in the picture
+allow: pstack/docs/guide/10-recipes-and-pitfalls.md | pinned cards reading | the image's alt text quotes the lettering in the picture
 ```
 
 ## 2. Frontmatter flags stay
@@ -68,16 +72,20 @@ pattern: \bpstack-models\.mdc\b
 pattern: \bpoteto-agent\b
 pattern: \bgeneralPurpose\b
 pattern: \binherit-parent\b
+pattern: \b[Gg]rok\b(?!-\d| [Bb]ot)
+pattern: \b(?:[Oo]pus|[Ss]onnet|[Hh]aiku|[Ff]able) \d
 before: | Reviewer A | `claude-opus-5-5-xhigh` |
 before: | Reviewer B | `grok-4.7-xhigh-fast` |
 before: Use the `interrogate reviewers` line in `~/.cursor/rules/pstack-models.mdc`, one reviewer per entry.
 before: **Use `subagent_type: "poteto-agent"` for any subagent you spawn inside a playbook step**
 before: One message, three calls, `subagent_type: generalPurpose`, and the model left unset for `auto` or `inherit-parent`.
+before: code delegates (feature, refactoring, bug fix, perf, hillclimb) go to grok, while the hardest changes, prose, and judgment go to opus 5.5.
 after: | Breakage | `judgement-reader` |
 after: | Fit | `judgement-reader` |
 after: Spawn one reviewer per lens on the `judgement-reader` agent.
 after: **Use the `work` agent for any subagent you spawn inside a playbook step**
 after: One message, three calls on the `work-reader` agent, with `model:` passed only when `${user_config.judgement_model}` resolved.
+after: code delegates (feature, refactoring, bug fix, perf, hillclimb) run on Work, while the hardest changes, prose, and judgment run on Judgement.
 ```
 
 ## 5. Cross-family review becomes a fresh-context review
@@ -176,10 +184,13 @@ User-facing "/loop until X" → "type `/goal X`" (trigger phrases accept both). 
 ```detect
 pattern: /loop until\b
 pattern: `/loop` per component\b
+pattern: \b[Gg]ives? `/loop`
 before: A long task to drive to completion without stopping ("run until done", "/loop until X").
 before: Investigate the pixel delta. `/loop` per component until the diff is zero.
+before: Write done as checks every iteration can run, and give `/loop` that predicate.
 after: A long task to drive to completion without stopping ("run until done", or type `/goal X`).
 after: Investigate the pixel delta. Repeat until the diff is zero.
+after: Write done as checks every iteration can run, and give `/goal` that condition.
 ```
 
 ## 11. Other Cursor built-ins
@@ -252,4 +263,66 @@ These keep `skills/poteto-mode/SKILL.md` translated:
 
 ```detect
 undetectable: each asks for a line to be present in poteto-mode's SKILL.md, and an absence is not a line a pattern can match
+```
+
+## 16. Install and settings
+
+`/add-plugin pstack` becomes the two `/plugin` commands, `/plugin marketplace add janrizmlibres/claude-pstack` then `/plugin install pstack@claude-pstack`, with the marketplace's auto-update on. `setup-pstack`'s model rule, its reasoning budgets and the `auto` and `inherit-parent` values become the three settings: the user picks each setting's model in `/config` (in cloud, with the setup line's `--config`), the port fixes each setting's effort, and `/pstack:setup-pstack` shows them. A changed setting reaches the sessions started after it.
+
+```detect
+pattern: (?<![\w-])/add-plugin\b
+pattern: \breasoning budgets?\b
+before: Install with `/add-plugin pstack` in chat, or from Customize in the sidebar.
+before: run /setup-pstack, pick a reasoning budget, and choose which models you want.
+after: Install with `/plugin marketplace add janrizmlibres/claude-pstack`, then `/plugin install pstack@claude-pstack`.
+after: Pick a model for each of the three settings in `/config`, and run /pstack:setup-pstack to see them.
+```
+
+## 17. Staying in the mode
+
+A Custom Mode (Option+Enter or Alt+Enter on the slash menu, or Use as Mode) has no counterpart and needs none: a typed `/pstack:poteto-mode` keeps itself on for the rest of the session through its reminder hook, worker results and loop fires included, and stays out of casual turns. The user opts out by saying so. `--resume` drops the hook, so after a resume the user types `/pstack:poteto-mode` again. A mention of the Agents Window goes with its Custom Mode sentence.
+
+```detect
+pattern: \b[Cc]ustom [Mm]odes?\b
+pattern: \b(?:[Oo]ption|[Aa]lt)\+[Ee]nter\b
+pattern: \bAgents Window\b
+before: To keep `/poteto-mode` on for the whole chat, pick it from the `/` menu with Option+Enter (Mac) or Alt+Enter (Windows) instead of Enter.
+before: That makes it a Custom Mode, which stays in context on every turn until you exit it. Custom Modes are available in the Agents Window and the CLI.
+after: `/pstack:poteto-mode` stays on for the rest of the session: its reminder hook brings it back on every turn.
+after: After `--resume`, type `/pstack:poteto-mode` again, because a resume drops the hook.
+```
+
+## 18. Cloud workers and other Cursor products
+
+Cursor as the product pstack runs in becomes Claude Code. Cursor cloud agents, cloud subagents and the `/in-cloud` command become cloud workers, placed as ADR 0001 places them: a local lead sends swarm workers, orchestrate units and autopilot owners to cloud workers by default (Auto on the account and a default cloud environment), "local only" keeps them in local worktrees, and "hand this off" moves the whole run to a cloud lead. A Cursor Project becomes one lead session per body of work, local or handed off. Cursor automations become routines (`/schedule`). A link to cursor.com becomes the matching Claude Code docs page, or goes when none matches.
+
+```detect
+pattern: \bCursor cloud agents?\b
+pattern: \bcloud subagents?\b
+pattern: (?<![\w-])/in-cloud\b
+pattern: \bCursor Projects?\b
+pattern: \bcursor\.com\b
+before: The cleanest isolation is a [cloud subagent](https://cursor.com/docs/subagents#cloud-subagents).
+before: Type `/in-cloud` before the task, or ask the parent chat to hand work to cloud subagents.
+before: A [Cursor Project](https://cursor.com/blog/projects) gives one coordinator agent a persistent thread.
+before: One Cursor cloud agent per PR owns build, the first verification round, and merge.
+after: The cleanest isolation is a [cloud worker](https://code.claude.com/docs/en/claude-code-on-the-web), a cloud session on its own VM and branch.
+after: Say "local only" to keep a run's workers in local worktrees, or "hand this off" to move the whole run to a cloud lead.
+after: Give each body of work its own lead session, local or handed off to the cloud.
+after: One cloud worker per PR owns build, the first verification round, and merge.
+```
+
+## 19. Vendored and dropped files
+
+`deslop`, `control-ui` and `control-cli` ship inside the port, vendored from `cursor-team-kit` and hidden by rule 2, so a line saying they ship in that plugin, or telling the user to install it, says they ship with pstack instead. A reference to a dropped file (`automations/benny`) goes with its sentence, or with its section when the section is about that file.
+
+```detect
+pattern: \bships? in (?:the )?`cursor-team-kit`
+pattern: \binstall `cursor-team-kit`
+pattern: \b[Bb]enny\b
+before: `/deslop` ships in the `cursor-team-kit` plugin, not in pstack.
+before: install `cursor-team-kit` alongside pstack if you want the full set.
+before: pstack also ships a dormant [benny automation pack](./automations/benny/).
+after: `/pstack:deslop` ships with pstack, vendored from the `cursor-team-kit` plugin and hidden until you type it.
+after: `control-cli` and `control-ui` ship with pstack too.
 ```
