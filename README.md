@@ -228,6 +228,8 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `skills/poteto-mode/references/brief-contract.md` | port-only | the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and a sub-lead's timebox |
 | `skills/poteto-mode/scripts/node_modules/commander/` | port-only | commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install |
 | `skills/poteto-mode/scripts/run` | port-only | the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install |
+| `.cursor-plugin/` | dropped | Cursor's plugin manifest, replaced by Claude Code's in .claude-plugin/plugin.json |
+| `.gitignore` | dropped | upstream's plugin-level ignore list: its node_modules/ line would hide the vendored commander, and the repo's root .gitignore covers the rest |
 | `agents/poteto-agent.md` | dropped | replaced by the three writer agents, which carry its body |
 | `automations/benny/` | dropped | Cursor Slack automations, outside the port's scope |
 | `skills/make-bot-ui/` | dropped | Cursor Grok Bot automations: the session creates its own webhook routine and wakes on it, and a lead creating its own routines is out of the port's scope |
