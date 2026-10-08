@@ -1,0 +1,29 @@
+{
+  "entries": [
+    {
+      "path": "pstack/automations/benny",
+      "kind": "dropped",
+      "why": "Cursor Slack automations, outside the port's scope"
+    },
+    {
+      "path": "pstack/agents/poteto-agent.md",
+      "kind": "dropped",
+      "why": "replaced by the three writer agents, which carry its body"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/bootstrap.ts",
+      "kind": "dropped",
+      "why": "installs commander at first run; the port vendors commander and runs scripts through its launcher"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/package.json",
+      "kind": "dropped",
+      "why": "a runtime manifest for bootstrap.ts's install; kept for development only"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/bun.lock",
+      "kind": "dropped",
+      "why": "a runtime lockfile for bootstrap.ts's install; kept for development only"
+    }
+  ]
+}

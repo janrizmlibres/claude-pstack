@@ -23,6 +23,14 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Snapshot matches its recorded upstream commit
         run: bun scripts/upstream-diff.ts --verify
+      - name: Conversion rules self-test and Cursor-ism check
+        run: bun scripts/check-cursorisms.ts
+      - name: port.json agrees with the port
+        run: bun scripts/check-port-json.ts
+      # Reports only: exit 1 (files left to port) passes, a malformed port.json
+      # (exit 2) fails. It is a gate in the local release checks instead.
+      - name: Port coverage (report)
+        run: bun scripts/check-port-json.ts --coverage || [ $? -eq 1 ]
       - name: Typecheck scripts
         run: bun run typecheck
       - name: Script tests

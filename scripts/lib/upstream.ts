@@ -30,14 +30,20 @@ export function readVersion(checkout: string, ref: string): string {
   return (JSON.parse(readFileSync(file, "utf8")) as { version: string }).version;
 }
 
-/** Files under `upstream/` that belong to no recorded path, `snapshot.json` aside. */
-export function strayFiles(root: string, paths: string[]): string[] {
+/** Every file of the snapshot, relative to `upstream/`, `snapshot.json` aside. */
+export function snapshotFiles(root: string): string[] {
   const dir = snapshotDir(root);
+  if (!existsSync(dir)) throw new UsageError(`no snapshot at upstream/ (looked in ${root})`);
   return readdirSync(dir, { recursive: true, withFileTypes: true })
     .filter((entry) => !entry.isDirectory())
     .map((entry) => relative(dir, join(entry.parentPath, entry.name)))
-    .filter((file) => file !== "snapshot.json" && !paths.some((p) => file.startsWith(`${p}/`)))
+    .filter((file) => file !== "snapshot.json")
     .sort();
+}
+
+/** Files under `upstream/` that belong to no recorded path, `snapshot.json` aside. */
+export function strayFiles(root: string, paths: string[]): string[] {
+  return snapshotFiles(root).filter((file) => !paths.some((p) => file.startsWith(`${p}/`)));
 }
 
 /** Thrown for a failure the user can act on; the command prints it and exits 2. */
