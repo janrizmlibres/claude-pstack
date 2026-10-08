@@ -94,4 +94,12 @@ git status -sb: ## claude/hopeful-curie-mz021j
 Designated branch, quoted: "Develop on branch `claude/hopeful-curie-mz021j`".
 
 ## 9. Push
-(filled in below)
+Push to `claude/hopeful-curie-mz021j`: accepted.
+```
+ * [new branch]      claude/hopeful-curie-mz021j -> claude/hopeful-curie-mz021j
+branch 'claude/hopeful-curie-mz021j' set up to track 'origin/claude/hopeful-curie-mz021j'.
+```
+Push of the same commit to `probe/routine-run-push-A` (non-claude/): accepted, not refused.
+```
+ * [new branch]      HEAD -> probe/routine-run-push-A
+```
