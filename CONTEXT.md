@@ -99,3 +99,7 @@ _Avoid_: launcher, front end
 **Hand-off**:
 An entry point passing a run to a lead on the other surface, when the user chooses to. The input (a spec, a file, or the task verbatim) is pushed first; the entry point keeps no control afterwards.
 _Avoid_: delegation (a lead giving work to its workers), dispatch
+
+**Setup line**:
+The command a user pastes into a cloud environment's setup script to install the port there, carrying their model choices. The only way the port reaches the cloud surface.
+_Avoid_: cloud line, install command
