@@ -1,6 +1,6 @@
 # Brief contract
 
-Every brief a lead or sub-lead writes for a worker follows this contract, on both surfaces. Clauses 1 and 3 govern how you write the brief. The rest bind the worker, so carry each one into the brief, in a line of its own where the worker must act on it. A brief may add to the contract; it never loosens it.
+Every brief a lead or sub-lead writes for a worker follows this contract, on both surfaces. Clauses 1 and 3 govern how you write the brief, and clause 12 governs the worktrees you give workers. The rest bind the worker, so carry each one into the brief, in a line of its own where the worker must act on it. A brief may add to the contract; it never loosens it.
 
 1. **Entry and paths.** A separate-session worker's brief (a cloud worker, a `create_session` worker) opens with `/pstack:<skill>` as its first line. It names skills, never absolute paths: the other session's plugin root and checkout aren't yours. A same-session subagent may get paths with `${CLAUDE_PLUGIN_ROOT}` already substituted.
 2. **Never ask the human.** No human is watching a worker, and a question stalls it for good. Return `BLOCKED` with the question and what each answer would change.
@@ -15,10 +15,12 @@ Every brief a lead or sub-lead writes for a worker follows this contract, on bot
 
     ```
     Pstack-Status: PASS|ISSUES|BLOCKED
+    Pstack-Nonce: <the nonce your brief gives>
     Claude-Session: <this session's URL>
     ```
 
-    A same-session subagent also returns the report as its final message.
+    `Pstack-Nonce` is for a separate-session worker, whose brief gives it a nonce, a short random word the lead chose. Other workers leave it out. A same-session subagent also returns the report as its final message.
 
-    How the lead reads it: a cloud worker's prompt opens with a nonce phrase the lead chose, so its branch is `claude/<nonce-slug>-*`. The lead finds it with `git ls-remote origin 'refs/heads/claude/<nonce-slug>-*'`, polls for it from a background loop, fetches it and reads `git log -1`. A local worktree worker's report is read from its branch with no push, and its work is integrated by cherry-pick or merge.
-11. **Sub-lead timebox.** A sub-lead declares its own timebox when it starts: the sum of its plan's worker timeboxes plus its integration time. Its lead holds it to that declaration.
+    How the lead reads it: a cloud worker pushes to a `claude/*` branch named from a title Claude Code generates, so the name can't be predicted and needn't carry the nonce. The lead finds the report by its trailer. From a background loop, it runs `git fetch -q origin '+refs/heads/claude/*:refs/remotes/origin/claude/*'`, then looks for the branch whose tip carries the nonce: `git for-each-ref --format='%(refname:short)' refs/remotes/origin/claude | while read -r b; do [ "$(git log -1 --format='%(trailers:key=Pstack-Nonce,valueonly)' "$b")" = "<nonce>" ] && echo "$b"; done`. The trailer is on the final commit only, so a match means the report is in, and the lead reads it with `git log -1 <branch>`. A local worktree worker's report is read from its branch with no push, and its work is integrated by cherry-pick or merge.
+11. **Sub-lead timebox and wait.** A sub-lead declares its own timebox when it starts: the sum of its plan's worker timeboxes plus its integration time. Its lead holds it to that declaration. A sub-lead is a subagent, and its run ends the first time it ends its turn, so it waits for its own workers inside that turn. It spawns them as foreground `Agent` calls (`run_in_background: false`), several in one message to run them in parallel, and refills its window batch by batch. It hands back only after it has read and integrated every worker's result, never with a worker still in flight.
+12. **The lead's worktrees.** On the local surface, before the first worktree you give a worker (an `Agent` with `isolation: "worktree"`), add `.claude/worktrees/` to the exclude file `git rev-parse --git-path info/exclude` names, once: `ex="$(git rev-parse --git-path info/exclude)"; grep -qx '.claude/worktrees/' "$ex" || echo '.claude/worktrees/' >> "$ex"`. Remove each worker's worktree once its result is integrated or discarded (`git worktree remove <path>`), and keep its branch. A sub-lead does the same for its own workers.
