@@ -25,3 +25,17 @@ S0 Baseline: OK — allow_auto_merge=true, delete_branch_on_merge=false, gh 2.89
 ```
 
 S1 Arm auto-merge, no body: OK — response {"enabled":true,"merge_method":"merge"}; PR #63 open, merged=false, mergeable_state=blocked, auto_merge.merge_method=merge, enabled_by=janrizmlibres
+
+### S2 DELETE pulls/63/ccr/auto_merge
+
+```
+{"enabled":false}
+```
+
+### S2 read pulls/63
+
+```
+{"auto_merge":null,"mergeable_state":"blocked","merged":false,"state":"open"}
+```
+
+S2 Disarm auto-merge: OK — response {"enabled":false}; PR #63 auto_merge=null, open, blocked
