@@ -91,3 +91,32 @@ Created at 2026-10-08T02:25:29Z. create_session returned (model fields omitted):
 ```
 {"ccr":{"id":"session_01TnE4qtDH4SijE5uVkiy7GV","title":"nestprobe child","session_status":"SESSION_STATUS_PENDING","created_at":"2026-10-08T02:25:21.411005Z","environment_id":"env_011fdXavJ6U87ghgCCgmnoee","session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack","revision":"main"}}],"outcomes":[{"git_repository":{"git_info":{"repo":"janrizmlibres/claude-pstack","branches":["claude/nestprobe-child"]}}}]},"origin":"claude_code_mcp_seed","connection_status":"disconnected","tags":["config:session-created","config:auto-create-pr:off","config:meta-mcp-own-entry"],"environment_kind":"anthropic_cloud","parent_session_id":"session_01FWterKmc4p3rzCwvx4fphG","status_bucket":"SESSION_STATUS_BUCKET_WORKING"}}
 ```
+
+## Step 3: nesting of plain subagents
+### Foreground (agentId a372ac1eafabfde43; tool result said report was delivered via SubagentHandback message, 2 tool uses, 5922 ms)
+Reply verbatim:
+```
+(1) Agent tool: no. My tools are Artifact, Bash, Edit, Glob, Grep, ListAgents, Read, ReportFindings, SendUserFile, ShowOnboardingRolePicker, Skill, SuggestSkills, ToolSearch, Write, SubagentHandback and the mcp__claude-code-remote__* tools (add_repo, archive_session, create_session, create_trigger, delete_trigger, fire_trigger, get_event, get_session, get_trigger, interrupt_session, list_environments, list_events, list_repos, list_sessions, list_triggers, read_documentation, register_repo_root, send_later, send_message, set_session_tags, set_session_title, subscribe_pr_activity, unarchive_session, unsubscribe_pr_activity, unwatch_url, update_trigger, watch_url). Some tools are deferred, such as SendMessage, Task*, WebFetch and mcp__github__*. None of them is called Agent.
+
+(2) Output:
+1
+exit=0
+
+(3) N=1, which is less than 4, but I don't have the Agent tool, so I did not spawn a child. There is no CHILD REPLY.
+```
+Deepest level that answered: 1 (level-1 subagent has no Agent tool; CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1). Note: level-1 subagent DOES have claude-code-remote tools incl. create_session (a possible escape hatch for nesting, not tested).
+
+### Background (run_in_background true; completed after 2 tool uses, 6679 ms; report delivered via SubagentHandback)
+Reply verbatim:
+```
+(1) Agent tool: no. My tools: Artifact, Bash, Edit, Glob, Grep, Read, Skill, ToolSearch, Write, SubagentHandback, and the mcp__claude-code-remote__* tools (add_repo, archive_session, create_session, create_trigger, delete_trigger, fire_trigger, get_event, get_session, get_trigger, interrupt_session, list_environments, list_events, list_repos, list_sessions, list_triggers, read_documentation, register_repo_root, send_later, send_message, set_session_tags, set_session_title, subscribe_pr_activity, unarchive_session, unsubscribe_pr_activity, unwatch_url, update_trigger, watch_url). Some tools are deferred and none of them is Agent: ArtifactComments, ArtifactData, EnterWorktree, ExitWorktree, ListPlugins, ListSkills, Monitor, NotebookEdit, SearchPlugins, SearchSkills, SendMessage, TaskStop, WebFetch, WebSearch, and the mcp__github__* tools.
+
+(2) Output:
+1
+exit=0
+
+(3) N is 1, which is less than 4, but I don't have the Agent tool, so I could not spawn a child. There is no CHILD REPLY.
+```
+Background nesting: SAME as foreground (depth 1). Background subagent had a slightly smaller tool set (no ListAgents/ReportFindings/SendUserFile/ShowOnboardingRolePicker/SuggestSkills) but listed EnterWorktree/ExitWorktree as deferred.
+
+Note: before committing step 3 I added `.claude/worktrees/` to .git/info/exclude (local only), because `git add -A` would otherwise stage the agent worktree under .claude/worktrees as an embedded repo.
