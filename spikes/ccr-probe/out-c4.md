@@ -9,3 +9,11 @@ claude/lead-4-ccr-probe-tytveb
 ```
 
 S0 Baseline: OK — date, CLI version and branch recorded
+
+### S1
+
+```
+{"draft":true}
+```
+
+S1 Convert to draft: OK — proxy route returned {"draft":true}
