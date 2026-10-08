@@ -23,3 +23,4 @@ S7 subagent push: call 1 FAILED: '/bin/bash: line 1: /tmp/units/probe-f/c.txt: N
 S8 open parent PR (REST): OK — PR #40 (unit-a -> main)
 S9 open stacked PR (REST): OK — PR #42 (unit-b -> unit-a)
 S10 retarget stacked PR (REST): OK — PR #42 base now main
+S11 close both PRs (REST): OK — #40 closed, #42 closed
