@@ -19,7 +19,7 @@ Invoke when the user says "reflect" or "/pstack:reflect". Skip when the conversa
 The parent finds its own transcript file before fanning out. It is `~/.claude/projects/<slug>/${CLAUDE_SESSION_ID}.jsonl`, where `<slug>` is the active workspace's absolute path with every character that isn't a letter or digit turned into "-". Use that path. Do not glob across `~/.claude/projects/*/`. That crosses workspace boundaries and reads private chats from unrelated projects.
 
 ```bash
-ls -t ~/.claude/projects/<slug>/${CLAUDE_SESSION_ID}.jsonl ~/.claude/projects/<slug>/*.jsonl ~/.claude/projects/<slug>/*/subagents/*.jsonl 2>/dev/null | head -10
+ls -t ~/.claude/projects/<slug>/*.jsonl ~/.claude/projects/<slug>/*/subagents/*.jsonl 2>/dev/null | head -10
 ```
 
 Two transcript layouts: session (`<id>.jsonl`) and subagent (`<id>/subagents/<child>.jsonl`).

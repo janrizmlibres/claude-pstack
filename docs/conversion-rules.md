@@ -59,7 +59,7 @@ after: Distinct lenses are the point.
 
 ## 4. Roles, not model IDs
 
-Text names a setting (Work, Judgement, Volume), never a model ID or `pstack-models.mdc`. `subagent_type: poteto-agent` and `generalPurpose` (with or without `readonly`) map to the matching setting agent. A spawn passes `model:` only when `${user_config.<setting>_model}` resolved to one of `opus`, `sonnet`, `haiku`, `fable`; a literal placeholder or empty value means no `model:` and the agent's default applies.
+Text names a setting (Work, Judgement, Volume), never a model ID or `pstack-models.mdc`. `subagent_type: poteto-agent` and `generalPurpose` (with or without `readonly`) map to the matching setting agent. A spawn passes `model:` only when `${user_config.<setting>_model}` resolved to one of `opus`, `sonnet`, `haiku`, `fable`; a literal placeholder or empty value means no `model:` and the agent's default applies. A spawn upstream leaves untyped gets its role's setting agent, a reader when it only reads: `automate-me`'s transcript miners run on `volume-reader`, `maintain-verification-skill`'s per-feature source readers on `work-reader`.
 
 ```detect
 pattern: \bclaude-(?:opus|sonnet|haiku|fable)-\d
@@ -98,7 +98,7 @@ after: A second opinion is the same prompt in a fresh context. Agreement rules o
 
 ## 6. Cursor tools and paths
 
-`Task` → `Agent` (with `isolation: "worktree"` wherever upstream says a worker gets its own worktree); `is_background` → `run_in_background`; `AskQuestion` → `AskUserQuestion`; `environment` dropped in favour of the worker rules. `.cursor/skills/` → `.claude/skills/`, `~/.cursor/skills/` → `~/.claude/skills/`, `~/.cursor/plugins/` → `~/.claude/plugins/`. `reflect` counts `Skill` tool calls as skill loads alongside `Read`s of a `SKILL.md`.
+`Task` → `Agent` (with `isolation: "worktree"` wherever upstream says a worker gets its own worktree); `is_background` → `run_in_background`; `AskQuestion` → `AskUserQuestion`, within its limits (1 to 4 questions of 2 to 4 options; `allow_multiple` → `multiSelect`); Cursor's `Shell` tool → `Bash`; `environment` dropped in favour of the worker rules. `.cursor/skills/` → `.claude/skills/`, `~/.cursor/skills/` → `~/.claude/skills/`, `~/.cursor/plugins/` → `~/.claude/plugins/`. `reflect` counts `Skill` tool calls as skill loads alongside `Read`s of a `SKILL.md`.
 
 ```detect
 pattern: \bTask tool\b
@@ -108,6 +108,8 @@ pattern: \bAskQuestion\b
 pattern: \bis_background\b
 pattern: \benvironment: "(?:cloud|local)"
 pattern: \.cursor/
+pattern: \ballow_multiple\b
+pattern: \(Shell,
 before: Launch all reviewers in a single message using the Task tool.
 before: One message, three `Task` calls, one per reviewer.
 before: Spawn one Task subagent that explores and explains.
@@ -115,6 +117,8 @@ before: Prefer AskQuestion over free text.
 before: is_background: true
 before: Spawn all N workers in one message with `environment: "cloud"` and `run_in_background: true`.
 before: It writes `.cursor/skills/verify-<app>/`, agent-facing instructions.
+before: Shape: one or two questions with 4-6 options each, `allow_multiple: true` for category questions.
+before: - Tool calls (Shell, Grep, MCP, etc.) that match a skill's documented commands
 after: Launch all reviewers in a single message using the Agent tool.
 after: One message, three `Agent` calls, one per reviewer.
 after: Spawn one Agent that explores and explains.
@@ -122,16 +126,21 @@ after: Prefer AskUserQuestion over free text.
 after: run_in_background: true
 after: Spawn all N workers in one message with `run_in_background: true`.
 after: It writes `.claude/skills/verify-<app>/`, agent-facing instructions.
+after: Shape: one or two questions with 2-4 options each (the tool's limit), `multiSelect: true` for category questions.
+after: - Tool calls (Bash, Grep, MCP, etc.) that match a skill's documented commands
 ```
 
 ## 7. Transcripts
 
-`agent-transcripts/` → `~/.claude/projects/<slug>/${CLAUDE_SESSION_ID}.jsonl`, subagents under `<id>/subagents/`; upstream's "never glob across projects" guard stays; `recall`'s slug rule becomes Claude Code's. Surface line in `recall` and `session-pickup`: in cloud, earlier sessions' transcripts aren't available, so fall back to the git trail and pushed branches.
+`agent-transcripts/` → `~/.claude/projects/<slug>/${CLAUDE_SESSION_ID}.jsonl`, subagents under `<id>/subagents/`; upstream's "never glob across projects" guard stays; `recall`'s slug rule becomes Claude Code's: the absolute path with every character that isn't a letter or digit turned into "-". A check of a transcript's opening prompt reads its first user line (`"type":"user"`), since Claude Code's first line may be metadata. Surface line in `recall` and `session-pickup`: in cloud (`pstack: surface=cloud`, or `$CLAUDE_CODE_REMOTE` set when no reminder line is in context), earlier sessions' transcripts aren't available, so fall back to the git trail and pushed branches.
 
 ```detect
 pattern: \bagent-transcripts\b
+pattern: message\.content\[0\]\.text
 before: Read this run's transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path).
+before: For each candidate, read the first JSONL line and check that `message.content[0].text` contains the conversation's opening user prompt.
 after: Read this run's transcript at `~/.claude/projects/<slug>/${CLAUDE_SESSION_ID}.jsonl`.
+after: Check each candidate: find its first user line (`"type":"user"`) and check that its `message.content` contains the conversation's opening user prompt.
 ```
 
 ## 8. Forge

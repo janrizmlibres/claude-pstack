@@ -73,7 +73,7 @@
     {
       "path": "pstack/skills/make-bot-ui",
       "kind": "dropped",
-      "why": "Cursor Grok Bot automations: a lead creating its own webhook routine and waking on it, outside the port's scope"
+      "why": "Cursor Grok Bot automations: the session creates its own webhook routine and wakes on it, and a lead creating its own routines is out of the port's scope"
     }
   ]
 }

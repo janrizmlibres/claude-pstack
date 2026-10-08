@@ -14,7 +14,7 @@ Your context lives in two records. Your own chat history holds what you did and 
 
 Transcripts live at `~/.claude/projects/<slug>/<uuid>.jsonl`, where `<slug>` is the workspace's absolute path with every character that isn't a letter or digit turned into "-" (so `/Users/you/proj` becomes `-Users-you-proj`, and `/Users/you/.proj` becomes `-Users-you--proj`). A chat's subagents keep theirs under `<uuid>/subagents/`. Every line is one chat message.
 
-On the cloud surface (`pstack: surface=cloud`), earlier sessions' transcripts aren't available: mine the git trail and the pushed branches instead, and say so in the brief.
+On the cloud surface (`pstack: surface=cloud`, or `$CLAUDE_CODE_REMOTE` set when no reminder line is in context), earlier sessions' transcripts aren't available: mine the git trail and the pushed branches instead, and say so in the brief.
 
 1. Classify, then route. One specific prior chat to resume is the `session-pickup` playbook (read ${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/playbooks/session-pickup.md), not this. Turning habits into a durable skill is `automate-me` (read ${CLAUDE_PLUGIN_ROOT}/skills/automate-me/SKILL.md). A human-readable summary of your work is a different task. Recall loads working context across recent chats before you act. If the user already gave you a full state capsule (paths, branch, the change), use it and skip the mining.
 2. Lock the scope before searching. Pin the window ("recent" is a real range, default the last 7 days), the topic if named, and the workspace (default the active one. Never read another project's transcripts without being asked). State the scope back. Never quietly turn "all" into "recent N".
