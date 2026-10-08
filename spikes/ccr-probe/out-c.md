@@ -19,3 +19,11 @@ S0 Baseline: OK — allow_auto_merge=true, delete_branch_on_merge=false, claude 
 ```
 
 S1 Read review threads: OK — JSON array of objects {resolved, outdated, path, line, comment_ids}; no thread node id. T1 resolved=true outdated=false; T2 resolved=false outdated=false; T3 resolved=false outdated=true (line=null). Resolution and outdatedness both readable per thread.
+
+### S2 resolve T2
+
+```
+{"comment_ids":[4215160624],"resolved":true}
+```
+
+S2 Resolve T2: OK — POST returns {comment_ids, resolved}; re-read (same shape) shows T2 resolved=true; T1/T3 unchanged.
