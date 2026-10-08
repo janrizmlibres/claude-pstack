@@ -6,6 +6,16 @@
       "why": "Claude Code's plugin manifest, with the three model settings as userConfig and no version"
     },
     {
+      "path": "pstack/.cursor-plugin",
+      "kind": "dropped",
+      "why": "Cursor's plugin manifest, replaced by Claude Code's in .claude-plugin/plugin.json"
+    },
+    {
+      "path": "pstack/.gitignore",
+      "kind": "dropped",
+      "why": "upstream's plugin-level ignore list: its node_modules/ line would hide the vendored commander, and the repo's root .gitignore covers the rest"
+    },
+    {
       "path": "pstack/hooks/poteto-mode-reminder.sh",
       "kind": "port-only",
       "why": "poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads"
