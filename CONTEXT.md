@@ -60,6 +60,10 @@ _Avoid_: coordinator (reserved for upstream's `orchestrate`), orchestrator, pare
 A session or subagent a lead starts to carry out one piece of a run.
 _Avoid_: child, agent
 
+**Sub-lead**:
+A worker that starts workers of its own for its piece of the run. On the cloud surface only a separate session can be one.
+_Avoid_: sub-coordinator (reserved for upstream's `orchestrate`), nested lead
+
 **Role**:
 The job a worker does in a run: delegate, runner, reviewer, judge or synthesizer. A role, not a worker, is what a model and effort setting attaches to.
 _Avoid_: seat, tier, slot
