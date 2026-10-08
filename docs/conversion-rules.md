@@ -248,12 +248,15 @@ after: Write it into the `wip:` commit's body (`--allow-empty` on a clean tree).
 
 ## 13. Landing and leftover branches
 
-In cloud, `gh pr merge <pr> --squash` → `gh api -X PUT repos/{owner}/{repo}/pulls/<n>/merge -f merge_method=squash`; `--auto` (merge-when-ready) → watch-then-merge from a background wait, never `/ccr/auto_merge`. At every merge step, the first refused merge stops that PR at merge-ready, with the refusal recorded as a gate; no retry, no workaround. Every landing playbook's Reply (Shipping, Autopilot-full, Orchestrate's Close) lists the leftover branches the run pushed (merged heads still present, closed or abandoned unit branches; open-PR heads left out; a store branch listed as kept) and one `git push origin --delete …` line for the user to run locally. No lead deletes a remote branch on either surface.
+In cloud, `gh pr merge <pr> --squash` → `gh api -X PUT repos/{owner}/{repo}/pulls/<n>/merge -f merge_method=squash`; `--auto` (merge-when-ready) → watch-then-merge from a background wait, never `/ccr/auto_merge`. At every merge step, the first refused merge stops that PR at merge-ready, with the refusal recorded as a gate; no retry, no workaround. Every landing playbook's Reply (Shipping, Autopilot-full, Orchestrate's Close) lists the leftover branches the run pushed (merged heads still present, closed or abandoned unit branches; open-PR heads left out; a store branch listed as kept) and one `git push origin --delete …` line for the user to run locally. No lead deletes a remote branch on either surface. A landing playbook lands only under a landing grant; without one it stops at merge-ready. Babysit and Shipping run `watch-pr` through the runtime launcher, `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/scripts/run watch-pr/watch-pr`, and hold its watch from a background wait in place of upstream's `/loop`; with no runtime (exit 69) they say so once with the install line and stop before calling a PR ready, never reading the forge by hand in the watcher's place.
 
 ```detect
 pattern: /ccr/auto_merge\b
+pattern: \bscripts/watch-pr/watch-pr\b
 before: In cloud, arm merge-when-ready with `gh api -X PUT repos/{owner}/{repo}/pulls/<n>/ccr/auto_merge`.
+before: On GitHub, status comes from `scripts/watch-pr/watch-pr`. Run it directly.
 after: In cloud, for merge-when-ready, watch the checks from a background wait, then merge.
+after: Status comes from the watcher, run through the runtime launcher: `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/scripts/run watch-pr/watch-pr`.
 ```
 
 ## 14. Agent descriptions
