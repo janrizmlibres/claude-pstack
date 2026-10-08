@@ -47,3 +47,9 @@ S12 delete probe branches: FAILED: "fatal: --negotiate-only needs one or more --
 - Permission mode: auto. No step was REFUSED by the permission system; no permission prompts or delays observed.
 - Surprising: (1) every push to non-designated `pstack/probe-u/*` branches, including force-with-lease and orphan refs, went through, but the branch **deletion** got HTTP 403 at the git transport. Possibly the proxy rejects ref deletes or multi-ref deletes. A single-ref delete was not tried because the rules forbid retrying. (2) `gh` CLI REST calls (create/patch PR) worked from this session. (3) Push-negotiation warnings appeared on S5 and S12 and were harmless on S5.
 - Cleanup needed by owner: delete `pstack/probe-u/{unit-a,unit-b,unit-c,store}` on origin. PRs #41 and #43 are closed. The local worktree at /tmp/units is left in place.
+
+## Follow-up
+
+S13 single-ref git delete (unit-c): FAILED: "fatal: --negotiate-only needs one or more --negotiation-tip=* / warning: push negotiation failed; proceeding anyway with push / error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403 / send-pack: unexpected disconnect while reading sideband packet" — same 403 as S12, so the git transport rejects ref deletes even for a single ref. Not a permission-system refusal.
+S14 REST ref delete (unit-b): FAILED: "{"message":"Write access to this GitHub API path is not permitted through this proxy.",...} gh: Write access to this GitHub API path is not permitted through this proxy. (HTTP 403)" — the proxy blocks DELETE on git/refs, although it allowed PR create/patch (S8–S11). Not a permission-system refusal.
+S15 ls-remote after follow-up: OK — all four refs remain: pstack/probe-u/store (09ea32d), unit-a (19ae0e2), unit-b (6b57660), unit-c (18017b5). Owner must delete them outside this session.
