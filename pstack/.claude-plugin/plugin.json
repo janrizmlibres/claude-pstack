@@ -27,7 +27,7 @@
     "volume_model": {
       "type": "string",
       "title": "Volume model",
-      "description": "Model for the Volume setting: swarm and first-pass race workers and bulk readers. Effort is fixed at high.",
+      "description": "Model for the Volume setting: swarm and first-pass race workers, and other Volume roles. Effort is fixed at high.",
       "options": ["opus", "sonnet", "haiku", "fable"],
       "default": "sonnet"
     }

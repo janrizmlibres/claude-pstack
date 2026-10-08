@@ -31,8 +31,8 @@ const expectedLines = (surface: string, mode: string) => [
     "pstack's no-skip rules bind only your own judgment. " +
     "When a playbook names a pstack skill, read that one, and don't also invoke a same-purpose skill " +
     "unless CLAUDE.md or the request names it.",
-  `Run every heavy command (test runner, build, whole-project typecheck or lint, dev server, browser session) ` +
-    `through ${pluginDir}/scripts/heavy -- <cmd>.`,
+  `Run every heavy command (test runner, build, whole-project typecheck or lint, dev server, browser session, ` +
+    `a fresh worktree's dependency install), even one scoped to a single file, through ${pluginDir}/scripts/heavy -- <cmd>.`,
 ];
 
 const marker = (home: string, id = sessionId) => join(home, ".claude", "pstack", "sessions", id);
@@ -54,7 +54,7 @@ describe("poteto-mode reminder hook", () => {
     expect(existsSync(marker(result.home))).toBe(true);
   });
 
-  test("an input without a permission mode reports it as unknown", () => {
+  test("an input without a permission mode reports it as unknown, even when the prompt quotes one", () => {
     const result = reminder(hookInput({}));
 
     expect(result.exitCode).toBe(0);

@@ -29,7 +29,7 @@ New task? Playbook match or rigor needed -> apply /pstack:poteto-mode. Casual tu
 The full skill is at $root/skills/poteto-mode/SKILL.md; read it if it isn't in your context.
 pstack: surface=$surface mode=${mode:-unknown}
 Your user's instructions (the run prompt, CLAUDE.md) outrank pstack's text, Non-negotiables included. Follow them, and record any step they remove as \`skip: user waived\`. pstack's no-skip rules bind only your own judgment. When a playbook names a pstack skill, read that one, and don't also invoke a same-purpose skill unless CLAUDE.md or the request names it.
-Run every heavy command (test runner, build, whole-project typecheck or lint, dev server, browser session) through $root/scripts/heavy -- <cmd>.
+Run every heavy command (test runner, build, whole-project typecheck or lint, dev server, browser session, a fresh worktree's dependency install), even one scoped to a single file, through $root/scripts/heavy -- <cmd>.
 EOF
 
 if [[ $session_id =~ ^[A-Za-z0-9_-]+$ ]]; then
