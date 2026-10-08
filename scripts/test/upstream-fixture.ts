@@ -29,14 +29,17 @@ export function fixtureUpstream(): { upstream: FakeRemote; first: string } {
 /** Whether an upstream path falls under one of the snapshot paths. */
 export const inSnapshot = (path: string) => snapshotPaths.some((p) => path.startsWith(`${p}/`));
 
-/** A port checkout whose `upstream/` holds the fixture's first commit, copied by hand. */
-export function portAt(upstream: FakeRemote, commit: string): string {
+/**
+ * A port checkout whose `upstream/` holds `files` (by default the fixture's
+ * first commit) as of `commit`, copied by hand.
+ */
+export function portAt(upstream: FakeRemote, commit: string, files: Files = upstreamFiles, version = "1.2.3"): string {
   const port = tempDir("pstack-port-");
-  writeFiles(join(port, "upstream"), Object.fromEntries(Object.entries(upstreamFiles).filter(([path]) => inSnapshot(path))));
+  writeFiles(join(port, "upstream"), Object.fromEntries(Object.entries(files).filter(([path]) => inSnapshot(path))));
   writeFileSync(
     join(port, "upstream", "snapshot.json"),
     JSON.stringify(
-      { repo: upstream.url, commit, version: "1.2.3", paths: snapshotPaths, taken: "2026-10-06T00:00:00.000Z" },
+      { repo: upstream.url, commit, version, paths: snapshotPaths, taken: "2026-10-06T00:00:00.000Z" },
       null,
       2,
     ) + "\n",

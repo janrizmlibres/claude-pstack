@@ -226,8 +226,10 @@ Every other file is translated from upstream at the same path, except `skills/co
 A weekly GitHub Action checks upstream. When it has moved, Claude opens one sync PR that brings the
 port up to date, with a row per upstream change and ⚠️ on the calls it was unsure of. Nothing
 merges itself. The snapshot, upstream's verbatim copy, lives in `upstream/`, and the sync re-renders the
-version line and file table above. `CONTEXT.md` and `docs/adr/` explain the port's vocabulary and
-decisions.
+version line and file table above. In a checkout of this repo the same sync runs by hand as
+`/sync-upstream` (`/sync-upstream dry run` lists the changes and stops), and
+`/sync-upstream retranslate <rule>` carries a conversion-rule change into every translated file.
+`CONTEXT.md` and `docs/adr/` explain the port's vocabulary and decisions.
 
 ## License and credit
 
