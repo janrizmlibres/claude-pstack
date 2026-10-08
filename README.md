@@ -196,6 +196,9 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 <!-- BEGIN generated from port.json — do not edit by hand -->
 | File | Kind | Why |
 |---|---|---|
+| `skills/architect/SKILL.md` | override | Phase B's two distinct candidates come from arena's directions, the architect runners model line goes, and a spec's Implementation Decisions reach every runner as fixed constraints |
+| `skills/architect/references/runner-prompt.md` | override | arena's directed or fourth-way block replaces the each-on-a-different-model paragraph, and a spec's Implementation Decisions bind every shape |
+| `skills/arena/SKILL.md` | override | runners on Work with two whole-shape directions, a fourth-way seat and their escapes, and a blind judge on every arena, in place of a runner per model family and a cross-family judge |
 | `skills/setup-pstack/SKILL.md` | override | shows the three settings, points to /config, prints the setup line and shows the Read rule, in place of writing a Cursor model rule |
 | `.claude-plugin/plugin.json` | port-only | Claude Code's plugin manifest, with the three model settings as userConfig and no version |
 | `agents/judgement-reader.md` | port-only | the Judgement setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, high effort |
@@ -205,8 +208,12 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `agents/work-reader.md` | port-only | the Work setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, medium effort |
 | `agents/work.md` | port-only | the Work setting's writer: upstream's poteto-agent body on the Work default model at medium effort, in the background |
 | `hooks/poteto-mode-reminder.sh` | port-only | poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads |
+| `scripts/heavy` | port-only | the machine lock: runs one heavy command at a time per machine, released by the kernel when its holder dies |
+| `skills/poteto-mode/scripts/node_modules/commander/` | port-only | commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install |
+| `skills/poteto-mode/scripts/run` | port-only | the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install |
 | `agents/poteto-agent.md` | dropped | replaced by the three writer agents, which carry its body |
 | `automations/benny/` | dropped | Cursor Slack automations, outside the port's scope |
+| `skills/make-bot-ui/` | dropped | Cursor Grok Bot automations: the session creates its own webhook routine and wakes on it, and a lead creating its own routines is out of the port's scope |
 | `skills/poteto-mode/scripts/bootstrap.ts` | dropped | installs commander at first run; the port vendors commander and runs scripts through its launcher |
 | `skills/poteto-mode/scripts/bun.lock` | dropped | a runtime lockfile for bootstrap.ts's install; kept for development only |
 | `skills/poteto-mode/scripts/package.json` | dropped | a runtime manifest for bootstrap.ts's install; kept for development only |
