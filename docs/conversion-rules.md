@@ -394,13 +394,17 @@ These keep `swarm` and the Autopilot-stack and Autopilot-full playbooks translat
 - where workers are spawned, the text carries the window (at most 10 direct children in flight, refilled as they finish, never in blocking batches; an in-session owner counts at its peak of 4 and keeps at most 3 workers of its own in flight, waited for inside the owner's own turn since an in-session owner is a subagent, a cloud or `create_session` worker counts as one, and a root's verification swarms share its window with its owners; swarm's N stays the total), backpressure (a refused spawn waits for one of the lead's own in-flight agents, whatever the error says, and never drops a slice, arm, owner or lane; with nothing in flight it is `BLOCKED: concurrency cap`) and the timebox (sized per brief, 30 minutes for a reader and 90 for a code writer without an estimate; at 1.5× the worker is `BLOCKED` with no retry, an in-session one stopped with `TaskStop`, its session URL recorded and the user told once);
 - an autopilot owner past 1.5× its timebox is stuck: it is `BLOCKED` and one replacement owner starts from its pushed branch and decision trail; a replacement that also stalls is `BLOCKED` and its item is parked and listed in the Reply, which is how upstream's replace-at-once audit and the no-retry timebox meet;
 - an audit tick re-reads its playbook from `${CLAUDE_PLUGIN_ROOT}` instead of `git show origin/main:`, since the plugin isn't in the user's repo;
-- Autopilot-full carries rule 13 at its merge step and in its Reply.
+- Autopilot-full carries rule 13 at its merge step and in its Reply;
+- Autopilot-full's pre-merge path check is `git diff --name-only HEAD...origin/main`, one plain command with the same paths as upstream's `$(git merge-base HEAD origin/main)` form, which a worktree-isolated owner's guard refuses.
 
 ```detect
 pattern: \bgit show origin/main:pstack/
 pattern: \bcloud_base_branch\b
+pattern: \$\(git merge-base HEAD origin/main\)
 before: At each tick, re-read this playbook from trunk with `git show origin/main:pstack/skills/poteto-mode/playbooks/autopilot-stack.md` and audit the operation against it.
 before: When a worker must start from a non-default pushed branch, pass `cloud_base_branch`.
+before: Also check that no path in `git diff --name-only $(git merge-base HEAD origin/main) origin/main` is a path the PR changes.
 after: At each tick, re-read this playbook at `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/playbooks/autopilot-stack.md` and audit the operation against it.
 after: Every worker starts from a commit its brief names.
+after: Also check that no path in `git diff --name-only HEAD...origin/main` is a path the PR changes.
 ```
