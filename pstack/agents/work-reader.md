@@ -1,6 +1,6 @@
 ---
 name: work-reader
-description: "pstack's Work reader, with no Edit, Write or NotebookEdit: how's explorers, and reflect's Judgement, Tooling and Divergent reviewers. Spawned only by pstack playbooks."
+description: "pstack's Work reader, with no Edit, Write or NotebookEdit: how's explorers, reflect's Judgement, Tooling and Divergent reviewers, and maintain-verification-skill's per-feature source readers. Spawned only by pstack playbooks."
 model: opus
 effort: medium
 disallowedTools: Edit, Write, NotebookEdit
