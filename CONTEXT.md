@@ -149,3 +149,25 @@ _Avoid_: PRD, ticket, plan
 **Plan**:
 The checklist pstack writes from a spec when the work spans several PRs: the PR slicing, their dependencies, each PR's evidence and the playbook that executes it. It lives beside the spec, never in it.
 _Avoid_: spec, roadmap
+
+### Release and QA
+
+**Release**:
+Any merge to `main`: the port carries no version, so every merge ships. The *first release* is the first merge that puts the plugin on `main`.
+_Avoid_: version, publish, deploy
+
+**Release candidate**:
+The branch the release checks install the port from, before the first release.
+_Avoid_: RC build, staging branch, beta
+
+**Release check**:
+A check that must pass on the release candidate before the first release: a failure would break installing or entering pstack on a surface, or let a playbook do the wrong thing without saying so.
+_Avoid_: gate (a **Full gate** is a run's verification), blocker, acceptance test
+
+**Watch check**:
+A check run after a release, covering scale limits and rare paths. A failure becomes a bug, not a hold on the release.
+_Avoid_: post-release test, soak test, nice-to-have
+
+**Fixture repo**:
+The throwaway repository release and watch checks run in, carrying everything the checks need (a test suite, a dev server, conflicting rules) so they never touch the user's own repos.
+_Avoid_: test repo, sandbox, demo repo
