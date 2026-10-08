@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "bun test --parallel=2 ./scripts ./pstack/skills/poteto-mode/scripts/orch",
+    "test": "bun test --parallel=2 ./scripts ./pstack/skills/poteto-mode/scripts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

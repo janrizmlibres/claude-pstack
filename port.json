@@ -141,6 +141,30 @@
       "sources": ["upstream/pstack/skills/poteto-mode/scripts/orch"]
     },
     {
+      "path": "pstack/skills/poteto-mode/scripts/watch-pr/github.ts",
+      "kind": "override",
+      "why": "adds a REST reader for cloud, where the session proxy refuses GraphQL, reading review threads from the proxy's /ccr/review_threads route, and switches to it at the first refusal; review bots are matched from a list of logins",
+      "depends_on": [
+        "upstream/pstack/skills/poteto-mode/scripts/watch-pr/types.ts",
+        "upstream/pstack/skills/poteto-mode/scripts/watch-pr/cli.ts"
+      ]
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/watch-pr/github.test.ts",
+      "kind": "override",
+      "why": "adds tests of the REST reader against a fake of the proxy's routes, its verdicts beside GraphQL's on the same threads, the fallback and the review-bot logins"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/watch-pr/fakes.test-helper.ts",
+      "kind": "override",
+      "why": "adds a fake of the REST API serving the proxy's /ccr/review_threads shape"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/watch-pr/watch-pr",
+      "kind": "override",
+      "why": "drops the bootstrap.ts install: the launcher runs it with the vendored commander"
+    },
+    {
       "path": "pstack/skills/poteto-mode/scripts/node_modules/commander",
       "kind": "port-only",
       "why": "commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install"

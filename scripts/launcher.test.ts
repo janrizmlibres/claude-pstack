@@ -139,6 +139,19 @@ describe("vendored commander", () => {
     expect(result.stdout).toContain(`${plugin}/skills/poteto-mode/scripts/node_modules/commander/`);
   });
 
+  test.each(Object.keys(runtimes))("runs watch-pr from a plugin install under %s", (name) => {
+    const binary = runtimes[name as keyof typeof runtimes];
+    if (!binary) throw new Error(`${name} is not on PATH; these tests need Bun and Node 22.18+`);
+    const bin = binWith({});
+    symlinkSync(binary, join(bin, name));
+
+    const result = launch(bin, ["watch-pr/watch-pr", "--help"], installedPlugin());
+
+    expect(result.stderr).toBe("");
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toStartWith("Usage: watch-pr [options]");
+  });
+
   test("Bun never installs commander on the fly when the vendored copy is missing", () => {
     const bin = binWith({});
     symlinkSync(process.execPath, join(bin, "bun"));
