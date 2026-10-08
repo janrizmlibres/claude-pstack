@@ -1,1 +1,3 @@
 node_modules/
+# commander, vendored into the plugin so its scripts run without an install
+!pstack/skills/poteto-mode/scripts/node_modules/

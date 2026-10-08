@@ -7,6 +7,8 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 
 export const scriptsDir = resolve(import.meta.dir, "..");
+/** The plugin, as a marketplace install copies it. */
+export const pluginDir = resolve(scriptsDir, "..", "pstack");
 
 const made: string[] = [];
 
@@ -33,9 +35,14 @@ export type RunOptions = {
 
 /** Run `bun <script> ...args`, with `script` relative to `scripts/`. */
 export function runScript(script: string, args: string[], options: RunOptions): RunResult {
+  return runProgram([process.execPath, join(scriptsDir, script), ...args], options);
+}
+
+/** Run `cmd` to completion; `options.env` may replace PATH. */
+export function runProgram(cmd: string[], options: RunOptions): RunResult {
   const home = options.home ?? tempDir("pstack-home-");
   const proc = Bun.spawnSync({
-    cmd: [process.execPath, join(scriptsDir, script), ...args],
+    cmd,
     cwd: options.cwd,
     env: {
       PATH: process.env.PATH ?? "",

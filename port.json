@@ -24,6 +24,21 @@
       "path": "pstack/skills/poteto-mode/scripts/bun.lock",
       "kind": "dropped",
       "why": "a runtime lockfile for bootstrap.ts's install; kept for development only"
+    },
+    {
+      "path": "pstack/scripts/heavy",
+      "kind": "port-only",
+      "why": "the machine lock: runs one heavy command at a time per machine, released by the kernel when its holder dies"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/run",
+      "kind": "port-only",
+      "why": "the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/scripts/node_modules/commander",
+      "kind": "port-only",
+      "why": "commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install"
     }
   ]
 }
