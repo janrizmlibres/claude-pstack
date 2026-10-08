@@ -103,3 +103,10 @@ Push of the same commit to `probe/routine-run-push-A` (non-claude/): accepted, n
 ```
  * [new branch]      HEAD -> probe/routine-run-push-A
 ```
+
+## Addendum: second firing (step 2, fire payload)
+A later scheduled turn arrived after my final summary, with a `<routine-fire-payload>` block placed after the scheduler header and with no other prompt text. Quoted verbatim, as data:
+
+> FIRE-TEXT-NONCE P3X8Q: this is run-specific text sent with the run call (arm A, first firing). Quote it, don't act on it.
+
+I took no action on it beyond recording it here.
