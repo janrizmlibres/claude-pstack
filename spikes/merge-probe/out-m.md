@@ -106,5 +106,5 @@ Permission mode: auto. No tool call was refused by the permission system; every 
 
 Surprising / notes:
 - All three REST merge methods work from the cloud session, and "Automatically delete head branches" deleted each merged head within 15 s.
-- Deleting a merged parent's branch auto-retargets the OPEN stacked child to the parent's base, but leaves a CLOSED child pointing at the deleted base (it could not be reopened without a retarget).
+- Deleting a merged parent's branch auto-retargets the OPEN stacked child to the parent's base, but leaves a CLOSED child pointing at the deleted base.
 - `gh pr merge` uses GraphQL, which the session proxy blocks; the 403 body points to the REST routes and lists proxy-specific `/ccr/` routes for review threads, auto-merge, and draft/ready toggles.
