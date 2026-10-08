@@ -39,3 +39,17 @@ S1 Arm auto-merge, no body: OK — response {"enabled":true,"merge_method":"merg
 ```
 
 S2 Disarm auto-merge: OK — response {"enabled":false}; PR #63 auto_merge=null, open, blocked
+
+### S3 PUT pulls/62/ccr/auto_merge -f merge_method=merge
+
+```
+REFUSED: Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources].
+```
+
+### S3 read pulls/62,63,64
+
+```
+REFUSED: Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Merge Without Review].
+```
+
+S3 Arm auto-merge with each merge method: REFUSED: Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources]. — #62 (merge) refused; #63 (squash) and #64 (rebase) not attempted per the no-retry/no-workaround rule; the follow-up read of #62–#64 was also refused: [Merge Without Review]
