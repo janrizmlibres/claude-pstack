@@ -96,12 +96,15 @@ Cross-family review becomes a fresh-context review in the Judgement role (or the
 pattern: \bdifferent model famil(?:y|ies)\b
 pattern: \bdiverse-model\b
 pattern: \bagainst a different model\b
+pattern: \bcross-judge\b
 before: Before handing back, spawn a subagent on a different model family from the one that did the work.
 before: Routed workflow skills set their own `subagent_type` for diverse-model review.
 before: A second opinion is the same prompt against a different model. Agreement is high-signal.
+before: delegate via the **arena** skill instead so the runners surface the alternatives and the cross-judge guards the pick.
 after: Before handing back, spawn a fresh-context review on `judgement-reader`, given the trail and transcript paths and never your reasoning.
 after: Routed workflow skills set their own agents for lens- or source-partitioned review.
 after: A second opinion is the same prompt in a fresh context. Agreement rules out a fluke, not a shared blind spot.
+after: delegate via the **arena** skill instead so the runners surface the alternatives and the blind judge guards the pick.
 ```
 
 ## 6. Cursor tools and paths
@@ -153,7 +156,7 @@ after: Check each candidate: find its first user line (`"type":"user"`) and chec
 
 ## 8. Forge
 
-`gh` is the only forge: every Origin branch and Origin-only flag is deleted, as is the "built-in PR tool" branch. `gh pr`/`gh issue` stay as written, with a surface line in poteto-mode: in cloud they fail (GraphQL blocked), so do the same operation with `gh api` REST; draft toggles use the proxy's `…/pulls/{n}/ccr/ready_for_review` and `…/ccr/convert_to_draft`. Stacks stay upstream's hand-chained base branches; the port never names `gh stack`.
+`gh` is the only forge: every Origin branch and Origin-only flag is deleted, as is the "built-in PR tool" branch. `gh pr`/`gh issue` stay as written, with a surface line in poteto-mode: in cloud they fail (GraphQL blocked), so do the same operation with `gh api` REST; draft toggles use the proxy's `…/pulls/{n}/ccr/ready_for_review` and `…/ccr/convert_to_draft`. A refused draft toggle is reported once, like a refused merge, and never retried. Stacks stay upstream's hand-chained base branches; the port never names `gh stack`.
 
 ```detect
 pattern: \bcommand -v origin\b
@@ -350,4 +353,21 @@ These keep `skills/poteto-mode/playbooks/multi-phase-plan.md` translated while i
 
 ```detect
 undetectable: each asks for a step or a skeleton line to be present in multi-phase-plan.md, and an absence is not a line a pattern can match
+```
+
+## 21. Worktrees
+
+Worktrees Cursor makes under `~/.cursor/worktrees/<repo>/` become Claude Code's, under the repo's `.claude/worktrees/`, and workers get them where ADR 0001 places them.
+
+- Opening a PR works from a worktree off the PR's base, not off main. Locally that is `git worktree add .claude/worktrees/<name> -b <branch> <base>`, then `EnterWorktree` by path, so a base other than the default branch works whatever `worktree.baseRef` says; `.claude/worktrees/` goes into the exclude file `git rev-parse --git-path info/exclude` names, and the worktree stays until the PR merges. On the cloud surface the lead works from its own checkout.
+- Every step in poteto-mode's playbooks and in `figure-it-out` that hands work to a worker (a delegate, an owner, a parallel attempt) briefs it per the brief contract (read ${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/references/brief-contract.md). A worker that gets its own worktree is an `Agent` with `isolation: "worktree"` whose brief names its start commit; the lead removes that worktree once the result is integrated or discarded and keeps the branch.
+- Worktree cleanup's chats become Claude Code sessions, read from the transcripts `worktree-audit.sh` names, and its audit step names the script's `stray` bucket. Its reclaimers drop Cursor's app data. Its simulator step runs only on the local surface, and on the cloud surface, where earlier sessions' transcripts aren't available, a `stray` is unverified rather than abandoned.
+
+```detect
+pattern: \bgit worktree off main\b
+pattern: Application Support/Cursor\b
+before: **Worktree.** Work from a git worktree off main. Subagents inherit it.
+before: More when needed: Xcode `DerivedData` and `iOS DeviceSupport`, `~/Library/Application Support/Cursor` (`state.vscdb.backup`), package caches (pnpm, uv, brew, yarn).
+after: **Worktree.** Work from a git worktree off the PR's base. Subagents inherit it.
+after: More when needed: Xcode `DerivedData` and `iOS DeviceSupport`, package caches (pnpm, uv, brew, yarn).
 ```

@@ -189,6 +189,14 @@
       "why": "drops the bootstrap.ts install: the launcher runs it with the vendored commander"
     },
     {
+      "path": "pstack/skills/poteto-mode/scripts/worktree-audit.sh",
+      "kind": "override",
+      "why": "attributes each worktree to the newest Claude Code transcript whose cwd is that worktree or lies under it, read only from the project directories of the main checkout and its worktrees, in place of a path search of Cursor's agent-transcripts, and buckets a worktree no transcript claims as a stray; it also runs on Linux and takes paths with spaces",
+      "depends_on": [
+        "upstream/pstack/skills/poteto-mode/playbooks/worktree-cleanup.md"
+      ]
+    },
+    {
       "path": "pstack/skills/poteto-mode/scripts/node_modules/commander",
       "kind": "port-only",
       "why": "commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install"
