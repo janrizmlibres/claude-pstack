@@ -125,6 +125,12 @@
       "why": "the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install"
     },
     {
+      "path": "pstack/skills/poteto-mode/scripts/orch",
+      "kind": "override",
+      "why": "frontier set takes the stacker's PR order from the store, PR state and merged heads from gh api REST and open heads from git rev-parse, in place of Graphite, and fails on a drifted base or a stale head; init excludes the store from git and every drain pushes it to its orphan branch by plumbing; commander imported directly and NotFoundError's parameter property a plain field, for Node's type stripping",
+      "sources": ["upstream/pstack/skills/poteto-mode/scripts/orch"]
+    },
+    {
       "path": "pstack/skills/poteto-mode/scripts/node_modules/commander",
       "kind": "port-only",
       "why": "commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install"
