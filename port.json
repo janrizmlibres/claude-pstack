@@ -95,6 +95,30 @@
       ]
     },
     {
+      "path": "pstack/skills/interrogate/SKILL.md",
+      "kind": "override",
+      "why": "three lens reviewers on judgement-reader, always all three, with critical-only spillover, the lead's verification gate in place of consensus, and a Coverage Map with Checked and Gaps in place of the Agreement Map",
+      "depends_on": [
+        "upstream/pstack/skills/interrogate/references/rubric.md",
+        "upstream/pstack/skills/interrogate/references/code-quality-review.md"
+      ]
+    },
+    {
+      "path": "pstack/skills/interrogate/references/reviewer-prompt.md",
+      "kind": "override",
+      "why": "a lens brief: one lens's sections, the other lenses named for critical-only spillover, and a required Checked list"
+    },
+    {
+      "path": "pstack/skills/interrogate/references/lead-judgment.md",
+      "kind": "override",
+      "why": "the verification gate replaces the consensus signal: Act on needs a traced path, and every dismissed critical is re-checked"
+    },
+    {
+      "path": "pstack/skills/poteto-mode/playbooks/eval.md",
+      "kind": "override",
+      "why": "spawns its own blind samples, 3 per variant on the model the change meets in use, with one blind Judgement judge over all of them and an opt-in cross-model sweep, in place of arena's model fan-out and cross-family judge"
+    },
+    {
       "path": "pstack/automations/benny",
       "kind": "dropped",
       "why": "Cursor Slack automations, outside the port's scope"
