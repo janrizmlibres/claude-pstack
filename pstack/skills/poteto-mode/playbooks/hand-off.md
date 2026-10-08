@@ -10,10 +10,10 @@
    - Push the branch the run starts from (`git push origin <branch>`), with the work this session already committed. Uncommitted changes don't travel. Commit them on that branch first, or name them in the brief as not done.
 3. Fill the brief below. Keep every heading, in order. Write `None.` under a heading with nothing to say.
 4. Start the cloud lead under a pseudo-terminal, with the brief as its prompt.
-   - macOS. `script -q /dev/null claude --cloud --permission-mode auto "$(cat <brief.md>)"`
-   - Linux. `script -qec "claude --cloud --permission-mode auto \"\$(cat <brief.md>)\"" /dev/null`
+   - macOS. `script -q /dev/null claude --permission-mode auto --cloud "$(cat <brief.md>)"`
+   - Linux. `script -qec "claude --permission-mode auto --cloud \"\$(cat <brief.md>)\"" /dev/null`
 
-   When the request names a cloud environment, add `--settings '{"remote":{"defaultEnvironmentId":"<env_ id>"}}'`. `--environment` takes only self-hosted ids.
+   `--cloud` takes the brief as its own argument, so it comes last, right before the brief. Put any other flag before it. When the request names a cloud environment, add `--settings '{"remote":{"defaultEnvironmentId":"<env_ id>"}}'` before `--cloud`. `--environment` takes only self-hosted ids.
 5. On success, print the session link the command returned and end the run here. Don't poll the cloud session, watch its branches, or carry on locally.
 6. On failure (no Auto on the account, no default cloud environment, a refused push, `claude` missing or signed out), say why in one sentence, once, and carry on locally under the playbook the task routes to. Never start the cloud session in another permission mode in its place. A cloud lead that is not in Auto stops on a click with no one watching.
 

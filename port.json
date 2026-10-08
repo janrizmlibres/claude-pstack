@@ -244,7 +244,7 @@
     {
       "path": "pstack/skills/poteto-mode/references/brief-contract.md",
       "kind": "port-only",
-      "why": "the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and a sub-lead's timebox"
+      "why": "the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and the nonce trailer a lead finds a cloud report by, a sub-lead's timebox and in-turn wait, and the lead's worker worktrees: the exclude line and removal"
     },
     {
       "path": "pstack/skills/poteto-mode/scripts/check-plan.mjs",
@@ -262,7 +262,7 @@
     {
       "path": "pstack/skills/poteto-mode/playbooks/hand-off.md",
       "kind": "port-only",
-      "why": "the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --cloud --permission-mode auto` and a fixed brief, then prints the link and ends, or says why once and stays local"
+      "why": "the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --permission-mode auto --cloud` and a fixed brief, then prints the link and ends, or says why once and stays local"
     }
   ]
 }

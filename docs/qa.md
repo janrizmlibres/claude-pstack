@@ -2,7 +2,7 @@
 
 Every check the first release must pass, and every check watched after it, one row each. A **release check** must pass on the release candidate before the first release; a failure blocks it. A **watch check** runs after release; a failure becomes a bug, never a hold. Both terms are in `CONTEXT.md`.
 
-Checks run in the fixture repo, `janrizmlibres/pstack-fixture`, except the dogfood run and the sync CI check. A **local** check runs in a local session on a clone of the fixture, with the candidate installed from the marketplace. A **cloud** release check is the brief `qa/briefs/<check>.md` in the fixture, started unattended with `claude --cloud --permission-mode auto` in the `pstack-qa` environment, whose setup line installs the candidate; `read-rule-cloud` alone starts in default mode, attended. Cloud watch checks are run by hand from the watch-check issue. Every check reports the way a worker does: a final commit on its own branch, subject `qa: <check> <result>`, the evidence in the body, and the trailers `QA-Check: <check>`, `QA-Result: PASS|FAIL|BLOCKED` and `Claude-Session: <url>`. The fixture's `scripts/qa-results.sh` lists every report on its origin, and `scripts/reset.sh` deletes the `qa/*` and `claude/*` branches a round leaves behind, since no cloud session can delete a branch.
+Checks run in the fixture repo, `janrizmlibres/pstack-fixture`, except the dogfood run and the sync CI check. A **local** check runs in a local session on a clone of the fixture, with the candidate installed from the marketplace. A **cloud** release check is the brief `qa/briefs/<check>.md` in the fixture, started unattended with `claude --permission-mode auto --cloud` in the `pstack-qa` environment, whose setup line installs the candidate; `read-rule-cloud` alone starts in default mode, attended. Cloud watch checks are run by hand from the watch-check issue. Every check reports the way a worker does: a final commit on its own branch, subject `qa: <check> <result>`, the evidence in the body, and the trailers `QA-Check: <check>`, `QA-Result: PASS|FAIL|BLOCKED` and `Claude-Session: <url>`. The fixture's `scripts/qa-results.sh` lists every report on its origin, and `scripts/reset.sh` deletes the `qa/*` and `claude/*` branches a round leaves behind, since no cloud session can delete a branch.
 
 Each candidate gets a tracking issue with the release checks as checkboxes, each linked to its report. Watch checks share one long-lived issue.
 
@@ -33,7 +33,7 @@ Each candidate gets a tracking issue with the release checks as checkboxes, each
 | `worktree-removal` | release | local | The lead removes each worker's worktree once its result is integrated or discarded, and keeps the branch. |
 | `swarm-local-only` | release | local | Under "local only", a swarm runs in parallel local worktrees. |
 | `missing-env` | release | local | A worker in a fresh worktree without `.env` returns `BLOCKED: missing .env` and copies nothing. |
-| `cloud-worker-nonce` | release | local | A local lead finds its cloud worker's branch by the nonce slug and reads the trailered report commit. |
+| `cloud-worker-nonce` | release | local | A local lead finds its cloud worker's report branch by its `Pstack-Nonce` trailer and reads the trailered report commit. |
 | `cloud-sub-lead` | release | cloud | A cloud worktree sub-lead spawns worktree workers of its own. |
 | `swarm-window` | release | cloud | Swarm keeps at most 10 slices in flight, and a refused spawn is backpressure: no slice dropped. |
 | **Machine lock** | | | |
