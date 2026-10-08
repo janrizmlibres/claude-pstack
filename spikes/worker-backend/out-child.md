@@ -18,3 +18,9 @@ AskUserQuestion: present
 Agent: present
 claude-code-remote tools: present (initially "still connecting"; became directly callable after a ToolSearch)
 Agent isolation values: worktree, remote
+
+## Later message
+- UTC time: 2026-10-08T02:31:33Z
+- Note: worker process was restarted after the first push and before step 3; AskUserQuestion was never called.
+- How it reached me: a system "task-notification" (queued-remote-notifications) prompted ReadNotifications, which returned a cross-session-message from session_01FWterKmc4p3rzCwvx4fphG (origin: message from another Claude session, via send_message). First 300 chars as seen:
+  > Answer from lead: Blue. Please finish now.
