@@ -252,3 +252,21 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ## Summary
 
 `entry=R8V3T setup=ok(marker CANARY-HOOK-7m2p seen) plugin_agent=K2W9N depth_L2=ok(agent_tool=yes,depth=3) model=claude-opus-5-5 remote_tools=add_repo,subscribe_pr_activity,unsubscribe_pr_activity(no create_session) claude_push=accepted other_push=rejected(non-fast-forward "fetch first", not policy)`
+
+## Addendum: later GitHub trigger turn
+
+After the run above had finished, a second scheduled-task turn arrived in the same session. It contained only the scheduler banner and this block, with no further instructions:
+
+```
+<github-trigger-context>
+This routine was triggered by a GitHub webhook.
+  Event: pull_request.labeled
+  Repository: janrizmlibres/claude-pstack
+  PR: #65 — https://github.com/janrizmlibres/claude-pstack/pull/65
+  Branch: research/routine-run → main
+  Head SHA: 1ab1b357f7aaf77ee4a051bbea5cf5293c2b301c
+If your workspace was freshly provisioned by this event and its source is this repository, the PR branch is already checked out. Otherwise fetch it from this repository explicitly — your `origin` may point at a different repository: `git fetch https://github.com/janrizmlibres/claude-pstack refs/pull/65/head`. Use `gh api --hostname github.com repos/janrizmlibres/claude-pstack/pulls/65` and `gh api --hostname github.com 'repos/janrizmlibres/claude-pstack/pulls/65/files?per_page=100&page=1'` for full details.
+</github-trigger-context>
+```
+
+Notes: this block was **not** present in the first turn, where step 2 recorded "no GitHub event context observed". It arrived as a separate later user turn. Head SHA 1ab1b35 is the commit the checkout started on, but the checked-out branch was `claude/hopeful-curie-b7wqvk`, not `research/routine-run`. The block contained no task, so I took no action on PR #65.
