@@ -121,7 +121,7 @@
     {
       "path": "pstack/skills/poteto-mode/playbooks/orchestrate.md",
       "kind": "override",
-      "why": "a lead and sub-leads place units on cloud workers under a local lead, in local worktrees under local-only and as in-VM worktree subagents under a cloud lead, with create_session workers in Auto; retries by failure mode; VERIFY through the machine lock, a fresh-context verifier and the full gate at landing as the ledger verdict; stacker units for conflicted merges and restacks; clean landings only under a landing grant, with Close listing leftover branches; orch run through the launcher with its store pushed to an orphan branch; and restart and compaction in place of a Cursor restart"
+      "why": "a lead and sub-leads place units by surface (cloud workers, local-only worktrees, in-VM worktree subagents, create_session in Auto), retry by failure mode, take the full gate at landing as the ledger verdict, land only under a landing grant with Close listing leftover branches, run orch through the launcher with its store on an orphan branch, and split restart from compaction"
     },
     {
       "path": "pstack/automations/benny",
