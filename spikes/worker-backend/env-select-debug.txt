@@ -1,0 +1,6 @@
+launch-debug.log:2026-10-08T02:24:51.756Z [DEBUG] Available environments: env_011fdXavJ6U87ghgCCgmnoee (Mira, anthropic_cloud), env_01C2nsLM8YNe2GsPB79MDmsm (Default, anthropic_cloud)
+launch-debug.log:2026-10-08T02:24:51.756Z [DEBUG] Using configured default environment: env_011fdXavJ6U87ghgCCgmnoee
+launch-debug.log:2026-10-08T02:24:51.756Z [DEBUG] Selected environment: env_011fdXavJ6U87ghgCCgmnoee (Mira, anthropic_cloud)
+launch-env-debug.log:2026-10-08T02:25:42.855Z [DEBUG] Available environments: env_011fdXavJ6U87ghgCCgmnoee (Mira, anthropic_cloud), env_01C2nsLM8YNe2GsPB79MDmsm (Default, anthropic_cloud)
+launch-env-debug.log:2026-10-08T02:25:42.855Z [DEBUG] Using configured default environment: env_01C2nsLM8YNe2GsPB79MDmsm
+launch-env-debug.log:2026-10-08T02:25:42.855Z [DEBUG] Selected environment: env_01C2nsLM8YNe2GsPB79MDmsm (Default, anthropic_cloud)
