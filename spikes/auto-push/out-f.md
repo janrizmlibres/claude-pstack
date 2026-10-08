@@ -17,3 +17,4 @@ S1 unit branch push: OK — pstack/probe-f/unit-a pushed from /tmp/units worktre
 S2 stacked branch push: OK — pstack/probe-f/unit-b pushed
 S3 parent fast-forward push: OK — unit-a advanced by one commit
 S4 restack force-with-lease push: OK — unit-b rebased onto unit-a and force-with-lease pushed
+S5 orphan data branch push: OK — store c975577 pushed; push printed 'fatal: expected 'acknowledgments', received 'packfile'' + 'push negotiation failed; proceeding anyway' but the ref was created
