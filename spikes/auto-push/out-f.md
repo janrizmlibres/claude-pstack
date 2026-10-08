@@ -21,3 +21,4 @@ S5 orphan data branch push: OK — store c975577 pushed; push printed 'fatal: ex
 S6 data branch fast-forward push: OK — store advanced to d15b0e1 (parent c975577)
 S7 subagent push: call 1 FAILED: '/bin/bash: line 1: /tmp/units/probe-f/c.txt: No such file or directory'; call 2 push OK — not refused; LEAD.md prep bug (probe-f/ dir absent on origin/main, needs mkdir -p), so unit-c was pushed identical to origin/main
 S8 open parent PR (REST): OK — PR #40 (unit-a -> main)
+S9 open stacked PR (REST): OK — PR #42 (unit-b -> unit-a)
