@@ -16,7 +16,8 @@
 // match one of its rule's `before` lines (else it is dead), every `before`
 // line must match one of its rule's patterns, and no `after` line may match
 // any rule's pattern. An allowance excuses its rule's matches on the lines of
-// one port file that contain its text; one that excuses nothing is stale.
+// one port file that contain its text, and must name one occurrence: one
+// that excuses nothing is stale, and one that excuses several lines is too wide.
 // Translated files are the port files port.json lists as neither an override,
 // a port-only file nor a dropped one.
 // Exit 0 when clean, 1 on Cursor-isms or stale allowances, 2 when the rules
@@ -51,29 +52,40 @@ function main(): number {
   const rules = readRules(root);
   const files = translatedFiles(root, readPortRecord(root));
 
-  const used = new Set<Allowance>();
+  // Each allowance's excused lines; one that excuses no line is stale, and one
+  // that excuses several names more than one occurrence.
+  const excused = new Map<Allowance, Set<number>>();
   const findings = files
     .flatMap((file) => scan(file, readFileSync(join(root, file), "utf8"), rules))
     .filter((finding) => {
       const allowance = finding.rule.allowances.find((a) => a.path === finding.file && finding.lineText.includes(a.text));
-      if (allowance) used.add(allowance);
+      if (allowance) excused.set(allowance, (excused.get(allowance) ?? new Set()).add(finding.line));
       return !allowance;
     });
-  const stale = rules.flatMap((rule) => rule.allowances.filter((a) => !used.has(a)).map((allowance) => ({ rule, allowance })));
+  const allowances = rules.flatMap((rule) => rule.allowances.map((allowance) => ({ rule, allowance })));
+  const stale = allowances.filter(({ allowance }) => !excused.has(allowance));
+  const wide = allowances.filter(({ allowance }) => (excused.get(allowance)?.size ?? 0) > 1);
 
-  for (const { file, line, column, rule, match } of findings) console.log(`${file}:${line}:${column}: ${name(rule)}: ${match}`);
+  for (const { file, line, column, rule, match } of findings) console.log(`${file}:${line}:${column}: ${ruleLabel(rule)}: ${match}`);
   for (const { rule, allowance: a } of stale) {
-    console.log(`${rulesFile}:${a.docLine}: ${name(rule)}: stale allowance, excuses nothing: ${a.path} | ${a.text}`);
+    console.log(`${rulesFile}:${a.docLine}: ${ruleLabel(rule)}: stale allowance, excuses nothing: ${a.path} | ${a.text}`);
+  }
+  for (const { rule, allowance: a } of wide) {
+    const lines = [...excused.get(a)!].join(", ");
+    console.log(
+      `${rulesFile}:${a.docLine}: ${ruleLabel(rule)}: allowance excuses ${excused.get(a)!.size} lines (${lines}), ` +
+        `give it text found on one: ${a.path} | ${a.text}`,
+    );
   }
   const inFiles = new Set(findings.map((finding) => finding.file)).size;
   console.log(
     `${plural(findings.length, "Cursor-ism")} in ${inFiles} of ${files.length} translated files; ` +
-      `${plural(used.size, "allowance")} in use, ${stale.length} stale.`,
+      `${plural(excused.size, "allowance")} in use, ${stale.length} stale.`,
   );
-  return findings.length + stale.length === 0 ? 0 : 1;
+  return findings.length + stale.length + wide.length === 0 ? 0 : 1;
 }
 
-const name = (rule: Rule) => `rule ${rule.number} (${rule.title})`;
+const ruleLabel = (rule: Rule) => `rule ${rule.number} (${rule.title})`;
 /** Whether `pattern` matches `text` anywhere; `search` ignores the global flag's `lastIndex`. */
 const matches = (pattern: RegExp, text: string) => text.search(pattern) !== -1;
 const plural = (count: number, noun: string) => `${count} ${noun}${count === 1 ? "" : "s"}`;
@@ -141,7 +153,7 @@ function readRules(root: string): Rule[] {
   if (fence) fail(fence.line, "a code fence that never closes");
 
   for (const { rule, line, blocks } of sections) {
-    if (blocks !== 1) fail(line, `${name(rule)} needs exactly one detect block, has ${blocks}`);
+    if (blocks !== 1) fail(line, `${ruleLabel(rule)} needs exactly one detect block, has ${blocks}`);
     else selfTest(rule, line, fail);
   }
   const rules = sections.map((s) => s.rule);
@@ -149,7 +161,7 @@ function readRules(root: string): Rule[] {
     for (const after of rule.after) {
       for (const other of rules) {
         const hit = other.patterns.find((pattern) => matches(pattern, after));
-        if (hit) fail(line, `${name(rule)}: after line matches ${name(other)}'s pattern ${hit.source}: ${after}`);
+        if (hit) fail(line, `${ruleLabel(rule)}: after line matches ${ruleLabel(other)}'s pattern ${hit.source}: ${after}`);
       }
     }
   }
@@ -205,18 +217,18 @@ function readKey(rule: Rule, text: string, line: number, fail: (line: number, me
 function selfTest(rule: Rule, line: number, fail: (line: number, message: string) => void): void {
   if (rule.undetectable !== undefined) {
     const extra = rule.patterns.length + rule.before.length + rule.after.length + rule.allowances.length;
-    if (extra > 0) fail(line, `${name(rule)} is undetectable, so it takes no pattern, before, after or allow`);
+    if (extra > 0) fail(line, `${ruleLabel(rule)} is undetectable, so it takes no pattern, before, after or allow`);
     return;
   }
-  if (rule.patterns.length === 0) return void fail(line, `${name(rule)} needs a pattern, or undetectable with a reason`);
+  if (rule.patterns.length === 0) return void fail(line, `${ruleLabel(rule)} needs a pattern, or undetectable with a reason`);
   for (const pattern of rule.patterns) {
     if (!rule.before.some((before) => matches(pattern, before))) {
-      fail(line, `${name(rule)}: dead pattern, matches none of its before lines: ${pattern.source}`);
+      fail(line, `${ruleLabel(rule)}: dead pattern, matches none of its before lines: ${pattern.source}`);
     }
   }
   for (const before of rule.before) {
     if (!rule.patterns.some((pattern) => matches(pattern, before))) {
-      fail(line, `${name(rule)}: before line none of its patterns match: ${before}`);
+      fail(line, `${ruleLabel(rule)}: before line none of its patterns match: ${before}`);
     }
   }
 }

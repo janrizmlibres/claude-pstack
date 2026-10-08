@@ -101,6 +101,17 @@ describe("check-cursorisms", () => {
     expect(result.stdout).toContain("1 allowance");
   });
 
+  test("fails on an allowance that excuses more than one line, since it must name one occurrence", () => {
+    const allowed = [...tools, "allow: pstack/README.md | AskQuestion | quotes upstream's wording"];
+    const files = { "pstack/README.md": "Quoting AskQuestion here.\nAnd AskQuestion again.\n" };
+
+    const result = check(repo({ "1. Tools": allowed }, files));
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stdout).toContain("allowance excuses 2 lines");
+    expect(result.stdout).toContain("pstack/README.md | AskQuestion");
+  });
+
   test("fails on an allowance that excuses nothing", () => {
     const allowed = [...tools, "allow: pstack/README.md | quoting AskQuestion | quotes upstream's wording"];
 

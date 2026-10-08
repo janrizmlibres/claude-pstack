@@ -9,10 +9,10 @@ A sync that finds a missing rule proposes it in the same PR as an edit to this d
 - `pattern: <regex>`: a JavaScript regular expression, matched against each line of every translated file. A rule may have several.
 - `before: <line>`: a line the rule rewrites, usually upstream's own wording.
 - `after: <line>`: what the rule makes of it.
-- `allow: <port file> | <text on the line> | <reason>`: excuses this rule's matches on the lines of one port file that contain the text, such as a deliberate quote of upstream.
+- `allow: <port file> | <text on the line> | <reason>`: excuses this rule's matches on the one line of one port file that contains the text, such as a deliberate quote of upstream. Allowances are per occurrence: one whose text is on more than one line with a match is too wide, and one that excuses nothing is stale; the check reports both.
 - `undetectable: <reason>`: instead of all of the above, for a rule no line pattern can see.
 
-The check self-tests this document before it scans anything and stops with exit 2 when it fails: every pattern must match at least one of its rule's `before` lines (a pattern that matches none is dead), every `before` line must match one of its rule's patterns, and no `after` line may match any rule's pattern. So a pattern can't change without its examples, nor an example without its pattern. An allowance that excuses nothing is reported as stale.
+The check self-tests this document before it scans anything and stops with exit 2 when it fails: every pattern must match at least one of its rule's `before` lines (a pattern that matches none is dead), every `before` line must match one of its rule's patterns, and no `after` line may match any rule's pattern. So a pattern can't change without its examples, nor an example without its pattern.
 
 To add a rule, copy the nearest rule, write its prose, paste the upstream line you met as `before` and your rewrite as `after`, and write a pattern that catches the first and not the second.
 
@@ -22,13 +22,15 @@ Every model-facing reference to a sibling skill (bold name, slash name, relative
 
 ```detect
 pattern: \b(?:[Ii]nvoke|[Rr]un) \$\{CLAUDE_PLUGIN_ROOT\}/skills/
-pattern: (?<![\w:/.~$}\]-])/(?:poteto-mode|poteto-help|setup-pstack|architect|arena|automate-me|benchmark-checklist|blast-radius|bro|correct|create-verification-skill|figure-it-out|how|interrogate|maintain-verification-skill|make-bot-ui|no-comments|recall|reflect|show-me-your-work|swarm|tdd|teach|technical-writing|typescript-best-practices|unslop|why|deslop|control-ui|control-cli|principle-[a-z-]+)(?![\w-])
+pattern: (?<!\$\{CLAUDE_PLUGIN_ROOT\}/skills/.*)(?<![\w:/.~$}\]-])/(?:poteto-mode|poteto-help|setup-pstack|architect|arena|automate-me|benchmark-checklist|blast-radius|bro|correct|create-verification-skill|figure-it-out|how|interrogate|maintain-verification-skill|make-bot-ui|no-comments|recall|reflect|show-me-your-work|swarm|tdd|teach|technical-writing|typescript-best-practices|unslop|why|deslop|control-ui|control-cli|principle-[a-z-]+)(?![\w-])(?!.*\$\{CLAUDE_PLUGIN_ROOT\}/skills/)
 before: Use the **arena** skill: invoke ${CLAUDE_PLUGIN_ROOT}/skills/arena/SKILL.md.
 before: [`/poteto-mode`](./skills/poteto-mode/SKILL.md) and the agents route through the same wrapper.
 before: Run /setup-pstack once, then /principle-fix-root-causes when a bug recurs.
+before: Seed the hypotheses with /how over the affected subsystem.
 after: Use the **arena** skill: read ${CLAUDE_PLUGIN_ROOT}/skills/arena/SKILL.md.
 after: [`/pstack:poteto-mode`](./skills/poteto-mode/SKILL.md) and the agents route through the same wrapper.
 after: Run /pstack:setup-pstack once, then /pstack:principle-fix-root-causes when a bug recurs.
+after: Seed the hypotheses with /how over the affected subsystem (read ${CLAUDE_PLUGIN_ROOT}/skills/how/SKILL.md).
 ```
 
 ## 2. Frontmatter flags stay
@@ -117,7 +119,7 @@ after: Launch all reviewers in a single message using the Agent tool.
 after: One message, three `Agent` calls, one per reviewer.
 after: Spawn one Agent that explores and explains.
 after: Prefer AskUserQuestion over free text.
-after: background: true
+after: run_in_background: true
 after: Spawn all N workers in one message with `run_in_background: true`.
 after: It writes `.claude/skills/verify-<app>/`, agent-facing instructions.
 ```
@@ -187,17 +189,22 @@ Cursor's `create-skill` → "a skill-authoring skill if one is installed (such a
 ```detect
 pattern: \b[Cc]ursor(?:'s| built-in)
 pattern: \bCursor restart\b
-pattern: \bPlan Mode\b
+pattern: \brestart Cursor\b
+pattern: \b[Pp]lan [Mm]ode\b
 pattern: \bcreate-skill\b
 pattern: \bmcps/
 before: Use Cursor's built-in `create-skill` skill to author the skill.
 before: Suspending in-flight work cleanly on an explicit pause, going offline, or a Cursor restart.
 before: pstack has no planning skill. Plan Mode works alongside it.
+before: cursor already has a great plan mode which works great with pstack.
+before: Tell the agent you're about to go offline or restart Cursor.
 before: Otherwise inspect the `mcps/` directory for enabled MCP servers.
 before: `/loop` is a Cursor built-in wake mechanism, not a pstack skill.
 after: Use a skill-authoring skill if one is installed (such as `skill-creator`); otherwise write the SKILL.md directly.
 after: Suspending in-flight work cleanly on an explicit pause, going offline, or a Claude Code restart.
 after: pstack has no planning skill.
+after: If you want a plan, ask `/pstack:poteto-mode` for one.
+after: Tell the agent you're about to go offline or restart Claude Code.
 after: List the MCP servers from your own tool list.
 after: `/loop` is a Claude Code built-in, not a pstack skill.
 ```

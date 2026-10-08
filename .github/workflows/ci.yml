@@ -28,7 +28,7 @@ jobs:
       - name: port.json agrees with the port
         run: bun scripts/check-port-json.ts
       # Reports only: exit 1 (files left to port) passes, a malformed port.json
-      # (exit 2) fails. It is a gate in the local release checks instead.
+      # (exit 2) fails. Files left to port hold back a release, not a PR.
       - name: Port coverage (report)
         run: bun scripts/check-port-json.ts --coverage || [ $? -eq 1 ]
       - name: Typecheck scripts

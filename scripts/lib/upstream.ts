@@ -1,5 +1,6 @@
 // The snapshot of upstream under `upstream/` and its machine-written record,
-// `upstream/snapshot.json`, shared by upstream-diff and upstream-snapshot.
+// `upstream/snapshot.json`, plus the command plumbing (UsageError, runCommand,
+// git) every repo script shares.
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";

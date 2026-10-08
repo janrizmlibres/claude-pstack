@@ -32,9 +32,9 @@ function check(root: string, record: PortRecord, files: string[]): number {
     if (entry.kind !== "dropped" && !files.some((file) => covers(entry.path, file))) {
       problems.push(`${entry.path}: listed as ${entry.kind}, but there is no such port file`);
     }
-    const upstream =
+    const snapshotPaths =
       entry.kind === "port-only" ? [] : [...(entry.sources ?? [counterpart(entry.path)]), ...(entry.depends_on ?? [])];
-    for (const path of upstream.filter((p) => !inSnapshot(p))) {
+    for (const path of snapshotPaths.filter((p) => !inSnapshot(p))) {
       problems.push(`${path}: listed by ${entry.path} (${entry.kind}), but not in the snapshot`);
     }
   }
