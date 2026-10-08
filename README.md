@@ -200,6 +200,7 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `skills/architect/references/runner-prompt.md` | override | arena's directed or fourth-way block replaces the each-on-a-different-model paragraph, and a spec's Implementation Decisions bind every shape |
 | `skills/arena/SKILL.md` | override | runners on Work with two whole-shape directions, a fourth-way seat and their escapes, and a blind judge on every arena, in place of a runner per model family and a cross-family judge |
 | `skills/poteto-help/SKILL.md` | override | Cursor-only sections (Custom Mode, Option+Enter, .cursor/rules, /add-plugin) rewritten for Claude Code's install, settings and surfaces, with a row for re-entering the mode after a resume |
+| `skills/poteto-mode/scripts/check-plan.mjs` | override | its markers match the port's plan wording: live lanes on the `volume` agent instead of a named model, and playbooks read from the plugin instead of from trunk with `git show` |
 | `skills/setup-pstack/SKILL.md` | override | shows the three settings, points to /config, prints the setup line and shows the Read rule, in place of writing a Cursor model rule |
 | `.claude-plugin/plugin.json` | port-only | Claude Code's plugin manifest, with the three model settings as userConfig and no version |
 | `agents/judgement-reader.md` | port-only | the Judgement setting's reader, in place of a readonly generalPurpose spawn: no Edit, Write or NotebookEdit, high effort |
@@ -212,6 +213,7 @@ In cloud, your user-level `CLAUDE.md` isn't there: rules come from the request a
 | `hooks/poteto-mode-compaction.sh` | port-only | after a compaction in a marked poteto-mode session, lists the durable state to re-read before acting: the skill, any store, the transcript, a trail and a resume note |
 | `hooks/poteto-mode-reminder.sh` | port-only | poteto-mode's per-turn reminder hook: upstream's reminder text, the skill path, the surface and mode, precedence and the machine lock, and the session marker the compaction hook reads |
 | `scripts/heavy` | port-only | the machine lock: runs one heavy command at a time per machine, released by the kernel when its holder dies |
+| `skills/poteto-mode/playbooks/hand-off.md` | port-only | the Hand-off playbook: on an explicit request only, pushes the input, starts a cloud lead with `claude --cloud --permission-mode auto` and a fixed brief, then prints the link and ends, or says why once and stays local |
 | `skills/poteto-mode/references/brief-contract.md` | port-only | the rules every worker brief carries: entry line, no human asks, own-branch pushes, start commit, the machine lock, missing files, leaf workers, the trailered report commit and a sub-lead's timebox |
 | `skills/poteto-mode/scripts/node_modules/commander/` | port-only | commander 14.0.0, the version upstream's bun.lock pins, vendored with its MIT licence so upstream's imports resolve without an install |
 | `skills/poteto-mode/scripts/run` | port-only | the runtime launcher: runs poteto-mode's scripts with Bun, else Node 22.18+, in place of bootstrap.ts's install |
