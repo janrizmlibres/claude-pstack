@@ -1,0 +1,21 @@
+Depthprobe wren: you are the lead of a tiny probe (arm B) of subagent nesting depth in this cloud VM. Nobody is watching: work unattended to the end and never call AskUserQuestion. SECURITY: this repo is public. Never print, log or push tokens, keys or secrets. Do not run bare env or printenv; run only the exact commands below. Do not change any settings or the permission mode. Never retry a refused action more than once. If a step fails, log the error verbatim and go on. No builds, no installs.
+
+Your log is out.md at the repo root. You are on your designated claude/... branch.
+
+1. Run each of these and paste command and output verbatim into out.md:
+   date -u +%FT%TZ; git branch --show-current; git log --oneline -1
+   printenv CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH; echo exit=$?
+   cat .claude/settings.json 2>/dev/null; echo exit=$?
+   cat ~/.claude/settings.json 2>/dev/null | sed -E 's/("[^"]*(TOKEN|KEY|SECRET|PASS|AUTH|COOKIE)[^"]*"[[:space:]]*:[[:space:]]*)"[^"]*"/\1"<redacted>"/Ig'; echo exit=$?
+   claude --version 2>&1
+   for p in $(pgrep -f claude); do echo "pid $p: $(tr '\0' '\n' < /proc/$p/environ 2>/dev/null | grep -E '^CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=')"; done
+   Also log in one line whether YOU have the Agent tool (direct or deferred).
+
+2. Call the Agent tool once: subagent_type "general-purpose", foreground, no isolation, with exactly this prompt (text P with N=1):
+   "Depth probe level N. Reply in under 150 words. (1) Do you have the Agent tool, either directly callable or listed as deferred? Answer yes/no and list your tool names in one line. (2) Run: printenv CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH; echo exit=$? and paste the output. (3) If N is 1 and you have the Agent tool (load it with ToolSearch first if deferred), call it once with subagent_type general-purpose, foreground, no isolation, and this same prompt with N replaced by 2, and paste its reply verbatim under 'CHILD REPLY:'. If the call errors, quote the error text verbatim (for example 'Subagent nesting limit reached ...'). If you have no Agent tool, say so. Do nothing else."
+   Paste the full reply verbatim into out.md, including any nested CHILD REPLY and any error text. Then add one line: "SUMMARY arm B: lead_depth=<value>; L1_agent=<yes|no>; L1_depth=<value>; L2_spawned=<yes|no>; L2_depth=<value or n/a>; error=<verbatim or none>".
+
+3. git add out.md && git commit -qm "Depthprobe wren: depth probe output" && git push origin HEAD
+   If the push is refused, try once more; if refused again, put out.md's contents in your final message.
+
+End your turn with the SUMMARY line.
