@@ -85,3 +85,9 @@ Deferred: ArtifactComments, ArtifactData, CronCreate, CronDelete, CronList, Desi
 - EnterWorktree / ExitWorktree: DEFERRED.
 - claude-code-remote tools: PRESENT (direct after MCP connect).
 - Agent types: claude, claude-code-guide, Explore, general-purpose, Plan, statusline-setup.
+
+## Step 2: child session
+Created at 2026-10-08T02:25:29Z. create_session returned (model fields omitted):
+```
+{"ccr":{"id":"session_01TnE4qtDH4SijE5uVkiy7GV","title":"nestprobe child","session_status":"SESSION_STATUS_PENDING","created_at":"2026-10-08T02:25:21.411005Z","environment_id":"env_011fdXavJ6U87ghgCCgmnoee","session_context":{"sources":[{"git_repository":{"url":"https://github.com/janrizmlibres/claude-pstack","revision":"main"}}],"outcomes":[{"git_repository":{"git_info":{"repo":"janrizmlibres/claude-pstack","branches":["claude/nestprobe-child"]}}}]},"origin":"claude_code_mcp_seed","connection_status":"disconnected","tags":["config:session-created","config:auto-create-pr:off","config:meta-mcp-own-entry"],"environment_kind":"anthropic_cloud","parent_session_id":"session_01FWterKmc4p3rzCwvx4fphG","status_bucket":"SESSION_STATUS_BUCKET_WORKING"}}
+```
