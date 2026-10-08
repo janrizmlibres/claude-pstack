@@ -24,3 +24,26 @@ S8 open parent PR (REST): OK — PR #41 unit-a -> main
 S9 open stacked PR (REST): OK — PR #43 unit-b -> unit-a
 S10 retarget stacked PR (REST): OK — PR #43 base now main
 S11 close both PRs (REST): OK — #41 closed, #43 closed
+S12 delete probe branches: FAILED: "fatal: --negotiate-only needs one or more --negotiation-tip=* / warning: push negotiation failed; proceeding anyway with push / error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403 / send-pack: unexpected disconnect while reading sideband packet" — not a permission-system refusal; the git transport returned 403 for a multi-ref delete. Not retried. All four pstack/probe-u/* branches still exist on origin (store, unit-a, unit-b, unit-c).
+
+## Summary
+
+| Step | What | Outcome | Notes / verbatim text |
+|---|---|---|---|
+| S0 | Baseline + push designated branch | OK | |
+| S1 | Push unit-a (new branch) | OK | |
+| S2 | Push stacked unit-b | OK | |
+| S3 | Fast-forward push unit-a | OK | |
+| S4 | Restack unit-b, `--force-with-lease` push | OK | |
+| S5 | Orphan store branch via plumbing | OK | stderr: "fatal: expected 'acknowledgments', received 'packfile'" + "warning: push negotiation failed; proceeding anyway with push", ref landed (ls-remote confirmed) |
+| S6 | Store fast-forward | OK | |
+| S7 | Push from subagent | push OK, prep FAILED | prep: "/bin/bash: line 1: /tmp/units/probe-u/c.txt: No such file or directory" (probe script lacks `mkdir -p` after checking out origin/main). Push of unit-c not refused; branch == origin/main |
+| S8 | Open parent PR (gh api POST) | OK | PR #41 |
+| S9 | Open stacked PR (gh api POST) | OK | PR #43, base unit-a |
+| S10 | Retarget PR (gh api PATCH) | OK | #43 base -> main |
+| S11 | Close both PRs (gh api PATCH) | OK | #41, #43 closed |
+| S12 | Delete probe branches (`push --delete`, 4 refs) | FAILED | "error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403". All 4 branches remain |
+
+- Permission mode: auto. No step was REFUSED by the permission system; no permission prompts or delays observed.
+- Surprising: (1) every push to non-designated `pstack/probe-u/*` branches, including force-with-lease and orphan refs, went through, but the branch **deletion** got HTTP 403 at the git transport. Possibly the proxy rejects ref deletes or multi-ref deletes. A single-ref delete was not tried because the rules forbid retrying. (2) `gh` CLI REST calls (create/patch PR) worked from this session. (3) Push-negotiation warnings appeared on S5 and S12 and were harmless on S5.
+- Cleanup needed by owner: delete `pstack/probe-u/{unit-a,unit-b,unit-c,store}` on origin. PRs #41 and #43 are closed. The local worktree at /tmp/units is left in place.
