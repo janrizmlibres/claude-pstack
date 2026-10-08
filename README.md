@@ -144,7 +144,9 @@ A routine whose prompt starts with `/pstack:poteto-mode` runs as a full cloud le
   ```
 
 - Label events on draft PRs may not fire.
-- A GitHub-fired run starts at the PR's head, on a `claude/` branch of its own.
+- A GitHub-fired run starts detached at the PR's head. It pushes its work to the PR's head branch,
+  so the PR updates in place. When that push is refused (a fork's head, branch protection), it
+  pushes a `claude/` branch and opens a PR against the head branch.
 - The run pushes like any cloud lead, and landing stays withheld unless the prompt grants it.
 
 ## What a run costs
