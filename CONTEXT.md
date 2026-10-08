@@ -80,6 +80,10 @@ _Avoid_: approach, variant, persona
 The part of a review rubric one reviewer owns. The other way a fan-out gets breadth from prompts: reviewers split the rubric instead of each applying all of it.
 _Avoid_: angle, focus, perspective
 
+**Panel**:
+A fan-out of several workers on one artifact whose results the lead weighs against each other: an arena's runners and judge, or interrogate's reviewers.
+_Avoid_: committee, ensemble, council
+
 **Sample**:
 One eval candidate's run of the change under test, on the same organic prompt as every other sample. A measurement, not breadth: identical prompts are the point, so the race rules on distinct briefs do not apply.
 _Avoid_: candidate, run, arm
