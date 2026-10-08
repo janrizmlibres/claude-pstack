@@ -16,3 +16,4 @@ S0 baseline + designated-branch push: OK — log commit pushed to claude/auto-pu
 S1 unit branch push: OK — pstack/probe-f/unit-a pushed from /tmp/units worktree
 S2 stacked branch push: OK — pstack/probe-f/unit-b pushed
 S3 parent fast-forward push: OK — unit-a advanced by one commit
+S4 restack force-with-lease push: OK — unit-b rebased onto unit-a and force-with-lease pushed
