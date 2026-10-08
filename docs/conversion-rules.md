@@ -335,3 +335,19 @@ before: pstack also ships a dormant [benny automation pack](./automations/benny/
 after: `/pstack:deslop` ships with pstack, vendored from the `cursor-team-kit` plugin and hidden until you type it.
 after: `control-cli` and `control-ui` ship with pstack too.
 ```
+
+## 20. Spec intake
+
+These keep `skills/poteto-mode/playbooks/multi-phase-plan.md` translated while it takes a spec to a plan and on to execution:
+
+- a first step reads the input: a spec is read and never edited, and an issue (a URL or a number) is read with `gh api` REST on both surfaces, comments included;
+- the plan file goes to `.claude/pstack/plans/<slug>.md` unless the operator names a path, listed in the exclude file `git rev-parse --git-path info/exclude` names, and is never committed on the run branch; the plan keeps `${CLAUDE_PLUGIN_ROOT}` literal;
+- `check-plan.mjs` runs through the runtime launcher, `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/scripts/run`; with no runtime (exit 69) the plan is posted as not linted, never linted by hand;
+- the plan is posted beside the input, never in it: as a comment on a spec issue, or for other input on the orphan branch `pstack/plan/<slug>` through git plumbing, with no worktree;
+- the hand-back becomes the go: a spec handed in, "run until done" or a brief's go grant carries on under the execution playbook the plan names; only a request for the plan alone ("plan #42", "plan only"), or a plan the operator asked for, stops after posting; landing stays withheld unless granted, and without a landing grant the execution playbook is always Autopilot-stack;
+- the skeleton reads the playbooks it names from `${CLAUDE_PLUGIN_ROOT}` instead of `git show origin/main:`, adds the brief contract to that list and to each owner's brief, branches from `<base-branch>` instead of `main`, runs its live lanes on the `volume` agent, and its audit tick's prompt reads poteto-mode by path, with rule 10's cloud surface line on the tick;
+- `check-plan.mjs` is an override whose markers match this skeleton, so a change to either is carried into the other.
+
+```detect
+undetectable: each asks for a step or a skeleton line to be present in multi-phase-plan.md, and an absence is not a line a pattern can match
+```

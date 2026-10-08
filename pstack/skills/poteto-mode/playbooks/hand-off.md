@@ -5,7 +5,7 @@
 1. Check the surface. A hand-off goes from a local entry point to a cloud lead. On the cloud surface (`pstack: surface=cloud`) there is no local session to start, so say so once and run it here.
 2. Push the input first, because a cloud session sees only what is on GitHub.
    - A spec issue is already there. Name its URL.
-   - A repo file is named by branch and path once that branch is pushed. A file on no pushed branch goes to the orphan branch `pstack/hand-off/<slug>` with the git plumbing Multi-phase plan posts a plan with (`playbooks/multi-phase-plan.md`), the file in the plan's place.
+   - A repo file travels with the branch the run starts from. Commit it there if it isn't, and name its path.
    - A task given verbatim goes into the brief, word for word.
    - Push the branch the run starts from (`git push origin <branch>`), with the work this session already committed. Uncommitted changes don't travel. Commit them on that branch first, or name them in the brief as not done.
 3. Fill the brief below. Keep every heading, in order. Write `None.` under a heading with nothing to say.

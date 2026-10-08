@@ -2,7 +2,7 @@
 // testing check-plan.mjs through its command line. Tests break it one fault
 // at a time with `replace`.
 
-export const rule =
+export const verificationRule =
   "Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked.";
 
 const lanes = Array.from({ length: 10 }, (_, i) =>
@@ -31,15 +31,15 @@ export function prSection(title: string, id: string, depends: string, gated: boo
     "",
     "- [ ] The log prints `retry 1 after 200ms` on a dropped socket.",
     "",
-    `**Verify, unit.** ${rule}`,
+    `**Verify, unit.** ${verificationRule}`,
     "",
     "- [ ] `src/net/retry.test.ts` gains the backoff case. Run `bun test src/net/retry.test.ts`.",
     "",
-    `**Verify, live.** ${rule} Ten lanes on the \`volume\` agent at the PR head, per the boot recipe.`,
+    `**Verify, live.** ${verificationRule} Ten lanes on the \`volume\` agent at the PR head, per the boot recipe.`,
     "",
     ...lanes,
     "",
-    `**Verify, perf.** ${rule}`,
+    `**Verify, perf.** ${verificationRule}`,
     "",
     "- [ ] Metric. Time to reconnect after a dropped socket, at trunk and head.",
     "- [ ] Probe. Drop the socket twenty times at trunk and at the head, interleaved.",
@@ -77,7 +77,7 @@ export const samplePlan = [
   "",
   "The program runs `${CLAUDE_PLUGIN_ROOT}/skills/poteto-mode/playbooks/autopilot-stack.md`. The operator lands the stack. R1 and R2 stop at merge-ready.",
   "",
-  rule,
+  verificationRule,
   "",
   "## Program checklist",
   "",

@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pluginDir, runProgram, tempDir, writeFiles } from "./test/harness.ts";
-import { prSection, rule, samplePlan } from "./test/plan-fixture.ts";
+import { prSection, verificationRule, samplePlan } from "./test/plan-fixture.ts";
 
 const launcher = join(pluginDir, "skills", "poteto-mode", "scripts", "run");
 
@@ -92,7 +92,7 @@ describe("check-plan.mjs", () => {
         "intro is 10 lines, under ten required",
       ],
       "How to read this without its rule": [
-        (p) => replace(p, `${rule}\n\n## Program checklist`, "## Program checklist"),
+        (p) => replace(p, `${verificationRule}\n\n## Program checklist`, "## Program checklist"),
         "How to read this lacks \"Tests alone are not sufficient verification.",
       ],
       "no How to read this": [(p) => replace(p, "## How to read this", "## Reading"), 'no "## How to read this" section'],
