@@ -53,3 +53,7 @@ REFUSED: Permission for this action was denied by the Claude Code auto mode clas
 ```
 
 S3 Arm auto-merge with each merge method: REFUSED: Permission for this action was denied by the Claude Code auto mode classifier. Reason: [Modify Shared Resources]. — #62 (merge) refused; #63 (squash) and #64 (rebase) not attempted per the no-retry/no-workaround rule; the follow-up read of #62–#64 was also refused: [Merge Without Review]
+
+S4 Auto-merge on a PR that is already mergeable: REFUSED: not attempted — S3's auto-merge arm was refused by the auto mode classifier ([Modify Shared Resources], then [Merge Without Review]); issuing the same arm call on #61 would be working around that refusal
+S5 Turn the gate green: REFUSED: not attempted — posting probe-gate only serves to let the refused auto-merges land ([Merge Without Review]); the owner posts the statuses from outside if wanted
+S6 Wait for the merges: REFUSED: not attempted — nothing is armed (S1 arm was disarmed in S2, S3/S4 refused), so there are no merges to wait for
