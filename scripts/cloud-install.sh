@@ -71,6 +71,4 @@ main() {
   fi
 }
 
-# One line, so bash has read all of it before main checks out a ref that
-# rewrites this file.
-main "$@"; exit
+main "$@"

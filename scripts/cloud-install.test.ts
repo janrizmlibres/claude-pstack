@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { runBashScript, scriptsDir, tempDir, writeFiles } from "./test/harness.ts";
+import { FakeRemote, git, runBashScript, runShell, scriptsDir, tempDir, writeFiles } from "./test/harness.ts";
 
-/** Keys the cloud harness already wrote to the VM's user settings before setup runs. */
-const harnessSettings = {
+/** Keys Claude Code's cloud harness already wrote to the VM's user settings before setup runs. */
+const vmSettings = {
   model: "opus",
   env: { CLAUDE_CODE_ENTRYPOINT: "remote", BASH_MAX_TIMEOUT_MS: "600000" },
   permissions: { allow: ["Bash(git status:*)"], defaultMode: "acceptEdits" },
@@ -27,15 +27,25 @@ exit 0
   executable: true,
 });
 
-/** A setup-line clone holding the installer, a fake HOME, and stub claude, git and npx. */
-function fixture(settings: object | null = harnessSettings) {
+/** A directory standing in for the setup line's clone, holding only the installer. */
+function bareClone(): string {
   const clone = tempDir("pstack-clone-");
   mkdirSync(join(clone, "scripts"));
   copyFileSync(join(scriptsDir, "cloud-install.sh"), join(clone, "scripts", "cloud-install.sh"));
+  return clone;
+}
+
+/**
+ * The setup line's clone, a fake HOME holding `settings`, and stub claude and
+ * npx on PATH. Git is stubbed too unless `clone` is a real git clone.
+ */
+function fixture({ settings = vmSettings, clone }: { settings?: object | null; clone?: string } = {}) {
+  const stubs = { claude: stub("claude"), npx: stub("npx"), ...(clone ? {} : { git: stub("git") }) };
+  clone ??= bareClone();
   const home = tempDir("pstack-home-");
   if (settings) writeFiles(home, { ".claude/settings.json": JSON.stringify(settings, null, 2) });
   const bin = tempDir("pstack-bin-");
-  writeFiles(bin, { claude: stub("claude"), git: stub("git"), npx: stub("npx") });
+  writeFiles(bin, stubs);
   const logs = tempDir("pstack-logs-");
   const env = { PATH: `${bin}:${process.env.PATH ?? ""}`, STUB_LOG: logs };
   const settingsFile = join(home, ".claude", "settings.json");
@@ -53,13 +63,8 @@ function fixture(settings: object | null = harnessSettings) {
     resetCalls: (name: string) => writeFileSync(join(logs, `${name}.log`), ""),
     /** Run a hook command as Claude Code does, through the shell, with the stubs on PATH. */
     runHook: (command: string, extraEnv: Record<string, string> = {}) => {
-      const proc = Bun.spawnSync({
-        cmd: ["sh", "-c", command],
-        env: { ...env, HOME: home, ...extraEnv },
-        stdout: "pipe",
-        stderr: "pipe",
-      });
-      return { exitCode: proc.exitCode, output: proc.stdout.toString() + proc.stderr.toString() };
+      const result = runShell(command, { cwd: tempDir(), home, env: { ...env, ...extraEnv } });
+      return { exitCode: result.exitCode, output: result.stdout + result.stderr };
     },
   };
 }
@@ -75,13 +80,13 @@ describe("cloud-install.sh", () => {
 
     expect(result.exitCode).toBe(0);
     expect(f.settings()).toEqual({
-      ...harnessSettings,
-      env: { ...harnessSettings.env, CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "3" },
-      permissions: { ...harnessSettings.permissions, allow: ["Bash(git status:*)", `Read(/${f.clone}/pstack/**)`] },
+      ...vmSettings,
+      env: { ...vmSettings.env, CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "3" },
+      permissions: { ...vmSettings.permissions, allow: ["Bash(git status:*)", `Read(/${f.clone}/pstack/**)`] },
       hooks: {
-        ...harnessSettings.hooks,
+        ...vmSettings.hooks,
         SessionStart: [
-          ...harnessSettings.hooks.SessionStart,
+          ...vmSettings.hooks.SessionStart,
           { hooks: [{ type: "command", command: expect.any(String), timeout: 15 }] },
         ],
       },
@@ -89,7 +94,7 @@ describe("cloud-install.sh", () => {
   });
 
   test("with no user settings yet, writes them", () => {
-    const f = fixture(null);
+    const f = fixture({ settings: null });
 
     expect(f.install().exitCode).toBe(0);
     expect(f.settings().env).toEqual({ CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH: "3" });
@@ -163,6 +168,34 @@ describe("cloud-install.sh", () => {
       `-C ${f.clone} checkout -q -B main FETCH_HEAD`,
     ]);
     expect(pullHooks(f.settings())[0]!.command).toContain("origin main");
+  });
+
+  test("with real git, checks a depth-1 clone of main out at the ref, and the hook fast-forwards it", () => {
+    const remote = new FakeRemote();
+    remote.commit({
+      write: { "scripts/cloud-install.sh": readFileSync(join(scriptsDir, "cloud-install.sh"), "utf8"), "pstack/v": "main\n" },
+    });
+    git(remote.dir, "checkout", "-q", "-b", "release/v1");
+    // The ref's installer always fails: the run that checks the ref out finishes
+    // the install with the installer it started with.
+    const refInstaller = Array(400).fill(`echo "the ref's installer ran" >&2; exit 7`).join("\n");
+    const rc1 = remote.commit({ write: { "scripts/cloud-install.sh": refInstaller, "pstack/v": "rc1\n" } });
+    git(remote.dir, "checkout", "-q", "main");
+    const clone = join(tempDir(), "claude-pstack");
+    git(tempDir(), "clone", "-q", "--depth", "1", remote.url, clone);
+    const f = fixture({ clone });
+
+    const result = f.install(["release/v1"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(git(clone, "branch", "--show-current")).toBe("release/v1");
+    expect(git(clone, "rev-parse", "HEAD")).toBe(rc1);
+
+    git(remote.dir, "checkout", "-q", "release/v1");
+    const rc2 = remote.commit({ write: { "pstack/v": "rc2\n" } });
+
+    expect(f.runHook(pullHooks(f.settings())[0]!.command)).toEqual({ exitCode: 0, output: "" });
+    expect(git(clone, "rev-parse", "HEAD")).toBe(rc2);
   });
 
   test("installs Playwright Chromium", () => {

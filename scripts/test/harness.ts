@@ -48,6 +48,11 @@ export function runBashScript(file: string, args: string[], options: RunOptions)
   return run(["bash", file, ...args], options);
 }
 
+/** Run a command line through `sh -c`, as Claude Code runs a settings hook command. */
+export function runShell(command: string, options: RunOptions): RunResult {
+  return run(["sh", "-c", command], options);
+}
+
 function run(cmd: string[], options: RunOptions): RunResult {
   const home = options.home ?? tempDir("pstack-home-");
   const proc = Bun.spawnSync({
