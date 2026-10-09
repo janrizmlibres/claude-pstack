@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# exclude-worktrees
+#
+# Adds .claude/worktrees/ once to the exclude file `git rev-parse --git-path
+# info/exclude` names, so worker worktrees never show up as untracked files.
+# In a linked worktree that is the repository's shared exclude file. Creates
+# the file when it is missing, and never adds the line twice.
+#
+# A lead or sub-lead runs this one plain command before the first worktree it
+# gives a worker. The git call happens in here, so the command never names git,
+# which a worktree-isolated agent's guard refuses inside a command
+# substitution.
+#
+# Exits 0 once the line is there, and 1 outside a git repository or when the
+# exclude file can't be written.
+set -u
+
+line=".claude/worktrees/"
+
+exclude="$(git rev-parse --git-path info/exclude 2>/dev/null)" || {
+  echo "exclude-worktrees: not inside a git repository" >&2
+  exit 1
+}
+mkdir -p "$(dirname "$exclude")" || exit 1
+touch "$exclude" || exit 1
+
+grep -qxF "$line" "$exclude" && exit 0
+# Ends a last line that has no newline before appending to it.
+[ -s "$exclude" ] && [ -n "$(tail -c 1 "$exclude")" ] && printf '\n' >>"$exclude"
+printf '%s\n' "$line" >>"$exclude" || exit 1

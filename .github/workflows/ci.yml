@@ -1,0 +1,76 @@
+# The one pull_request workflow. Its `ci` and `ci-macos` jobs are the required
+# checks on main and release/v1, set by the ruleset in
+# .github/rulesets/ci-required.json.
+# Create it with
+#   gh api -X POST repos/{owner}/{repo}/rulesets --input .github/rulesets/ci-required.json
+# and update it with -X PUT on repos/{owner}/{repo}/rulesets/<id>.
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      # The oldest Node the runtime launcher accepts, for its Node tests.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.18.0
+      - run: bun install --frozen-lockfile
+      - name: Snapshot matches its recorded upstream commit
+        run: bun scripts/upstream-diff.ts --verify
+      - name: Conversion rules self-test and Cursor-ism check
+        run: bun scripts/check-cursorisms.ts
+      - name: port.json agrees with the port
+        run: bun scripts/check-port-json.ts
+      # Reports only: exit 1 (files left to port) passes, a malformed port.json
+      # (exit 2) fails. Files left to port hold back a release, not a PR.
+      - name: Port coverage (report)
+        run: bun scripts/check-port-json.ts --coverage || [ $? -eq 1 ]
+      - name: README's generated blocks are current
+        run: bun scripts/render-readme.ts --check
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@2.1.294
+      # Fails on any error or warning but the missing version: the port carries
+      # no version on purpose, since every merge to main is a release.
+      - name: Marketplace and plugin validate
+        shell: bash
+        run: |
+          out="$RUNNER_TEMP/validate.json"
+          for target in . pstack; do
+            claude plugin validate "$target" --json > "$out" || { cat "$out"; exit 1; }
+            unexpected=$(jq -r '(.manifest, .contents[]) | .file as $f | .warnings[]
+              | "\($f): \(.path): \(.message)" | select(test("(: |→ )version: ") | not)' "$out")
+            if [ -n "$unexpected" ]; then echo "$unexpected"; exit 1; fi
+            echo "$target: valid"
+          done
+      - name: Typecheck scripts
+        run: bun run typecheck
+      - name: Script tests
+        run: bun run test
+
+  # The machine lock takes flock(1) on Linux and perl's flock() on macOS, so
+  # the script tests run on both.
+  ci-macos:
+    name: ci-macos
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.18.0
+      - run: bun install --frozen-lockfile
+      - name: Script tests
+        run: bun run test
